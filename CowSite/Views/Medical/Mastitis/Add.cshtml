@@ -1,0 +1,114 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>隐形乳房炎检测</title>
+    <link rel="stylesheet" href="~/ligerUI/skins/Aqua/css/ligerui-all.css">
+    <link rel="stylesheet" href="~/Style/base.css">
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/ligerUI/js/ligerui.min.js"></script>
+    <link rel="stylesheet" href="~/bootstrap/css/bootstrap-theme1.min.css">
+    <script src="~/bootstrap/js/bootstrap.min.js"></script>
+    <script src="~/Scripts/menu.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $('#menu').menu({ mainMenuSelectedID: "Medical", subMenuSelectedID: "Medical-Mastitis" });
+            loadMilkMastitisReportInfo();
+            initBtnEvent();
+        });
+
+        function loadMilkMastitisReportInfo() {
+            $("#milkMastitisReportInfo").ligerForm({
+                inputWidth: 170, labelWidth: 90, space: 40,
+                fields: [
+                {
+                    display: "耳号", name: "EarNum", type: "text", width: 270, validate: { required: true }
+                },
+                {
+                    display: "左前乳", name: "LeftFront", type: "select", width: 270,
+                    options: {
+                        data: [{ text: "-", id: "0" }, { text: "+", id: "1" }, { text: "++", id: "2" },
+                            { text: "+++", id: "3" }, { text: "++++", id: "4" }], valueFieldID: "LeftFront"
+                    },
+                    validate: { required: true }
+                },
+                {
+                    display: "右前乳", name: "RightFront", type: "select", width: 270,
+                    options: {
+                        data: [{ text: "-", id: "0" }, { text: "+", id: "1" }, { text: "++", id: "2" },
+                                { text: "+++", id: "3" }, { text: "++++", id: "4" }], valueFieldID: "RightFront"
+                    },
+                    validate: { required: true }
+                },
+                {
+                    display: "左后乳", name: "LeftBack", type: "select", width: 270,
+                    options: {
+                        data: [{ text: "-", id: "0" }, { text: "+", id: "1" }, { text: "++", id: "2" },
+                                { text: "+++", id: "3" }, { text: "++++", id: "4" }], valueFieldID: "LeftBack"
+                    },
+                    validate: { required: true }
+                },
+                {
+                    display: "右后乳", name: "RightBack", type: "select", width: 270,
+                    options: {
+                        data: [{ text: "-", id: "0" }, { text: "+", id: "1" }, { text: "++", id: "2" },
+                                { text: "+++", id: "3" }, { text: "++++", id: "4" }], valueFieldID: "RightBack"
+                    },
+                    validate: { required: true }
+                },
+                {
+                    display: "检测时间", name: "DetectionDate", type: "date", width: 270, validate: { required: true }
+                },
+                {
+                    display: "检测人", name: "Detector", type: "text", width: 270, validate: { required: true }
+                },
+                {
+                    display: "检测描述", name: "Description", type: "text", width: 270, validate: { required: true }
+                }
+                ]
+            });
+        }
+
+        function initBtnEvent() {
+            $('#btnSubmit').ligerButton({
+                width: 60,
+                text: '保存',
+                click: function () {
+                    //提交表单
+                    document.getElementById('milkMastitisReportInfo').submit();
+                    parent.$.ligerDialog.close();
+                    parent.$(".l-dialog,.l-window-mask").hide();
+                },
+                icon: null
+            });
+            $('#btnCancel').ligerButton({
+                width: 60,
+                text: '取消',
+                click: function () {
+                    parent.$.ligerDialog.close();
+                    parent.$(".l-dialog,.l-window-mask").hide();
+                },
+                icon: null
+            });
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div id="menu"></div>
+        <div class="content">
+            <form class="form-inline" action="~/Medical/Mastitis/Save" method="post" id="milkMastitisReportInfo"></form>
+            <div style="text-align:left;">
+                <input type="button" id="btnSubmit" value="保存" />
+                <input type="button" id="btnCancel" value="取消" />
+            </div>
+        </div>
+    </div>
+    <script src="~/Scripts/bdhm.js"></script>
+</body>
+</html>

@@ -1,0 +1,108 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>体况评分</title>
+    <link rel="stylesheet" href="~/ligerUI/skins/Aqua/css/ligerui-all.css">
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/Scripts/jquery-tools-min.js"></script>
+    <script src="~/ligerUI/js/ligerui.min.js"></script>
+    <link rel="stylesheet" href="~/bootstrap/css/bootstrap-theme1.min.css">
+    <script src="~/bootstrap/js/bootstrap.min.js"></script>
+    <link href="~/Controls/jQuery.Select2/select2.css" rel="stylesheet" />
+    <script src="~/Controls/jQuery.Select2/select2.min.js"></script>
+    <script src="~/Scripts/menu.js"></script>
+    <script src="~/Scripts/common.js"></script>
+    <link href="~/Controls/bootstrap.datepicker/datepicker.css" rel="stylesheet" />
+    <script src="~/Controls/bootstrap.datepicker/bootstrap-datepicker.js"></script>
+    <link rel="stylesheet" href="~/Style/base.css">
+    <script type="text/javascript">
+        $(function () {
+            $('#menu').menu({ mainMenuSelectedID: "Feed", subMenuSelectedID: "Feed-Grade" });
+            initCheckSelector();
+            initBtnEvent();
+        });
+
+        function initCheckSelector() {
+            $('input[name=mDate]').datepicker({
+                language: 'zh-CN',
+                autoclose: 1,
+                todayHighlight: 1,
+                format: "yyyy-mm-dd"
+            });
+        }
+
+        function initBtnEvent() {
+            $("#btnSubmit").show().ligerButton({
+                width: 80,
+                text: "保存",
+                disable: false,
+                click: function () {
+                    var earNum = $("#earNum").val();
+                    var date = $("#MeasureDate").val();
+                    var height = $("#Height").val();
+                    var weight = $("#Weight").val();
+                    var chest = $("#Chest").val();
+                    var grade = $("#Grade").val();
+                    var description = $("#Description").val();
+                    $.ajax({
+                        type: 'post',
+                        url: "../../Feed/Grade/Save",
+                        dataType: "json",
+                        data: { EarNum: earNum, Date: date, Height: height, Weight: weight, Chest: chest, Grade: grade, Description: description }
+                    }).success(
+                            function (msg) {
+                                alert(msg);
+                            }
+                    );
+                }
+            });
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div id="menu"></div>
+        <div class="content">
+            <form id="gradeInfo">
+                <div class="input-group mt10">
+                    <span class="input-group-addon w100">耳号</span>
+                    <input type="text" class="form-control w200 js-DisplayEarNum" placeholder="耳号" id="earNum" name="DisplayEarNum">
+                </div>
+                <div class="input-group mt10">
+                    <span class="input-group-addon w100">录入日期</span>
+                    <input type="text" class="form-control w200" placeholder="录入日期" id="MeasureDate" name="mDate">
+                </div>
+                <div class="input-group mt10">
+                    <span class="input-group-addon w100">体高</span>
+                    <input type="text" class="form-control w200" placeholder="体高" id="Height" name="CowHeight" />
+                </div>
+                <div class="input-group mt10">
+                    <span class="input-group-addon w100">体重</span>
+                    <input type="text" class="form-control w200" placeholder="体重" id="Weight" name="CowWeight" />
+                </div>
+                <div class="input-group mt10">
+                    <span class="input-group-addon w100">胸围</span>
+                    <input type="text" class="form-control w200" placeholder="胸围" id="Chest" name="CowChest" />
+                </div>
+                <div class="input-group mt10">
+                    <span class="input-group-addon w100">评分</span>
+                    <input type="text" class="form-control w200" placeholder="评分" id="Grade" name="CowGrade" />
+                </div>
+                <div class="input-group mt10">
+                    <span class="input-group-addon w100">体况描述</span>
+                    <input type="text" class="form-control h200 w400" placeholder="体况描述" id="Description" name="CowDescription" />
+                </div>
+            </form>
+            <div class="btn-group mt10">
+                <input type="button" id="btnSubmit" value="保存" />
+            </div>
+        </div>
+    </div>
+    <script src="~/Scripts/bdhm.js"></script>
+</body>
+</html>

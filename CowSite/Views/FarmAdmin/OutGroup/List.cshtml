@@ -1,0 +1,115 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>离群</title>
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/Scripts/jquery-tools-min.js"></script>
+    <script src="~/ligerUI/js/ligerui.min.js"></script>
+    <link rel="stylesheet" href="~/bootstrap/css/bootstrap-theme1.min.css">
+    <script src="~/bootstrap/js/bootstrap.min.js"></script>
+    <link href="~/Controls/jQuery.Select2/select2.css" rel="stylesheet" />
+    <script src="~/Controls/jQuery.Select2/select2.min.js"></script>
+    <script src="~/Scripts/menu.js"></script>
+    <link rel="stylesheet" href="~/Style/base.css">
+    <link rel="stylesheet" href="~/ligerUI/skins/Aqua/css/ligerui-all.css">
+    <link href="~/Controls/bootstrap.datepicker/datepicker.css" rel="stylesheet" />
+    <script src="~/Controls/bootstrap.datepicker/bootstrap-datepicker.js"></script>
+    <script src="~/Scripts/common.js"></script>
+    <script>
+        $(function () {
+            $('#menu').menu({ mainMenuSelectedID: "FarmAdmin", subMenuSelectedID: "FarmAdmin-OutGroup" });
+            initDateSelector();
+            initStrayTypeSelector();
+            initIsSoldSelector();
+            btnOutGroupClick();
+        });
+        function initDateSelector() {
+            $('input[name=strayDate]').datepicker({
+                language: 'zh-CN',
+                autoclose: 1,
+                todayHighlight: 1,
+                format: "yyyy-mm-dd"
+            });
+        }
+        function initStrayTypeSelector() {
+            $('select[name=strayType]').empty();
+            $('select[name=strayType]').append('<option value="' + 1 + '">' + '死亡' + '</option>');
+            $('select[name=strayType]').append('<option value="' + 0 + '">' + '淘汰' + '</option>');
+        }
+        function initIsSoldSelector() {
+            $('select[name=isSold]').empty();
+            $('select[name=isSold]').append('<option value="' + 1 + '">' + '是' + '</option>');
+            $('select[name=isSold]').append('<option value="' + 0 + '">' + '否' + '</option>');
+            $('select[name=isSold]').change(function () {
+                if ($('select[name=isSold]').val()==1) {
+                    $('div.js-price').show();
+                }
+                else{
+                    $('div.js-price').hide();
+                }
+            })
+            
+        }
+        function btnOutGroupClick() {
+            $('#btnOutGroup').click(function () {
+                $.ajax({
+                    type: 'post',
+                    url: '../../FarmAdmin/OutGroup/OutGroup',
+                    data: $("#cowInfo").serialize(),
+                    dataType: 'json',
+                    success: function (response) {
+                        if (response.Result == 1) {
+                            alert('离群成功！');
+                        }
+                    }
+                });
+            });
+        }
+
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div id="menu"></div>
+        <div class="content">
+            <form id="cowInfo">
+                <div class="input-group mt10">
+                    <span class="input-group-addon w200">牛耳号</span>
+                    <input type="text" class="form-control w400 js-DisplayEarNum" placeholder="牛耳号" name="displayEarNum">
+                </div>
+                <div class="input-group mt10">
+                    <span class="input-group-addon w200">离群日期</span>
+                    <input type="text" class="form-control w400" placeholder="离群日期" name="strayDate">
+                </div>
+                <div class="input-group mt10">
+                    <span class="input-group-addon w200">离群原因</span>
+                    <textarea class="form-control h200 w400" placeholder="离群原因" name="strayReason"></textarea>
+                    
+                </div>
+                <div class="input-group mt10">
+                    <span class="input-group-addon w200">离群类型</span>
+                    <select class="w400" name="strayType"></select>
+                </div>
+                <div class="input-group mt10">
+                    <span class="input-group-addon w200">是否出售</span>
+                    <select class="w400" name="isSold"></select>
+                </div>
+                <div class="input-group mt10 js-price">
+                    <span class="input-group-addon w200">出售价格</span>
+                    <input type="text" class="form-control w400" placeholder="出售价格" name="price">
+                </div>
+                <div class="mt10">
+                    <button type="button" class="btn btn-primary" id="btnOutGroup">离群</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script src="~/Scripts/bdhm.js"></script>
+</body>
+</html>

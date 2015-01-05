@@ -1,0 +1,63 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>剩料记录</title>
+    <link rel="stylesheet" href="~/ligerUI/skins/Aqua/css/ligerui-all.css">
+    <link rel="stylesheet" href="~/Style/base.css">
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/ligerUI/js/ligerui.min.js"></script>
+    <link rel="stylesheet" href="~/bootstrap/css/bootstrap-theme1.min.css">
+    <script src="~/bootstrap/js/bootstrap.min.js"></script>
+    <script src="~/Scripts/menu.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $('#menu').menu({ mainMenuSelectedID: "Feed", subMenuSelectedID: "Feed-Remain" });
+            loadCowGroup();
+        });
+
+        function loadCowGroup() {
+            $.ajax({
+                type: 'get',
+                url: '../../Feed/CowGroup/GetCowGroupList',
+                dataType: 'json',
+                cache: false,
+                success: function (cowGroup) {
+                    if (cowGroup) {
+                        $("#cowGroupID").empty();
+                        $("#cowGroupID").append('<option value="0" selected = "selected">' + "请选择牛群" + '</option>');
+                        $.each(cowGroup, function () {
+                            $("#cowGroupID").append('<option value="' + this.ID + '">' + this.Name + '</option>');
+                        });
+                    }
+                }
+            });
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div id="menu"></div>
+        <div class="content">
+            <form action="~/Feed/Remain/Save" method="post" id="remainRecordInfo">
+                <div class="input-group mt10">
+                    <span class="input-group-addon w200">牛群：</span>
+                    <select name="cowGroupName" class="form-control w200" id="cowGroupID"></select>
+                </div>
+                <div class="input-group mt10">
+                    <span class="input-group-addon w200">剩料量:</span>
+                    <input type="text" id="remainQuantity" name="reQuantity" class="form-control w200" />
+                </div>
+                <div class="mt10">
+                    <input type="submit" id="btnSubmit" class="btn btn-primary" value="保存" />
+                </div>
+            </form>
+        </div>
+    </div>
+    <script src="~/Scripts/bdhm.js"></script>
+</body>
+</html>

@@ -1,0 +1,161 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>牧场管理</title>
+    <link rel="stylesheet" href="~/ligerUI/skins/Aqua/css/ligerui-all.css">
+    <link rel="stylesheet" href="~/Style/base.css">
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/ligerUI/js/ligerui.min.js"></script>
+    <link rel="stylesheet" href="~/bootstrap/css/bootstrap-theme1.min.css">
+    <script src="~/bootstrap/js/bootstrap.min.js"></script>
+    <link href="~/Controls/bootstrap.datepicker/datepicker.css" rel="stylesheet" />
+    <script src="~/Controls/bootstrap.datepicker/bootstrap-datepicker.js"></script>
+    <link href="~/Controls/bootstrap.timepicker/css/bootstrap-timepicker.min.css" rel="stylesheet" />
+    <script src="~/Controls/bootstrap.timepicker/js/bootstrap-timepicker.min.js"></script>
+    <link href="~/Controls/jQuery.Select2/select2.css" rel="stylesheet" />
+    <script src="~/Controls/jQuery.Select2/select2.min.js"></script>
+    <script src="~/Scripts/menu.js"></script>
+    <script>
+        $(function () {
+            $('#menu').menu({ mainMenuSelectedID: "Platform", subMenuSelectedID: "Platform-Farm" });
+            loadPastureList();
+            initBtn();
+        });
+
+        var pastureGridManager;
+        var pastures;
+
+        function loadPastureList() {
+            $.ajax({
+                type: 'get',
+                url: "../../Platform/Farm/GetPastures",
+                dataType: 'json',
+                cache: false,
+                success: function (pastureData) {
+                    pastures = pastureData;
+                    initGrid();
+                }
+            });
+        }
+
+        function initBtn() {
+            $("#btnSet").click(function () {
+                var row = pastureGridManager.getSelectedRow();
+                if (row) {
+                    var pastureID = row["ID"];
+                    var isActive = $('select[name=activeSelect]').val();
+                    $.ajax({
+                        type: 'get',
+                        url: "../../Platform/Farm/SetPastureStatus",
+                        dataType: 'json',
+                        cache: false,
+                        data: { pastureID: pastureID, isActive: isActive },
+                        success: function (Result) {
+                            loadPastureList();
+                            initGrid();
+                            alert(Result.Msg);
+                        }
+                    });
+                }
+                else {
+                    alert("请先选中牧场。");
+                }
+            });
+
+            $("#btnAdd").click(function () {
+                var pastureName, farmAdminAccount, farmAdminName;
+                pastureName = $('input[name=pastureName]').val();
+                if (pastureName == "") {
+                    alert("牧场名不能为空！");
+                    return;
+                }
+                farmAdminAccount = $('input[name=adminAccount]').val();
+                if (farmAdminAccount == "") {
+                    alert("牧场管理员账号不能为空！");
+                    return;
+                }
+                farmAdminName = $('input[name=adminName]').val();
+                if (farmAdminName == "") {
+                    alert("牧场管理员名不能为空！");
+                    return;
+                }
+                $.ajax({
+                    type: 'get',
+                    url: "../../Platform/Farm/AddPasture",
+                    dataType: 'json',
+                    cache: false,
+                    data: {pastureName :pastureName,farmAdminAccount :farmAdminAccount,farmAdminName: farmAdminName},
+                    success: function (Result) {
+                        loadPastureList();
+                        initGrid();
+                        alert(Result.Msg);
+                    }
+                });
+            });
+        }
+
+        function initGrid() {
+            pastureGridManager = $("#pastureGrid").ligerGrid({
+                checkbox: false,
+                columns: [
+                    { display: '牧场ID', name: 'ID', type: 'int', hide: true, width: 50 },
+                    { display: '牧场', name: 'Name', align: 'left', width: 150 },
+                    { display: '牧场IsActive', name: 'IsActive', align: 'left', hide: true, width: 150 },
+                    { display: '牧场状态', name: 'Status', type: 'text', align: 'left', width: 100 },
+                ],
+                title: "牧场信息",
+                showTitle: true,
+                pageSize: 15,
+                width: '100%',
+                height: 'auto',
+                isScroll: false,
+                data: pastures
+            });
+            $("#pageloading").hide();
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div id="menu"></div>
+        <div class="content">
+            <form id="pastureInfo">
+                <div class="input-group mt10 ">
+                    <span class="input-group-addon w200 ">牧场名</span>
+                    <input type="text" class="form-control w200 disabled" placeholder="牧场名" name="pastureName">
+                </div>
+                <div class="input-group mt10 ">
+                    <span class="input-group-addon w200 ">牧场管理员名</span>
+                    <input type="text" class="form-control w200 disabled" placeholder="牧场管理员名" name="adminName">
+                </div>
+                <div class="input-group mt10 ">
+                    <span class="input-group-addon w200 ">牧场管理员账号</span>
+                    <input type="text" class="form-control w200 disabled" placeholder="牧场管理员账号，缺省密码123" name="adminAccount">
+                </div>
+                <div class="input-group mt10 ">
+                    <button type="button" class="btn btn-primary" id="btnAdd">添加牧场</button>
+                </div>
+                <div class="mt10">
+                    <span class="input-group-addon w200">选中以下牧场，设置其状态为</span>
+                    <select class="w200 inline" name="activeSelect">
+                        <option value="1">正常运营</option>
+                        <option value="0">暂停运营</option>
+                    </select>
+                    <button type="button" class="btn btn-primary inline" id="btnSet">设置状态</button>
+                </div>
+                <div>
+                    <div id="pastureGrid" class="displayBlock ml5 mr5"></div>
+                    <div id="message"></div>
+                    <div class="l-loading" id="pageloading"></div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script src="~/Scripts/bdhm.js"></script>
+</body>
+</html>

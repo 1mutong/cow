@@ -1,0 +1,93 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>修蹄</title>
+    <link rel="stylesheet" href="~/ligerUI/skins/Aqua/css/ligerui-all.css">
+    <link rel="stylesheet" href="~/Style/base.css">
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/ligerUI/js/ligerui.min.js"></script>
+    <link rel="stylesheet" href="~/bootstrap/css/bootstrap-theme1.min.css">
+    <script src="~/bootstrap/js/bootstrap.min.js"></script>
+    <script src="~/Scripts/menu.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $('#menu').menu({ mainMenuSelectedID: "Medical", subMenuSelectedID: "Medical-RepairHoof" });
+            loadRepairHoofInfo();
+            initBtnEvent();
+        });
+
+        function loadRepairHoofInfo() {
+            $("#repairHoofInfo").ligerForm({
+                inputWidth: 170, labelWidth: 90, space: 40,
+                fields: [
+                { display: "耳号", name: "EarNum", type: "text", width: 270, validate: { required: true } },
+                { display: "方法", name: "Method", type: "text", width: 270, validate: { required: true } },
+                {
+                    display: "左前", name: "LeftFront", type: "select", width: 270,
+                    options: { data: [{ text: "正常", id: "0" }, { text: "不正常", id: "1" }], valueFieldID: "LeftFront" },
+                    validate: { required: true }
+                },
+                {
+                    display: "右前", name: "RightFront", type: "select", width: 270,
+                    options: { data: [{ text: "正常", id: "0" }, { text: "不正常", id: "1" }], valueFieldID: "RightFront" },
+                    validate: { required: true }
+                },
+                {
+                    display: "左后", name: "LeftBack", type: "select", width: 270,
+                    options: { data: [{ text: "正常", id: "0" }, { text: "不正常", id: "1" }], valueFieldID: "LeftBack" },
+                    validate: { required: true }
+                },
+                {
+                    display: "右后", name: "RightBack", type: "select", width: 270,
+                    options: { data: [{ text: "正常", id: "0" }, { text: "不正常", id: "1" }], valueFieldID: "RightBack" },
+                    validate: { required: true }
+                },
+                { display: "时间", name: "OprateDate", type: "date", width: 270, validate: { required: true } }
+                ]
+            });
+        }
+
+        function initBtnEvent() {
+            $('#btnSubmit').ligerButton({
+                width: 60,
+                text: '保存',
+                click: function () {
+                    //提交表单
+                    document.getElementById('repairHoofInfo').submit();
+                    parent.$.ligerDialog.close();
+                    parent.$(".l-dialog,.l-window-mask").hide();
+                },
+                icon: null
+            });
+            $('#btnCancel').ligerButton({
+                width: 60,
+                text: '取消',
+                click: function () {
+                    parent.$.ligerDialog.close();
+                    parent.$(".l-dialog,.l-window-mask").hide();
+                },
+                icon: null
+            });
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div id="menu"></div>
+        <div class="content">
+            <form class="form-inline" action="~/Medical/RepairHoof/Save" method="post" id="repairHoofInfo"></form>
+            <div style="text-align:left;">
+                <input type="button" id="btnSubmit" value="保存" />
+                <input type="button" id="btnCancel" value="取消" />
+            </div>
+        </div>
+    </div>    
+    <script src="~/Scripts/bdhm.js"></script>
+</body>
+</html>

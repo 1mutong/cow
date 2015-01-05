@@ -1,0 +1,109 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>牛群管理</title>
+    <link rel="stylesheet" href="~/ligerUI/skins/Aqua/css/ligerui-all.css">
+    <link rel="stylesheet" href="~/Style/base.css">
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/ligerUI/js/ligerui.min.js"></script>
+    <link rel="stylesheet" href="~/bootstrap/css/bootstrap-theme1.min.css">
+    <script src="~/bootstrap/js/bootstrap.min.js"></script>
+    <script src="~/Scripts/menu.js"></script>
+    <script src="~/Scripts/settingData.js"></script>
+    <script>
+        $(function () {
+            $('#menu').menu({ mainMenuSelectedID: "Feed", subMenuSelectedID: "Feed-CowGroup" });
+            loadCowGroupList();
+            initButton();
+        });
+
+        var cowGroups;
+        var cowGroupGridManager;
+        function loadCowGroupList() {
+            cowGroupGridManager = $("#cowGroupGrid").ligerGrid({
+                checkbox: false,
+                columns: [
+                    { display: '牛群ID', name: 'ID', type: 'int', hide: true, width: 50 },
+                    { display: '牧场', name: 'PastureName', align: 'left', hide: true, width: 150 },
+                    { display: '牛群', name: 'Name', align: 'left', width: 250, editor: { type: 'text' } },
+                    { display: '牛群类型', name: 'CowGroupTypeString', align: 'left', width: 150 },
+                    { display: '牛群说明', name: 'Description', align: 'left' },
+                    { display: '配方', name: 'FormulaName', align: 'left', width: 150 }
+                ],
+                pageSize: 15,
+                data: cowGroups,
+                width: '100%',
+                height: '100%',
+                isScroll: false,
+                url: "../../Feed/CowGroup/GetCowGroupInfo"
+            });
+            $("#pageloading").hide();
+        }
+
+        function initButton() {
+            $('#btnAdd').show().ligerButton({
+                width: 80,
+                text: "新增牛群",
+                disabled: false,
+                click: function () {
+                    var editUrl = "../../CowGroup/AddCowGroup";
+                    $.ligerDialog.open({ title: "新增牛群", height: 260, width: 550, url: editUrl });
+                }
+            });
+
+            $('#btnDelete').show().ligerButton({
+                width: 80,
+                text: "删除牛群",
+                disabled: false,
+                click: function () {
+                    var row = cowGroupGridManager.getSelectedRow();
+                    var editUrl = "../../CowGroup/Delete";
+                    if (row) {
+                        var id = row["ID"];
+                    } else {
+                        alert("请选择牛群");
+                        return;
+                    }
+                    $.ajax({
+                        type: 'post',
+                        url: editUrl,
+                        dataType: "json",
+                        data: { ID: id }
+                    }).success(function (msg) {
+                        loadCowGroupList();
+                        alert(msg);
+                    });
+                }
+            });
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div id="menu"></div>
+        <div class="content">
+            <div style="margin: 10px 0px 10px 0px; position: relative; height: 30px; width: 100%;">
+                <div style="display: inline-block; position: absolute; left: 0px;">
+                    @*牛群名称：<input type="text" id="groupeName" />*@
+                    @*<select id="groupID" style="width: 150px; height: 25px"></select>*@
+                </div>
+                <div style="display: inline-block; position: absolute; right: 0px;">
+                    <input type="button" id="btnAdd" value="新增牛群" style="display: none;" />
+                    <input type="button" id="btnDelete" value="删除牛群" style="display: none; " />
+                </div>
+            </div>
+            <div>
+                <div id="cowGroupGrid" class="displayBlock ml5 mr5"></div>
+                <div id="message"></div>
+                <div class="l-loading" id="pageloading"></div>
+            </div>
+        </div>
+    </div>
+    <script src="~/Scripts/bdhm.js"></script>
+</body>
+</html>

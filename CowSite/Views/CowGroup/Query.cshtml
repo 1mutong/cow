@@ -1,0 +1,75 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>牛群查询</title>
+    <link rel="shortcut icon" href="images/emutong.ico">
+    <link rel="stylesheet" href="~/bootstrap/css/bootstrap-theme1.min.css">
+    <link rel="stylesheet" href="~/Style/base.css">
+    <link rel="stylesheet" href="~/Style/common.css">
+    <link rel="stylesheet" href="~/Style/Home/Index.css">
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/Scripts/jquery-tools-min.js"></script>
+    <script src="~/bootstrap/js/bootstrap.min.js"></script>
+    <script src="~/Scripts/menu.js"></script>
+    <link href="~/Controls/jQuery.LoadingUI/jquery.loadingui.css" rel="stylesheet" />
+    <script src="~/Controls/jQuery.LoadingUI/jquery.loadingui.js"></script>
+    <link href="~/Controls/jQuery.Table2014/Table2014.css" rel="stylesheet" />
+    <script src="~/Controls/jQuery.Table2014/Table2014.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $('#menu').menu({ mainMenuSelectedID: "Query", subMenuSelectedID: "Query-CowGroup" });
+            loadCowGroup();
+        });
+
+        function loadCowGroup() {
+            $.ajax({
+                url: '../../Feed/CowGroup/GetCowGroup',
+                dataType: 'json',
+                type: 'get',
+                cache: false,
+                success: function (cowGroup) {
+                    $('div.cowGroupList').table2014({
+                        tableTitle: false,
+                        tableHeader: true,
+                        hoverColor: true,
+                        data: cowGroup,
+                        dataRowsPath: 'Rows',
+                        columns:
+                        [
+                            {
+                                header: '牛群', colName: 'Name', render: function (row) {
+                                    return '<span>' + row.Name + '</span>';
+                                }
+                            },
+                            { header: '类型', colName: 'CowGroupTypeString', width: 200, align: 'left' },
+                            { header: '牛数量', colName: 'CowNumber', width: 160, align: 'left' }
+                        ],
+                        onSortCol: null
+                    });
+                }
+            })
+        }
+    </script>
+    <style type="text/css">
+        .table2014 .table-cell {
+            border-bottom: 1px solid #c2c2c2;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="menu"></div>
+        <div class="content">
+            <div class="cowGroupList"></div>
+        </div>
+    </div>
+    <script src="~/Scripts/bdhm.js"></script>
+</body>
+</html>

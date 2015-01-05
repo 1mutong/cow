@@ -1,0 +1,43 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>添加配方</title>
+    <link href="~/bootstrap/css/bootstrap-theme1.min.css" rel="stylesheet" />
+</head>
+<body>
+    <div style="margin:5px 5px;">
+        <input id="formulaName" style="width: 350px; height: 30px;" />
+    </div>
+    <div style="margin:5px 5px; text-align:center;">
+        <button id="btnSave" class="btn-primary">保存</button>
+    </div>
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/bootstrap/js/bootstrap.min.js"></script>
+    <script>
+        $('#btnSave').click(function () {
+            var formulaName = $('#formulaName').val();
+            $.ajax({
+                type: 'get',
+                url: "../../Platform/Formula/InsertFormula",
+                data: { formulaName: formulaName },
+                cache: false,
+                dataType: "json",
+                success: function (result) {
+                    alert('添加配方成功！');
+                    parent.$.ligerDialog.close();
+                    parent.window.setFormulaId(result.formulaId);
+                    parent.window.loadFormulaList();
+                    parent.$(".l-dialog,.l-window-mask").hide();
+                }
+            });
+        });
+    </script>
+    <script src="~/Scripts/bdhm.js"></script>
+</body>
+</html>

@@ -1,0 +1,162 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>指定配方</title>
+    <link rel="stylesheet" href="~/ligerUI/skins/Aqua/css/ligerui-all.css">
+    <link rel="stylesheet" href="~/Style/base.css">
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/ligerUI/js/ligerui.min.js"></script>
+    <link rel="stylesheet" href="~/bootstrap/css/bootstrap-theme1.min.css">
+    <script src="~/bootstrap/js/bootstrap.min.js"></script>
+    <link href="~/Controls/bootstrap.datepicker/datepicker.css" rel="stylesheet" />
+    <script src="~/Controls/bootstrap.datepicker/bootstrap-datepicker.js"></script>
+    <link href="~/Controls/bootstrap.timepicker/css/bootstrap-timepicker.min.css" rel="stylesheet" />
+    <script src="~/Controls/bootstrap.timepicker/js/bootstrap-timepicker.min.js"></script>
+    <link href="~/Controls/jQuery.Select2/select2.css" rel="stylesheet" />
+    <script src="~/Controls/jQuery.Select2/select2.min.js"></script>
+    <script src="~/Scripts/menu.js"></script>
+    <script>
+        $(function () {
+            $('#menu').menu({ mainMenuSelectedID: "Platform", subMenuSelectedID: "Platform-FormulaAssign" });
+            initSelectors();
+            loadCowGroupList();
+            initBtn();
+        })
+
+        var cowGroupGridManager;
+        var cowGroups;
+        var formulaID;
+        function loadCowGroupList() {
+            var areAll = $("select[name=groupSelect]").val();
+            $.ajax({
+                type: 'get',
+                url: "../../Platform/Formula/GetCowGroupInfo",
+                dataType: 'json',
+                cache: false,
+                data: { areAll: areAll },
+                success: function (cowGroupData) {
+                    cowGroups = cowGroupData;
+                    initGrid();
+                }
+            });
+        }
+
+        function initSelectors() {
+            $.ajax({
+                type: 'get',
+                url: "../../Platform/Formula/GetFormulas",
+                dataType: 'json',
+                cache: false,
+                //data: { GroupID: currentGroupID },
+                success: function (list) {
+                    doctors = list;
+                    $('select[name=formula]').empty();
+                    if (typeof (doctors) != 'undefined' && doctors && doctors.length > 0) {
+                        $.each(doctors, function () {
+                            $("select[name=formula]").append('<option value="' + this.ID + '">' + this.Name + '</option>');
+                        });
+                    }
+                }
+            });
+
+            $('select[name=groupSelect]').change(function () {
+                loadCowGroupList();
+            })
+        }
+
+        function initBtn() {
+            $("#btnAssign").click(function () {
+                var row = cowGroupGridManager.getSelectedRow();
+                if (row) {
+                    $('input[name=cowGroup]').val(row["Name"]);
+                    var cowGroupID = row["ID"];
+                    var formulaID = $('select[name=formula]').val();
+                    $.ajax({
+                        type: 'get',
+                        url: "../../Platform/Formula/UpdateFormula",
+                        dataType: 'json',
+                        cache: false,
+                        data: { cowGroupID: cowGroupID, formulaID: formulaID },
+                        success: function (result) {
+                            if (result.Count == 1) {
+                                alert("指定配方成功！");
+                            }
+                            else {
+                                alert("指定配方失败！");
+                            }
+                            loadCowGroupList();
+                            initGrid();
+                        }
+                    });
+                }
+                else {
+                    alert("请先选中牛群。");
+                }
+            });
+        }
+
+        function initGrid() {
+            cowGroupGridManager = $("#cowGroupGrid").ligerGrid({
+                checkbox: false,
+                columns: [
+                    { display: '牛群ID', name: 'ID', type: 'int', hide: true, width: 50 },
+                    { display: '牧场', name: 'PastureName', align: 'left', width: 150 },
+                    { display: '牛群', name: 'Name', align: 'left', width: 260, editor: { type: 'text' } },
+                    { display: '牛群类型', name: 'CowGroupTypeString', type: 'text', align: 'left', width: 150 },
+                    { display: '牛群说明', name: 'Description', align: 'left', width: 200 },
+                    { display: '配方ID', name: 'FormulaID', type: 'int', hide: true, width: 50 },
+                    { display: '配方', name: 'FormulaName', width: 260 },
+                ],
+                title: "牛群配方信息",
+                showTitle: true,
+                pageSize: 15,
+                width: '100%',
+                height: 'auto',
+                isScroll: false,
+                data: cowGroups
+            });
+            $("#pageloading").hide();
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div id="menu"></div>
+        <div class="content">
+            <form id="cowGroupInfo">
+                <div style="display:table-row;">
+                    <div class="input-group" style="display:table-cell;">
+                        <div class="input-group mt10">
+                            <span class="input-group-addon w200">配方</span>
+                            <select class="w200" name="formula"></select>
+                        </div>
+                        <div class="input-group mt10">
+                            <span class="input-group-addon w200">牛群类型</span>
+                            <select class="w200" name="groupSelect">
+                                <option value="0">仅未指定配方牛群</option>
+                                <option value="1">全部牛群</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div style="display:table-cell; width:15px;"></div>
+                    <div class="mt10" style="display:table-cell;">
+                        <button type="button" class="btn btn-primary" id="btnAssign">指定配方</button>
+                    </div>
+                </div>
+                <div class="mt5">
+                    <div id="cowGroupGrid" class="displayBlock mr5"></div>
+                    <div id="message"></div>
+                    <div class="l-loading" id="pageloading"></div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script src="~/Scripts/bdhm.js"></script>
+</body>
+</html>

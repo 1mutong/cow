@@ -1,0 +1,93 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>奶量抽查</title>
+    <link rel="stylesheet" href="~/ligerUI/skins/Aqua/css/ligerui-all.css">
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/Scripts/jquery-tools-min.js"></script>
+    <script src="~/ligerUI/js/ligerui.min.js"></script>
+    <link rel="stylesheet" href="~/bootstrap/css/bootstrap-theme1.min.css">
+    <script src="~/bootstrap/js/bootstrap.min.js"></script>
+    <link href="~/Controls/jQuery.Select2/select2.css" rel="stylesheet" />
+    <script src="~/Controls/jQuery.Select2/select2.min.js"></script>
+    <script src="~/Scripts/menu.js"></script>
+    <script src="~/Scripts/common.js"></script>
+    <link href="~/Controls/bootstrap.datepicker/datepicker.css" rel="stylesheet" />
+    <script src="~/Controls/bootstrap.datepicker/bootstrap-datepicker.js"></script>
+    <link rel="stylesheet" href="~/Style/base.css">
+    <script>
+        $(function () {
+            $('#menu').menu({ mainMenuSelectedID: "Milk", subMenuSelectedID: "Milk-Check" });
+            InitButton();
+            initMilkDateSelector();
+        });
+
+        function initMilkDateSelector() {
+            $('input[name=milkDate]').datepicker({
+                language: 'zh-CN',
+                autoclose: 1,
+                todayHighlight: 1,
+                format: "yyyy-mm-dd"
+            });
+        }
+
+        function InitButton() {
+            $("#btnSave").show().ligerButton({
+                width: 80,
+                text: "保存",
+                disable: false,
+                click: function () {
+                    var earNum = $("#earNum").val();
+                    var date = $('input[name=milkDate]').val();
+                    var ability = $("#ability").val();
+                    var round = $("#round").val();
+                    $.ajax({
+                        type: 'post',
+                        url: "../../MilkabilityCheck/AddMilkAbility",
+                        dataType: "json",
+                        data: { EarNum: earNum, Date: date, Ability: ability, Round: round }
+                    }).success(
+                            function (msg) {
+                                alert(msg);
+                            }
+                    );
+                }
+            });
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div id="menu"></div>
+        <div class="content">
+            <form id="milkAbilityCheck">
+                <div class="input-group mt10">
+                    <span class="input-group-addon w100">耳号</span>
+                    <input type="text" class="form-control w200 js-DisplayEarNum" placeholder="耳号" id="earNum" name="DisplayEarNum">
+                </div>
+                <div class="input-group mt10">
+                    <span class="input-group-addon w100">售奶日期</span>
+                    <input type="text" class="form-control w200" placeholder="售奶日期" name="milkDate">
+                </div>
+                <div class="input-group mt10">
+                    <span class="input-group-addon w100">奶量(公斤)</span>
+                    <input type="text" class="form-control w200" placeholder="奶量" id="ability" name="MilkAbility" />
+                </div>
+                <div class="input-group mt10">
+                    <span class="input-group-addon w100">班次</span>
+                    <input type="text" class="form-control w200" placeholder="班次" id="round" name="Round" />
+                </div>
+                <div class="btn-group mt10">
+                    <input type="button" id="btnSave" value="保存" />
+                </div>
+            </form>
+        </div>
+    </div>
+    <script src="~/Scripts/bdhm.js"></script>
+</body>
+</html>

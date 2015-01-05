@@ -1,0 +1,99 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>牛群配种分配</title>
+    <link rel="stylesheet" type="text/css" href="../../ligerUI/skins/Aqua/css/ligerui-all.css">
+    <link rel="stylesheet" type="text/css" href="../../Style/base.css">
+    <script type="text/javascript" src="../../Scripts/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript" src="../../ligerUI/js/ligerui.min.js"></script>
+    <link rel="stylesheet" href="../../bootstrap/css/bootstrap-theme1.min.css">
+    <script type="text/javascript" src="../../bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            loadInseminationOperator();
+        })
+
+        var inseminationOperatorList = null;
+        function loadInseminationOperator() {
+            $.ajax({
+                url: "../../Breed/Insemination/GetInseminationOperatorList"
+            }).success(function (responseData) {
+                inseminationOperatorList = responseData;
+                loadCowGroupLipst();
+            });
+        }
+
+        var cowGroupGridManager;
+        function loadCowGroupLipst() {
+            cowGroupGridManager = $("#cowGroupGrid").ligerGrid({
+                columns: [
+                    { display: '牛群ID', name: 'ID', hide: true },
+                    { display: '牛群名称', name: 'Name', align: 'left', width: 160 },
+                    {
+                        display: "牛群配种员", name: "InsemOperatorID", width: 193,
+                        editor: { type: 'select', data: inseminationOperatorList, valueField: 'ID', textField: "Name" },
+                        render: function (item) {
+                            for (var i = 0; i < inseminationOperatorList.length; i++) {
+                                if (inseminationOperatorList[i]['ID'] == item.InsemOperatorID)
+                                    return inseminationOperatorList[i]['Name'];
+                            }
+                            return item.Name;
+                        }
+                    },
+                    {
+                        display: '操作', isSort: false, width: 80, render: function (rowdata, rowindex, value) {
+                            var h = "";
+                            if (!rowdata._editing) {
+                                h += "<a href='javascript:beginEdit(" + rowindex + ")'>修改</a> ";
+                            }
+                            else {
+                                h += "<a href='javascript:endEdit(" + rowindex + ")'>提交</a> ";
+                                h += "<a href='javascript:cancelEdit(" + rowindex + ")'>取消</a> ";
+                            }
+                            return h;
+                        }
+                    }
+                ],
+                enabledEdit: true, clickToEdit: false, isScroll: false,
+                url: "../../Breed/Insemination/GetCowGroupList",
+                usePager: false
+            });
+            $("#pageloading").hide();
+        }
+
+        function beginEdit(rowid) {
+            cowGroupGridManager.beginEdit(rowid);
+        }
+
+        function cancelEdit(rowid) {
+            cowGroupGridManager.cancelEdit(rowid);
+        }
+
+        function endEdit(rowid) {
+            var row = cowGroupGridManager.rows[rowid];
+            var rowObjs = cowGroupGridManager.getCheckedRowObjs();
+            var groupID = row["ID"];
+            var operatorID = $(rowObjs).find('#_val').val();
+            $.ajax({
+                url: "../../Breed/Insemination/SaveInseminationOperator",
+                data: { cowGroupID: groupID, insemOperatorID: operatorID }
+            }).success(function () {
+                $.ligerMessageBox.alert('提示消息', '配种员更新成功！');
+                cowGroupGridManager.endEdit(rowid);
+            });
+        }
+
+    </script>
+</head>
+<body>
+    <div>
+        <div id="cowGroupGrid"></div>
+    </div>
+    <script src="~/Scripts/bdhm.js"></script>
+</body>
+</html>

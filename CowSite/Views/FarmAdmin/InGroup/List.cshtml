@@ -1,0 +1,324 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>入群</title>
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/Scripts/jquery-tools-min.js"></script>
+    <script src="~/ligerUI/js/ligerui.min.js"></script>
+    <link rel="stylesheet" href="~/bootstrap/css/bootstrap-theme1.min.css">
+    <script src="~/bootstrap/js/bootstrap.min.js"></script>
+    <link href="~/Controls/jQuery.Select2/select2.css" rel="stylesheet" />
+    <script src="~/Controls/jQuery.Select2/select2.min.js"></script>
+    <script src="~/Scripts/menu.js"></script>
+    <link rel="stylesheet" href="~/Style/base.css">
+    <link rel="stylesheet" href="~/ligerUI/skins/Aqua/css/ligerui-all.css">
+    <link href="~/Controls/bootstrap.datepicker/datepicker.css" rel="stylesheet" />
+    <script src="~/Controls/bootstrap.datepicker/bootstrap-datepicker.js"></script>
+    <script>
+        var earNum;
+        var houseList;
+        $(function () {
+            $('#menu').menu({ mainMenuSelectedID: "FarmAdmin", subMenuSelectedID: "FarmAdmin-InGroup" });
+            initHouseSelector();
+            loadHouses();
+            initDateSelector();
+            initSexSelector();
+            initColorSelector();
+            //initTimeSelector()
+            queryGetSemon();
+            inGroup();
+            initBreedStatusSelector();
+            $('div.js-calving').hide();
+            $('div.js-insemination').hide();
+        });
+        function initDateSelector() {
+            $('input[name=birthDate]').datepicker({
+                language: 'zh-CN',
+                autoclose: 1,
+                todayHighlight: 1,
+                format: "yyyy-mm-dd"
+            });
+            $('input[name=birthDate]').change(function () {
+                var birthdate = new Date($('input[name=birthDate]').val());
+                if ((new Date().getTime() - birthdate.getTime()) > (1000 * 3600 * 24 * 30.5 * 14)) {
+                    //至少青年牛
+                    initBreedStatusSelector();
+                    initParitySelector();
+                    $('div.js-breedInfo').show();
+
+                }
+                else {
+                    $('div.js-breedInfo').hide();
+                }
+            })
+            $('input[name=inseminationDate]').datepicker({
+                language: 'zh-CN',
+                autoclose: 1,
+                todayHighlight: 1,
+                format: "yyyy-mm-dd"
+            });
+            $('input[name=calvingDate]').datepicker({
+                language: 'zh-CN',
+                autoclose: 1,
+                todayHighlight: 1,
+                format: "yyyy-mm-dd"
+            });
+
+        }
+        //function initTimeSelector() {
+        //    $('input[name=birthTime]').timepicker({
+        //        language: 'zh-CN',
+        //    });
+        //}
+        function initSexSelector() {
+            $('select[name=sex]').empty();
+            //$('select[name=sex]').append('<option value="' + '公' + '">' + '公' + '</option>');
+            $('select[name=sex]').append('<option value="' + '母' + '">' + '母' + '</option>');
+        }
+        function initParitySelector() {
+            $('select[name=parityNumber]').empty();
+            $('select[name=parityNumber]').append('<option value="' + 0 + '">' + '0' + '</option>');
+            $('select[name=parityNumber]').append('<option value="' + 1 + '">' + '1' + '</option>');
+            $('select[name=parityNumber]').append('<option value="' + 2 + '">' + '2' + '</option>');
+            $('select[name=parityNumber]').append('<option value="' + 3 + '">' + '3' + '</option>');
+            $('select[name=parityNumber]').append('<option value="' + 4 + '">' + '4' + '</option>');
+            $('select[name=parityNumber]').append('<option value="' + 5 + '">' + '5' + '</option>');
+            $('select[name=parityNumber]').append('<option value="' + 6 + '">' + '6' + '</option>');
+            $('select[name=parityNumber]').append('<option value="' + 7 + '">' + '7' + '</option>');
+            $('select[name=parityNumber]').append('<option value="' + 8 + '">' + '8' + '</option>');
+            $('select[name=parityNumber]').append('<option value="' + 9 + '">' + '9' + '</option>');
+
+            $('select[name=parityNumber]').change(function () {
+                var parity = $('select[name=parityNumber]').val();
+                if (parity > 0) {
+                    $('div.js-calving').show();
+                }
+                else {
+                    $('div.js-calving').hide();
+                }
+            });
+
+        }
+        function initColorSelector() {
+            $('select[name=color]').empty();
+            $('select[name=color]').append('<option value="' + '黑白花' + '">' + '黑白花' + '</option>');
+            $('select[name=color]').append('<option value="' + '全黑' + '">' + '全黑' + '</option>');
+            $('select[name=color]').append('<option value="' + '黄白花' + '">' + '黄白花' + '</option>');
+            $('select[name=color]').append('<option value="' + '红白花' + '">' + '红白花' + '</option>');
+            $('select[name=color]').append('<option value="' + '全红' + '">' + '全红' + '</option>');
+            $('select[name=color]').append('<option value="' + '全黄' + '">' + '全黄' + '</option>');
+            $('select[name=color]').append('<option value="' + '深红' + '">' + '深红' + '</option>');
+        }
+        function initBreedStatusSelector() {
+            $('select[name=breedStatus]').empty();
+            $('select[name=breedStatus]').append('<option value="' + '未配' + '">' + '未配' + '</option>');
+            $('select[name=breedStatus]').append('<option value="' + '已配未检' + '">' + '已配未检' + '</option>');
+            $('select[name=breedStatus]').append('<option value="' + '初检-' + '">' + '初检-' + '</option>');
+            $('select[name=breedStatus]').append('<option value="' + '初检+' + '">' + '初检+' + '</option>');
+            $('select[name=breedStatus]').append('<option value="' + '复检-' + '">' + '复检-' + '</option>');
+            $('select[name=breedStatus]').append('<option value="' + '复检+' + '">' + '复检+' + '</option>');
+            $('select[name=breedStatus]').append('<option value="' + '禁配' + '">' + '禁配' + '</option>');
+
+            $('select[name=breedStatus]').change(function () {
+                var breed = $('select[name=breedStatus]').val();
+                if (breed == '已配未检' || breed == '初检+' || breed == '复检+') {
+                    $('div.js-insemination').show();
+                }
+                else {
+                    $('div.js-insemination').hide();
+                }
+            });
+        }
+
+        function loadGroups() {
+            $.ajax({
+                type: 'get',
+                url: "../../Feed/CowGroup/GetCowGroupList",
+                dataType: 'json',
+                cache: false,
+                success: function (group) {
+                    $("select[name=group]").empty();
+                    $("select[name=group]").append('<option></option>');
+                    if (typeof (group) != 'undefined' && group && group.length > 0) {
+                        $.each(group, function () {
+                            $("select[name=group]").append('<option value="' + this.ID + '">' + this.Name + '</option>');
+                        });
+                    }
+                }
+            });
+        }
+        function loadHouses() {
+            $.ajax({
+                type: 'get',
+                url: "../../Feed/CowGroup/GetHouses",
+                dataType: 'json',
+                cache: false,
+                success: function (house) {
+                    loadGroups();
+                    houseList = house;
+                }
+            });
+        }
+
+
+
+        function initHouseSelector() {
+            $("select[name=group]").select2({
+                placeholder: "牛群",
+                allowClear: true,
+                minimumResultsForSearch: -1
+            }).change(function () {
+                var groupID = $("select[name=group]").val()
+                bindDiseaseSeletor(groupID);
+                $("select[name=house]").select2("val", "");
+            });
+
+            $("select[name=house]").select2({
+                placeholder: "牛舍",
+                allowClear: true,
+                minimumResultsForSearch: -1
+            });
+        }
+
+        function bindDiseaseSeletor(groupID) {
+            $("select[name=house]").empty();
+            $("select[name=house]").append('<option></option>');
+            if (typeof (houseList) != 'undefined' && houseList && houseList.length > 0) {
+                $.each(houseList, function () {
+                    if (this.GroupID == groupID) {
+                        $("select[name=house]").append('<option value="' + this.ID + '">' + this.Name + '</option>');
+                    }
+                });
+            }
+        }
+
+        function queryGetSemon() {
+            $("#btnGetSemon").click(function () {
+
+                $.ajax({
+                    type: 'post',
+                    url: '../../FarmAdmin/InGroup/GetFatherSemon',
+                    data: $("#cowInfo").serialize(),
+                    dataType: 'json',
+                    success: function (response) {
+                        $("input[name=fatherSemen]").val(response.SemenNum);
+                    }
+                });
+            })
+        }
+
+        function inGroup() {
+            $("#btnInGroup").click(function () {
+                if ($('input[name=displayEarNum]').val() == '') {
+                    alert("请输入耳号！");
+                    return;
+                } else if ($('input[name=birthDate]').val() == '') {
+                    alert("请输入出生日期！");
+                    return;
+                }
+
+                $.ajax({
+                    type: 'get',
+                    url: '../../Cow/CheckCowInFarm',
+                    data: { displayEarNum: $('input[name=displayEarNum]').val() },
+                    cache:false,
+                    dataType: 'json',
+                    success: function (response) {
+                        if (response.result) {
+                            alert('本牧场已经存在该耳号，请输入其它耳号！');
+                            return;
+                        }
+
+                        $.ajax({
+                            type: 'post',
+                            url: '../../FarmAdmin/InGroup/InGroup',
+                            data: $("#cowInfo").serialize(),
+                            cache: false,
+                            dataType: 'json',
+                            success: function (response) {
+                                if (response.Result == 1) {
+                                    alert('入群成功！');
+                                }
+                            }
+                        });
+                    }
+                });
+            })
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div id="menu"></div>
+        <div class="content">
+            <form id="cowInfo">
+                <div class="input-group mt10">
+                    <span class="input-group-addon w200">母亲牛耳号</span>
+                    <input type="text" class="form-control w400" placeholder="母亲牛耳号" name="motherDisplayEarNum">
+                </div>
+                <div class="input-group mt10">
+                    <span class="input-group-addon w200">父亲冻精号</span>
+                    <input type="text" class="form-control w400" name="fatherSemen">
+                    <button type="button" class="btn btn-info inline mb5" id="btnGetSemon">获取</button>
+                </div>
+                <div class="input-group mt10">
+                    <span class="input-group-addon w200">牛耳号</span>
+                    <input type="text" class="form-control w400" placeholder="牛耳号，本牧场不能重复" name="displayEarNum">
+                </div>
+                <div class="input-group mt10">
+                    <span class="input-group-addon w200">性别</span>
+                    <select class="w400" name="sex"></select>
+                </div>
+                <div class="input-group mt10">
+                    <span class="input-group-addon w200">出生日期</span>
+                    <input type="text" class="form-control w400" placeholder="出生日期" name="birthDate">
+                </div>
+                @*<div class="input-group mt10">
+                        <span class="input-group-addon w200">出生时间</span>
+                        <input type="text" class="form-control w400" placeholder="出生时间" name="birthTime">
+                    </div>*@
+                <div class="input-group mt10">
+                    <span class="input-group-addon w200">牛群</span>
+                    <select class="w400" name="group"></select>
+                </div>
+                <div class="input-group mt10">
+                    <span class="input-group-addon w200">牛舍</span>
+                    <select class="w400" name="house"></select>
+                </div>
+                <div class="input-group mt10">
+                    <span class="input-group-addon w200">毛色</span>
+                    <select class="w400" name="color"></select>
+                </div>
+                
+                <div class="mt10 none js-breedInfo">
+                    <div class="input-group mt10">
+                        <span class="input-group-addon w200">繁殖状态</span>
+                        <select class="w400" name="breedStatus"></select>
+                    </div>
+                    <div class="input-group mt10 none js-insemination ">
+                        <span class="input-group-addon w200">最近配种日期</span>
+                        <input type="text" class="form-control w400" placeholder="最近配种日期" name="inseminationDate">
+                    </div>
+                    <div class="input-group mt10">
+                        <span class="input-group-addon w200">胎次</span>
+                        <select class="w400" name="parityNumber"></select>
+                    </div>
+                    <div class="input-group mt10 none js-calving ">
+                        <span class="input-group-addon w200">最近产犊日期</span>
+                        <input type="text" class="form-control w400" placeholder="最近产犊日期" name="calvingDate">
+                    </div>
+                </div>
+                <div class="mt10">
+                    <button type="button" class="btn btn-primary" id="btnInGroup">入群</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script src="~/Scripts/bdhm.js"></script>
+</body>
+</html>

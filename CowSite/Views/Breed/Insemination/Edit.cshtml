@@ -1,0 +1,130 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>配种信息录入</title>
+    <link rel="stylesheet" type="text/css" href="../../../ligerUI/skins/Aqua/css/ligerui-all.css">
+    <link rel="stylesheet" type="text/css" href="../../../Style/base.css">
+    <script type="text/javascript" src="../../../Scripts/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript" src="../../../ligerUI/js/ligerui.min.js"></script>
+    <link rel="stylesheet" href="../../../bootstrap/css/bootstrap-theme1.min.css">
+    <script type="text/javascript" src="../../../bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            loadInsemInfo();
+            InitBtnEvent();
+            initSecondMenu();
+        })
+
+        function loadInsemInfo() {
+            $("#insemInfo").ligerForm({
+                inputWidth: 170, labelWidth: 100, space: 40,
+                fields: [
+                { display: "耳号", name: "EarNum", type: "text", width: 270, validate: { required: true } },
+                { display: "配次", name: "InseminationNum", type: "text", width: 270, validate: { required: true } },
+                { display: "冻精类型", name: "SemenType", type: "text", width: 270, validate: { required: true } },
+                { display: "冻精编号", name: "SemenNum", type: "text", width: 270, validate: { required: true } },
+                { display: "发情发现方式", name: "EstrusFindType", type: "text", width: 270, validate: { required: true } },
+                { display: "配种日期", name: "OperateDate", type: "date", width: 270, validate: { required: true } },
+                { display: "配种员", name: "Operator", type: "text", width: 270, validate: { required: true } },
+                { display: "描述", name: "Description", type: "text", width: 270 },
+                { display: "发情日期", name: "EstrusDate", type: "date", width: 270 },
+                { display: "发情类型", name: "EstrusType", type: "text", width: 270 },
+                { display: "发情发现人", name: "EstrusFindPerson", type: "text", width: 270 }
+                ]
+            });
+
+            liger.get("insemInfo").getEditor("EarNum").setValue("@ViewBag.EarNum");
+            liger.get("insemInfo").getEditor("InseminationNum").setValue("@ViewBag.InseminationNum");
+            liger.get("insemInfo").getEditor("SemenType").setValue("@ViewBag.SemenType");
+            liger.get("insemInfo").getEditor("SemenNum").setValue("@ViewBag.SemenNum");
+            liger.get("insemInfo").getEditor("EstrusFindType").setValue("@ViewBag.EstrusFindType");
+            liger.get("insemInfo").getEditor("OperateDate").setValue("@ViewBag.OperateDate");
+            liger.get("insemInfo").getEditor("Operator").setValue("@ViewBag.Operator");
+            liger.get("insemInfo").getEditor("Description").setValue("@ViewBag.Description");
+            liger.get("insemInfo").getEditor("EstrusDate").setValue("@ViewBag.EstrusDate");
+            liger.get("insemInfo").getEditor("EstrusType").setValue("@ViewBag.EstrusType");
+            liger.get("insemInfo").getEditor("EstrusFindPerson").setValue("@ViewBag.EstrusFindPerson");
+        }
+
+        function InitBtnEvent() {
+            $('#btnSubmit').ligerButton({
+                width: 60,
+                text: '保存',
+                click: function () {
+                    if (liger.get("insemInfo").getEditor("Operator").getValue() == "") {
+                        alert("配种员信息不能为空");
+                    } else {
+                        //提交表单
+                        document.getElementById('insemInfo').submit();
+                        parent.$.ligerDialog.close();
+                        parent.$(".l-dialog,.l-window-mask").hide();
+                    }
+                },
+                icon: null
+            });
+            $('#btnCancel').ligerButton({
+                width: 60,
+                text: '取消',
+                click: function () {
+                    parent.$.ligerDialog.close();
+                    parent.$(".l-dialog,.l-window-mask").hide();
+                },
+                icon: null
+            });
+            $('#btnPrint').ligerButton({
+                width: 60,
+                text: '打印',
+                click: function () {
+                    window.print();
+                },
+                icon: null
+            });
+        }
+
+        function initSecondMenu() {
+            $('#menu1').click(function () { window.open('../../Breed/Index/Index'); });
+            $('#menu2').click(function () { window.open('../../Breed/Insemination/Edit'); });
+            $('#menu3').click(function () { window.open('../../Breed/ForbidInsemination/Edit'); });
+            $('#menu4').click(function () { window.open('../../Breed/UnForbidInsemination/Edit'); });
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div class="header mt10 mb10">
+            <div class="btn-group">
+                <img src="../../Images/emutong_logo.png" style="width:164px; height:33px;" />
+            </div>
+            <div class="btn-group">
+                <ul class="nav nav-pills">
+                    <li><a href="../../Home/Index">首页</a></li>
+                    <li><a href="../../Task/Index/List">任务</a></li>
+                    <li class="active"><a href="javascript:void(0);">繁殖</a></li>
+                    <li><a href="../../Feed/Index/List">饲养</a></li>
+                    <li><a href="../../Milk/Index/List">奶厅</a></li>
+                    <li><a href="../../Medical/Index/List">兽医</a></li>
+                    <li><a href="../../Platform/Formula/List">平台</a></li>
+                    <li><a href="../../Users/Index/List">场长</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="btn-group" style="margin: 10px 0px 10px 0px;">
+            <button id="menu1" type="button" class="btn btn-default">繁殖首页</button>
+            <button id="menu2" type="button" class="btn btn-primary">发情配种</button>
+            <button id="menu3" type="button" class="btn btn-default">禁配</button>
+            <button id="menu4" type="button" class="btn btn-default">解禁</button>
+        </div>
+        <form class="form-inline" action="~/Breed/Insemination/Save/@ViewBag.EarNum" method="post" id="insemInfo"></form>
+        <div style="text-align:center;">
+            <input type="button" id="btnSubmit" value="保存" />
+            <input type="button" id="btnCancel" value="取消" />
+            <input type="button" id="btnPrint" value="打印" />
+        </div>
+    </div>
+    <script src="~/Scripts/bdhm.js"></script>
+</body>
+</html>

@@ -1,0 +1,172 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>牛舍维护</title>
+    <link rel="stylesheet" href="~/ligerUI/skins/Aqua/css/ligerui-all.css">
+    <link rel="stylesheet" href="~/Style/base.css">
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/ligerUI/js/ligerui.min.js"></script>
+    <link rel="stylesheet" href="~/bootstrap/css/bootstrap-theme1.min.css">
+    <script src="~/bootstrap/js/bootstrap.min.js"></script>
+    <script src="~/Scripts/menu.js"></script>
+    <script>
+        $(function () {
+            $('#menu').menu({ mainMenuSelectedID: "Feed", subMenuSelectedID: "Feed-CowHouse" });
+            loadCowHouseList();
+            loadGroupList();
+            initButton();
+        });
+
+        var cowHouseGridManager;
+        function loadCowHouseList() {
+            cowHouseGridManager = $("#cowHouseGrid").ligerGrid({
+                checkbox: false,
+                columns: [
+                    { display: '牛舍ID', name: 'ID', type: 'int', hide: true, width: 50 },
+                    { display: '牛舍名称', name: 'Name', align: 'left', width: 250 },
+                    { display: '牛群', name: 'GroupName', align: 'left', width: 250 },
+                    { display: '牛群类型', name: 'GroupType', align: 'left', width: 250 }
+                ],
+                pageSize: 15,
+                width: '100%',
+                height: '100%',
+                isScroll: false,
+                url: "../../Feed/CowHouse/GetCowHouseInfo"
+            });
+            $("#pageloading").hide();
+        }
+
+        //加载所有的group
+        function loadGroupList() {
+            $.ajax({
+                type: 'get',
+                url: "../../Feed/CowGroup/GetCowGroupList",
+                cache: false,
+                dataType: "json",
+            }).success(
+                function (cowGroup) {
+                    if (cowGroup) {
+                        $("#groupID").empty();
+                        $("#groupID").append('<option value="0" selected = "selected">' + "（空）" + '</option>');
+                        $.each(cowGroup, function () {
+                            $("#groupID").append('<option value="' + this.ID + '">' + this.Name + '</option>');
+                        });
+                    }
+                }
+            )
+        }
+
+        function initButton() {
+            $('#btnAdd').show().ligerButton(
+                {
+                    width: 80,
+                    text: "新增牛舍",
+                    disabled: false,
+                    click: function () {
+                        //var row = cowHouseGridManager.getSelectedRow();
+                        //var editUrl = "../../CowHouse/Add";
+                        //if (row) {
+                        //    editUrl += "/" + row["ID"];
+                        //}
+                        var houseName = $("#houseName").val();
+                        var groupID = $("#groupID").val();
+                        $.ajax({
+                            type: 'post',
+                            url: "../../CowHouse/Add",
+                            dataType: "json",
+                            data: { HouseName: houseName, GroupID: groupID }
+                        }).success(
+                            function (msg) {
+                                loadCowHouseList();
+                                alert(msg);
+                            }
+                        )
+                    }
+                });
+
+            $('#btnDelete').show().ligerButton({
+                width: 80,
+                text: "删除牛舍",
+                disabled: false,
+                click: function () {
+                    var row = cowHouseGridManager.getSelectedRow();
+                    var editUrl = "../../CowHouse/Delete";
+                    if (row) {
+                        var id = row["ID"];
+                        var name = row["Name"];
+                        var groupID = row["GroupID"];
+                    } else {
+                        alert("请选择牛群");
+                        return;
+                    }
+                    $.ajax({
+                        type: 'post',
+                        url: editUrl,
+                        dataType: "json",
+                        data: { Name: name, GroupID: groupID, ID: id }
+                    }).success(function (msg) {
+                        loadCowHouseList();
+                        alert(msg);
+                    });
+                }
+            });
+
+            $('#btnModify').show().ligerButton({
+                width: 80,
+                text: "更改牛舍",
+                disabled: false,
+                click: function () {
+                    var newGroupID = $("#groupID").val();
+                    var row = cowHouseGridManager.getSelectedRow();
+                    var editUrl = "../../CowHouse/Update";
+                    if (row) {
+                        var id = row["ID"];
+                        var name = row["Name"];
+                        var groupID = row["GroupID"];
+                    } else {
+                        alert("请选择牛群");
+                        return;
+                    }
+                    $.ajax({
+                        type: 'post',
+                        url: editUrl,
+                        dataType: "json",
+                        data: { Name: name, GroupID: newGroupID, ID: id }
+                    }).success(function () {
+                        loadCowHouseList();
+                        alert("更改牛舍成功");
+                    });
+                }
+            });
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div id="menu"></div>
+        <div class="content">
+            <div style="margin: 10px 0px 10px 0px; position: relative; height: 30px; width: 100%;">
+                <div style="display: inline-block; position: absolute; left: 0px;">
+                    牛舍名称：<input type="text" id="houseName" />
+                    <input type="button" id="btnAdd" value="新增牛舍" style="display: none;" />
+                    <input type="button" id="btnDelete" value="删除牛舍" style="display: none; " />                    
+                </div>
+                <div style="display: inline-block; position: absolute; right: 0px;">
+                    请选择牛群：<select id="groupID" style="width: 150px; height: 25px"></select>
+                    <input type="button" id="btnModify" value="修改牛舍" style="display: none; " />
+                </div>
+            </div>
+            <div>
+                <div id="cowHouseGrid" class="displayBlock ml5 mr5"></div>
+                <div id="message"></div>
+                <div class="l-loading" id="pageloading"></div>
+            </div>
+        </div>
+    </div>
+    <script src="~/Scripts/bdhm.js"></script>
+</body>
+</html>

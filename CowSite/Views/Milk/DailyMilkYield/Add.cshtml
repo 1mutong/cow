@@ -1,0 +1,176 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>日产奶量</title>
+    <link rel="stylesheet" href="~/ligerUI/skins/Aqua/css/ligerui-all.css">
+    <link rel="stylesheet" href="~/Style/base.css">
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/ligerUI/js/ligerui.min.js"></script>
+    <link rel="stylesheet" href="~/bootstrap/css/bootstrap-theme1.min.css">
+    <script src="~/bootstrap/js/bootstrap.min.js"></script>
+    <script src="~/Scripts/menu.js"></script>
+    <link href="~/Controls/bootstrap.datepicker/datepicker.css" rel="stylesheet" />
+    <script src="~/Controls/bootstrap.datepicker/bootstrap-datepicker.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $('#menu').menu({ mainMenuSelectedID: "Milk", subMenuSelectedID: "Milk-DailyMilkYield" });
+            initMilkDateSelector();
+            renderMilkForm();
+            initBtnEvent();
+        });
+
+        function initMilkDateSelector() {
+            $('input[name=milkDate]').datepicker({
+                language: 'zh-CN',
+                autoclose: 1,
+                todayHighlight: 1,
+                format: "yyyy-mm-dd"
+            });
+        }
+
+        function renderMilkForm() {
+            $("#milkShipping").ligerForm({
+                inputWidth: 160, labelWidth: 100, space: 40,
+                fields: [
+                { display: "售奶日期", name: "MilkDate", type: "hidden", width: 270 },
+                { display: "奶罐号", name: "TankerNum", type: "text", width: 270 },
+                { display: "理化解码", name: "Decoding", type: "text", width: 270 },
+                { display: "奶车编号", name: "ShipCode", type: "text", width: 270 },
+                { display: "车牌号", name: "TruckNum", type: "text", width: 270 },
+                { display: "公斤数", name: "MilkWeight", type: "float", width: 270, validate: { required: true } },
+                { display: "乳脂率", name: "Fat", type: "float", width: 270 },
+                { display: "乳蛋白", name: "Protein", type: "float", width: 270 },
+                { display: "干物质", name: "DryMatter", type: "float", width: 270 },
+                { display: "非脂固体率", name: "NonFatSolid", type: "float", width: 270 },
+                { display: "乳糖率", name: "Lactose", type: "float", width: 270 },
+                { display: "微生物", name: "Microbe", type: "float", width: 270 },
+                { display: "冰点", name: "IcePoint", type: "float", width: 270 },
+                { display: "酸度", name: "Acidity", type: "float", width: 270 },
+                { display: "金额", name: "Amount", type: "float", width: 270, validate: { required: true } },
+                { display: "乳品厂", name: "Company", type: "text", width: 270 },
+                ]
+            });
+
+            $("#milkOther").ligerForm({
+                inputWidth: 160, labelWidth: 160, space: 40,
+                fields: [
+                    { display: "售奶日期", name: "OtherMilkDate", type: "hidden", width: 220 },
+                    { display: "喂犊牛奶(公斤)", name: "MilkForCalf", type: "float", width: 220 },
+                    { display: "非正常销售奶(公斤)", name: "AbnormalSaleMilk", type: "float", width: 220 },
+                    { display: "坏奶(公斤)", name: "BadMilk", type: "float", width: 220 },
+                    { display: "其余奶(公斤)", name: "LeftMilk", type: "float", width: 220 }
+                ]
+            });
+        }
+
+        function initBtnEvent() {
+            $('#btnSaveMilkShipping').ligerButton({
+                width: 60,
+                text: '保存',
+                click: function () {
+                    var milkDate = $('input[name=milkDate]').val();
+                    if (milkDate == '') {
+                        alert('请选择售奶日期！');
+                        return;
+                    }
+                    else {
+                        $('form#milkShipping input[name=MilkDate]').val(milkDate);
+                    }
+                    var milkWeight = $('input[name=MilkWeight]').val();
+                    if (milkWeight == '') {
+                        alert('请输入公斤数！');
+                        return;
+                    }
+                    var amount = $('input[name=Amount]').val();
+                    if (amount == '') {
+                        alert('请输入金额！');
+                        return;
+                    }
+                    $.ajax({
+                        type: 'post',
+                        url: '../../Milk/DailyMilkYield/SaveMilkShipping',
+                        data: $("#milkShipping").serialize(),
+                        dataType: 'json',
+                        success: function (response) {
+                            if (response.Result = 1) {
+                                alert('保存售奶记录成功！');
+                            }
+                        }
+                    });
+                },
+                icon: null
+            });
+
+            $('#btnSaveOtherMilk').ligerButton({
+                width: 60,
+                text: '保存',
+                click: function () {
+                    var milkDate = $('input[name=milkDate]').val();
+                    if (milkDate == '') {
+                        alert('请选择售奶日期！');
+                        return;
+                    }
+                    else {
+                        $('form#milkOther input[name=OtherMilkDate]').val(milkDate);
+                    }
+
+                    $.ajax({
+                        type: 'post',
+                        url: '../../Milk/DailyMilkYield/SaveOtherMilk',
+                        data: $("#milkOther").serialize(),
+                        dataType: 'json',
+                        success: function (response) {
+                            if (response.Result == 1) {
+                                alert('保存其它奶记录成功！');
+                            }
+                            else {
+                                alert('该售奶日期下的其它奶记录已存在，不能重复添加！');
+                            }
+                        }
+                    });
+                },
+                icon: null
+            });
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div id="menu"></div>
+        <div class="content">
+            <div class="mb10">
+                <div class="input-group">
+                    <span class="input-group-addon">售奶日期</span>
+                    <input type="text" class="form-control w100" placeholder="售奶日期" name="milkDate">
+                </div>
+            </div>
+            <div>
+                <div class="inline pt5 pb5" style="border: 1px solid; width: 450px;">
+                    <div class="tc" style="font-weight:bold;">售奶记录</div>
+                    <div class="bc" style="width:380px;">
+                        <form class="form-inline tc" id="milkShipping"></form>
+                    </div>
+                    <div class="tc">
+                        <input type="button" id="btnSaveMilkShipping" value="保存" />
+                    </div>
+                </div>
+                <div class="inline ml60 vt tc pt5 pb5" style="border: 1px solid; width: 450px;">
+                    <div class="tc" style="font-weight:bold;">其他奶记录</div>
+                    <div class="bc" style="width:380px;">
+                        <form class="form-inline" id="milkOther"></form>
+                    </div>
+                    <div class="tc">
+                        <input type="button" id="btnSaveOtherMilk" value="保存" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="~/Scripts/bdhm.js"></script>
+</body>
+</html>

@@ -1,0 +1,128 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>完成检疫任务单</title>
+    <link rel="stylesheet" href="~/ligerUI/skins/Aqua/css/ligerui-all.css">
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/Scripts/jquery-tools-min.js"></script>
+    <script src="~/ligerUI/js/ligerui.min.js"></script>
+    <link rel="stylesheet" href="~/bootstrap/css/bootstrap-theme1.min.css">
+    <script src="~/bootstrap/js/bootstrap.min.js"></script>
+    <link href="~/Controls/jQuery.Select2/select2.css" rel="stylesheet" />
+    <script src="~/Controls/jQuery.Select2/select2.min.js"></script>
+    <script src="~/Scripts/menu.js"></script>
+    <script src="~/Scripts/common.js"></script>
+    <link href="~/Controls/bootstrap.datepicker/datepicker.css" rel="stylesheet" />
+    <script src="~/Controls/bootstrap.datepicker/bootstrap-datepicker.js"></script>
+    <link rel="stylesheet" href="~/Style/base.css">
+    <link rel="stylesheet" href="~/Style/common.css">
+    <script type="text/javascript">
+        var taskID = "@ViewBag.TaskID";
+
+        $(function () {
+            $('#menu').menu({ mainMenuSelectedID: "Task", subMenuSelectedID: "Task-CompleteQuarantine", showSubMemu: false });
+            loadOperator();
+            initDateSelector();
+            loadTask();
+        })
+
+        function loadTask() {
+            $.ajax({
+                type: 'get',
+                url: "../../TaskCompleteQuarantine/LoadTask",
+                data: { taskID: taskID },
+                dataType: "json",
+                cache: false
+            }).success(function (taskData) {
+                $('select[name=doctorID]').val(taskData.doctorID);
+                $('input[name=DisplayEarNum]').val(taskData.earNum);
+            });
+        }
+
+        function initDateSelector() {
+            $('input[name=quarantineDate]').datepicker({
+                language: 'zh-CN',
+                autoclose: 1,
+                todayHighlight: 1,
+                format: "yyyy-mm-dd"
+            });
+        }
+
+        function loadOperator() {
+            $.ajax({
+                type: 'get',
+                url: '../../Users/User/GetUserItems',
+                dataType: 'json',
+                cache: false,
+                success: function (user) {
+                    if (user) {
+                        $("#doctor").empty();
+                        $("#doctor").append('<option value="0" selected = "selected">' + "请选择操作人员" + '</option>');
+                        $.each(user, function () {
+                            $("#doctor").append('<option value="' + this.ID + '">' + this.Name + '</option>');
+                        });
+                    }
+                }
+            });
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div id="menu"></div>
+        <div class="content">
+            <div class="page-title">完成检疫任务单</div>
+            <div>
+                <form action="../../TaskCompleteQuarantine/SaveTask/@ViewBag.TaskID" method="post">
+                    <div>任务指导：检疫</div>
+                    <br />
+                    <div class="input-group mt10">
+                        <span class="input-group-addon w200">牛耳号:</span>
+                        <input type="text" class="form-control w200 js-DisplayEarNum" placeholder="耳号" id="earNum" name="DisplayEarNum" />
+                    </div>
+                    <div class="input-group mt10">
+                        <span class="input-group-addon w200">检疫类型：</span>
+                        <select name="quarantineType" class="form-control w200">
+                            <option value="布鲁氏病">布鲁氏病</option>
+                            <option value="肺结核">肺结核</option>
+                            <option value="口蹄疫">口蹄疫</option>
+                        </select>
+                    </div>
+                    <div class="input-group mt10">
+                        <span class="input-group-addon w200">检疫时间：</span>
+                        <input type="text" name="quarantineDate" class="form-control w200" />
+                    </div>
+                    <div class="input-group mt10">
+                        <span class="input-group-addon w200">检疫方式：</span>
+                        <select name="quarantineMethod" class="form-control w200">
+                            <option value="抽血">抽血</option>
+                            <option value="皮试">皮试</option>
+                        </select>
+                    </div>
+                    <div class="input-group mt10">
+                        <span class="input-group-addon w200">检疫结果：</span>
+                        <select name="result" class="form-control w200">
+                            <option value="0">-</option>
+                            <option value="1">+</option>
+                        </select>
+                    </div>
+                    <div class="input-group mt10">
+                        <span class="input-group-addon w200"> 操作人员：</span>
+                        <select name="doctorID" id="doctor" class="form-control w200"></select>
+                    </div>
+                    <div class="mt10">
+                        <button type="submit">提交</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script src="~/Scripts/bdhm.js"></script>
+</body>
+</html>

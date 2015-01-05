@@ -1,0 +1,43 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>编辑配方中饲料量</title>
+    <link href="~/bootstrap/css/bootstrap-theme1.min.css" rel="stylesheet" />
+</head>
+<body>
+    <div style="margin:5px 5px;">
+        <input id="quantity" />
+    </div>
+    <div style="margin: 5px 5px; text-align:center;">
+        <button id="btnSave" class="btn-primary">保存</button>
+    </div>
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script>
+        var formulaId = "@ViewBag.FormulaID";
+        var fodderId = "@ViewBag.FodderID";
+
+        $('#btnSave').click(function () {
+            var quantity = $('#quantity').val();
+            $.ajax({
+                type: 'get',
+                url: "../../Platform/Formula/SaveFodderQuantity",
+                data: { formulaId: formulaId, fodderId: fodderId, fodderQuantity: quantity },
+                cache: false,
+                dataType: "json"
+            }).success(function (formula) {
+                alert('修改配方饲料量成功！');
+                parent.$.ligerDialog.close();
+                parent.window.loadFodderList(formulaId);
+                parent.$(".l-dialog,.l-window-mask").hide();
+            });
+        });
+    </script>
+    <script src="~/Scripts/bdhm.js"></script>
+</body>
+</html>

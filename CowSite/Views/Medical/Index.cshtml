@@ -1,0 +1,171 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>兽医首页</title>
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/Scripts/jquery-tools-min.js"></script>
+    <script src="~/ligerUI/js/ligerui.min.js"></script>
+    <link rel="stylesheet" href="~/bootstrap/css/bootstrap-theme1.min.css">
+    <script src="~/bootstrap/js/bootstrap.min.js"></script>
+    <link href="~/Controls/jQuery.Select2/select2.css" rel="stylesheet" />
+    <script src="~/Controls/jQuery.Select2/select2.min.js"></script>
+    <script src="~/Scripts/menu.js"></script>
+    <link rel="stylesheet" href="~/Style/base.css">
+    <link rel="stylesheet" href="~/ligerUI/skins/Aqua/css/ligerui-all.css">
+    <link href="~/Controls/bootstrap.datepicker/datepicker.css" rel="stylesheet" />
+    <script src="~/Controls/bootstrap.datepicker/bootstrap-datepicker.js"></script>
+
+    <script>
+        var diseaseList = null;
+        $(function () {
+            $('#menu').menu({ mainMenuSelectedID: "Medical", subMenuSelectedID: "Medical-Home" });
+            initDiseaseSelector();
+            loadDiseases();
+            initDateSelector();
+            queryDiseaseCount();
+        })
+        function initDateSelector() {
+            $('input[name=startDate]').datepicker({
+                language: 'zh-CN',
+                autoclose: 1,
+                todayHighlight: 1,
+                format: "yyyy-mm-dd"
+            });
+            $('input[name=endDate]').datepicker({
+                language: 'zh-CN',
+                autoclose: 1,
+                todayHighlight: 1,
+                format: "yyyy-mm-dd"
+            });
+        }
+        function loadDiseasesType() {
+            $.ajax({
+                type: 'get',
+                url: '../../Medical/Diagnoses/GetDiseasesType',
+                dataType: 'json',
+                cache: false,
+                success: function (diseasesType) {
+                    $("select[name=diseasesType]").empty();
+                    $("select[name=diseasesType]").append('<option></option>');
+                    if (typeof (diseasesType) != 'undefined' && diseasesType && diseasesType.length > 0) {
+                        $.each(diseasesType, function () {
+                            $("select[name=diseasesType]").append('<option value="' + this.ID + '">' + this.Name + '</option>');
+                        });
+                    }
+                }
+            });
+        }
+
+        function loadDiseases() {
+            $.ajax({
+                type: 'get',
+                url: '../../Medical/Diagnoses/GetDiseases',
+                dataType: 'json',
+                cache: false,
+                success: function (diseases) {
+                    diseaseList = diseases;
+                    loadDiseasesType();
+                }
+            });
+        }
+
+        function initDiseaseSelector() {
+            $("select[name=diseasesType]").select2({
+                placeholder: "疾病类型",
+                allowClear: true,
+                minimumResultsForSearch: -1
+            }).change(function () {
+                var diseaseTypeID = $("select[name=diseasesType]").val()
+                bindDiseaseSeletor(diseaseTypeID);
+                $("select[name=diseases]").select2("val", "");
+            });
+
+            $("select[name=diseases]").select2({
+                placeholder: "疾病",
+                allowClear: true,
+                minimumResultsForSearch: -1
+            });
+        }
+
+        function bindDiseaseSeletor(diseaseTypeID) {
+            $("select[name=diseases]").empty();
+            $("select[name=diseases]").append('<option></option>');
+            if (typeof (diseaseList) != 'undefined' && diseaseList && diseaseList.length > 0) {
+                $.each(diseaseList, function () {
+                    if (this.DiseaseTypeID == diseaseTypeID) {
+                        $("select[name=diseases]").append('<option value="' + this.ID + '">' + this.Name + '</option>');
+                    }
+                });
+            }
+        }
+        function queryDiseaseCount() {
+            $('#btnQuery').click(function () {
+                var diseases = $('select[name=diseases]').val();
+                if (diseases == '') {
+                    alert('请选择疾病！');
+                    return;
+                }
+                var startD = $('input[name=startDate]').val();
+                if (startD == '' || Date.parse(startD) > Date.now) {
+                    alert('请选择开始日期，今天以前！');
+                    return;
+                }
+                var endD = $('input[name=endDate]').val();
+                if (endD == '' || (Date.parse(endD)>Date.now) || Date.parse(startD) > Date.parse(endD)) {
+                    alert('请选择正确结束日期，开始日期之后，今天以前！');
+                    return;
+                }
+                $.ajax({
+                    type: 'post',
+                    url: '../../Medical/Index/GetDiseaseCount',
+                    data: $("#careInfo").serialize(),
+                    dataType: 'json',
+                    success: function (response) {
+                        $("input[name=count]").val( response.Count);
+                    }
+                });
+            });
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div id="menu"></div>
+        <div class="content">
+            <form id="careInfo">
+                <div class="input-group mt10">
+                        <span class="input-group-addon w100" >疾病类型</span>
+                        <select class="w200" name="diseasesType"></select>
+                    </div>
+                    <div class="input-group mt10">
+                        <span class="input-group-addon w100" >疾病</span>
+                        <select class="w200" name="diseases"></select>
+                    </div>
+                    <div class="input-group mt10">
+                        <span class="input-group-addon w100">开始日期</span>
+                        <input type="text" class="form-control w200" placeholder="开始日期" name="startDate">
+                    </div>
+                    <div class="input-group mt10">
+                        <span class="input-group-addon w100">结束日期</span>
+                        <input type="text" class="form-control w200" placeholder="结束日期" name="endDate">
+                    </div>
+                <div class="input-group mt10">
+                    <span class="input-group-addon w100">疾病头次</span>
+                    <input type="text" class="form-control w200" placeholder="疾病头次" name="count">
+                </div>
+                    <div class="mt10">
+                        <button type="button" class="btn btn-primary" id="btnQuery">查询</button>
+                    </div>
+            </form>
+        </div>
+    </div>
+    <script src="~/Scripts/bdhm.js"></script>
+</body>
+</html>

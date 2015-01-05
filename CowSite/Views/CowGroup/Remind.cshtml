@@ -1,0 +1,61 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>分群提醒</title>
+    <link rel="stylesheet" href="~/ligerUI/skins/Aqua/css/ligerui-all.css">
+    <link rel="stylesheet" href="~/Style/base.css">
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/ligerUI/js/ligerui.min.js"></script>
+    <link rel="stylesheet" href="~/bootstrap/css/bootstrap-theme1.min.css">
+    <script src="~/bootstrap/js/bootstrap.min.js"></script>
+    <script src="~/Scripts/menu.js"></script>
+    <script>
+        $(function () {
+            $('#menu').menu({ mainMenuSelectedID: "Feed", subMenuSelectedID: "Feed-GroupRemind" });
+            loadRemindCows();
+        });
+
+        function loadRemindCows() {
+            $.ajax({
+                type: 'get',
+                url: "../../Feed/CowGroup/GetRemindCows",
+                dataType: "json",
+                cache: false,
+                timeout: 90000000
+            }).success(function (cows) {
+                $("#remindList").ligerGrid({
+                    checkbox: false,
+                    columns: [
+                        { display: '耳号', name: 'DisplayEarNum', align: 'left', width: 120 },
+                        { display: '类型', name: 'CowType', align: 'left', width: 120 },
+                        { display: '泌乳状态', name: 'MilkType', align: 'left', width: 120 },
+                        { display: '生病状态', name: 'IllStatus', align: 'left', width: 120 },
+                        { display: '牛群类型', name: 'GroupTypeStr', align: 'left', width: 120 },
+                        { display: '调群原因', name: 'RegroupingReason', align: 'left' }
+                    ],
+                    pageSize: 10,
+                    width: '100%',
+                    height: '100%',
+                    data: cows
+                });
+                $("#pageloading").hide();
+            });            
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div id="menu"></div>
+        <div class="content">
+            <div id="remindList" class="ml5 mr5"></div>
+            <div class="l-loading" id="pageloading"></div>
+        </div>
+    </div>
+    <script src="~/Scripts/bdhm.js"></script>
+</body>
+</html>

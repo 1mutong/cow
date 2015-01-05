@@ -1,0 +1,78 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>列表页面</title>
+    <script src="../../jQuery/jquery-1.11.0.min.js" type="text/javascript"></script>
+    <script src="../../jQuery/jquery-tools-min.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(function () {
+            for (var i = 0; i < 200; i++) {
+                $('#content').append('<div>test' + i + '</div>');
+            }
+        });
+    </script>
+    <style type="text/css">
+        .loadingui-overlay
+        {
+            -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(opacity=30)";
+            filter: alpha(Opacity=30);
+            -moz-opacity: 0.3;
+            opacity: 0.3;
+            background: #ccc;
+            z-index: 1000000;
+        }
+        
+        .loadingui-overlay-fullwindow
+        {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .loadingui-table
+        {
+            display: table;
+            table-layout: fixed;
+            z-index: 1000001;
+        }
+        
+        .loadingui-table-row
+        {
+            display: table-row;
+        }
+        .loadingui-table-cell
+        {
+            display: table-cell;
+            text-align: center;
+            vertical-align: middle;
+        }
+        .loadingui-box
+        {
+            background: white url(images/loading-ui2.gif) no-repeat 3px 3px;
+            width: 56px;
+            height: 24px;
+            line-height: 26px;
+            font-size: 12px;
+            padding: 3px 10px 3px 30px;
+            top: 10%;
+            border: 1px solid #9BBBE6;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+    <div class="loadingui-overlay loadingui-overlay-fullwindow">
+    </div>
+    <div class=" loadingui-table loadingui-overlay-fullwindow">
+        <div class="loadingui-table-cell">
+            <div class="loadingui-box">
+                Loading...</div>
+        </div>
+    </div>
+    <div id="content">
+    </div>
+</body>
+</html>

@@ -1,0 +1,42 @@
+﻿@{
+    Layout = null;
+    var insemiantion = ViewBag.Insemination;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>配种信息查看</title>
+</head>
+<body>
+    <div>
+        胎次:@insemiantion.InseminationTimes
+    </div>
+    <div>
+        配次:@insemiantion.InseminationTimes
+    </div>
+    <div>
+        返情天数:
+    </div>
+    <div>
+        冻精编号:
+    </div>
+    <div>
+        冻精类型:@insemiantion.SemenType
+    </div>
+    <div>
+        是否复配:
+    </div>
+    <div>
+        配种结果:
+    </div>
+    <div>
+        冻精使用量:@insemiantion.SemenUseAmount
+    </div>
+    <div>
+        配种评注:@insemiantion.Remark
+    </div>
+    <a href="~/Breed/Insemination/Edit/@insemiantion.EarNum">编辑</a>
+    <script src="~/Scripts/bdhm.js"></script>
+</body>
+</html>

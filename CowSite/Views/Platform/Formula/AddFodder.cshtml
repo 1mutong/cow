@@ -1,0 +1,66 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>为配方添加饲料</title>
+    <link href="~/bootstrap/css/bootstrap-theme1.min.css" rel="stylesheet" />
+    <link href="~/Controls/jQuery.Select2/select2.css" rel="stylesheet" />
+</head>
+<body>
+    <div style="margin:5px 5px;">
+        <select id="fodderSelector" style="width: 350px; height: 30px;"></select>
+    </div>
+    <div style="margin:5px 5px;">
+        <input id="quantity" style="width: 350px; height: 30px;" />
+    </div>
+    <div style="margin:5px 5px; text-align:center;">
+        <button id="btnSave" class="btn-primary">保存</button>
+    </div>
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/bootstrap/js/bootstrap.min.js"></script>
+    <script src="~/Controls/jQuery.Select2/select2.min.js"></script>
+    <script>
+        var formulaId = "@ViewBag.FormulaID";
+
+        $.ajax({
+            url: "../../Feed/Fodder/GetSysFodders",
+            cache: false,
+            success: function (fodderInfo) {
+                $("#fodderSelector").empty();
+                if (fodderInfo) {
+                    $.each(fodderInfo.Rows, function () {
+                        $('#fodderSelector').append('<option value="' + this.ID + '">' + this.Name + '</option>');
+                    });
+                    $('#fodderSelector').select2({
+                        placeholder: "配方",
+                        allowClear: true,
+                        minimumResultsForSearch: -1
+                    });
+                }
+            }
+        });
+
+        $('#btnSave').click(function () {
+            var quantity = $('#quantity').val();
+            var fodderId = $('#fodderSelector').val();
+            $.ajax({
+                type: 'get',
+                url: "../../Platform/Formula/InsertFodder",
+                data: { formulaId: formulaId, fodderId: fodderId, fodderQuantity: quantity },
+                cache: false,
+                dataType: "json"
+            }).success(function (formula) {
+                alert('为配方添加饲料成功！');
+                parent.$.ligerDialog.close();
+                parent.window.loadFodderList(formulaId);
+                parent.$(".l-dialog,.l-window-mask").hide();
+            });
+        });
+    </script>
+    <script src="~/Scripts/bdhm.js"></script>
+</body>
+</html>

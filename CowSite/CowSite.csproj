@@ -1,0 +1,1338 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{E0CE26A5-CD8D-4F8B-8D49-5528678C2DF4}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>CowSite</RootNamespace>
+    <AssemblyName>CowSite</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <UseIISExpress>true</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ExcludeGeneratedDebugSymbol>true</ExcludeGeneratedDebugSymbol>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Core">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.0.1\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.EntityFramework">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.EntityFramework.2.0.1\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Owin">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Owin.2.0.1\lib\net45\Microsoft.AspNet.Identity.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.4.5.11\lib\net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Net.Http.WebRequest" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Http, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Web.Http.WebHost, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Web.RegularExpressions" />
+    <Reference Include="System.Web.Routing" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System.Web.Razor">
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.0.0\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Webpages">
+      <HintPath>..\packages\Microsoft.AspNet.Webpages.3.0.0\lib\net45\System.Web.Webpages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Webpages.Deployment">
+      <HintPath>..\packages\Microsoft.AspNet.Webpages.3.0.0\lib\net45\System.Web.Webpages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Webpages.Razor">
+      <HintPath>..\packages\Microsoft.AspNet.Webpages.3.0.0\lib\net45\System.Web.Webpages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Helpers">
+      <HintPath>..\packages\Microsoft.AspNet.Webpages.3.0.0\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc">
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.0.0\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="bootstrap\css\bootstrap-theme.css" />
+    <Content Include="bootstrap\css\bootstrap-theme.min.css" />
+    <Content Include="bootstrap\css\bootstrap-theme1.min.css" />
+    <Content Include="bootstrap\css\bootstrap.css" />
+    <Content Include="bootstrap\css\bootstrap.min.css" />
+    <Content Include="bootstrap\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="bootstrap\js\bootstrap.js" />
+    <Content Include="bootstrap\js\bootstrap.min.js" />
+    <Content Include="Controls\bootstrap.datepicker\bootstrap-datepicker.js" />
+    <Content Include="Controls\bootstrap.datepicker\datepicker.css" />
+    <Content Include="Controls\bootstrap.timepicker\css\bootstrap-timepicker.css" />
+    <Content Include="Controls\bootstrap.timepicker\css\bootstrap-timepicker.min.css" />
+    <Content Include="Controls\bootstrap.timepicker\js\bootstrap-timepicker.js" />
+    <Content Include="Controls\bootstrap.timepicker\js\bootstrap-timepicker.min.js" />
+    <Content Include="Controls\echarts\build\build.js" />
+    <Content Include="Controls\echarts\build\config-tpl.js" />
+    <Content Include="Controls\echarts\build\echarts-map.js" />
+    <Content Include="Controls\echarts\build\echarts-original-map.js" />
+    <Content Include="Controls\echarts\build\echarts-original.js" />
+    <Content Include="Controls\echarts\build\echarts-plain-map.js" />
+    <Content Include="Controls\echarts\build\echarts-plain-original-map.js" />
+    <Content Include="Controls\echarts\build\echarts-plain-original.js" />
+    <Content Include="Controls\echarts\build\echarts-plain.js" />
+    <Content Include="Controls\echarts\build\echarts.js" />
+    <Content Include="Controls\echarts\build\r.js" />
+    <Content Include="Controls\echarts\build\wrap\almond.js" />
+    <Content Include="Controls\echarts\build\wrap\end-map.js" />
+    <Content Include="Controls\echarts\build\wrap\end.js" />
+    <Content Include="Controls\echarts\build\wrap\start.js" />
+    <Content Include="Controls\echarts\doc\asset\css\bootstrap-responsive.css" />
+    <Content Include="Controls\echarts\doc\asset\css\bootstrap.css" />
+    <Content Include="Controls\echarts\doc\asset\css\codemirror.css" />
+    <Content Include="Controls\echarts\doc\asset\css\echartsHome.css" />
+    <Content Include="Controls\echarts\doc\asset\css\flexslider.css" />
+    <Content Include="Controls\echarts\doc\asset\css\google-code-prettify.css" />
+    <Content Include="Controls\echarts\doc\asset\css\monokai.css" />
+    <Content Include="Controls\echarts\doc\asset\ico\favicon.png" />
+    <Content Include="Controls\echarts\doc\asset\img\architecture.png" />
+    <Content Include="Controls\echarts\doc\asset\img\bg_direction_nav.png" />
+    <Content Include="Controls\echarts\doc\asset\img\blacktocat.png" />
+    <Content Include="Controls\echarts\doc\asset\img\connect.gif" />
+    <Content Include="Controls\echarts\doc\asset\img\creativity.jpg" />
+    <Content Include="Controls\echarts\doc\asset\img\custom.png" />
+    <Content Include="Controls\echarts\doc\asset\img\dataDancing.mp3" />
+    <Content Include="Controls\echarts\doc\asset\img\dataRange.gif" />
+    <Content Include="Controls\echarts\doc\asset\img\dataView.gif" />
+    <Content Include="Controls\echarts\doc\asset\img\datazoom.gif" />
+    <Content Include="Controls\echarts\doc\asset\img\device.png" />
+    <Content Include="Controls\echarts\doc\asset\img\doc\axisBoundaryGap.png" />
+    <Content Include="Controls\echarts\doc\asset\img\doc\axisBoundaryGap1.jpg" />
+    <Content Include="Controls\echarts\doc\asset\img\doc\axisDetail.jpg" />
+    <Content Include="Controls\echarts\doc\asset\img\doc\axisDetail.png" />
+    <Content Include="Controls\echarts\doc\asset\img\doc\axisScale1.png" />
+    <Content Include="Controls\echarts\doc\asset\img\doc\axisScale2.png" />
+    <Content Include="Controls\echarts\doc\asset\img\doc\barTheme.png" />
+    <Content Include="Controls\echarts\doc\asset\img\doc\charts.jpg" />
+    <Content Include="Controls\echarts\doc\asset\img\doc\chordTheme.png" />
+    <Content Include="Controls\echarts\doc\asset\img\doc\dataRange.png" />
+    <Content Include="Controls\echarts\doc\asset\img\doc\dataZoom.png" />
+    <Content Include="Controls\echarts\doc\asset\img\doc\forceTheme.png" />
+    <Content Include="Controls\echarts\doc\asset\img\doc\grid.jpg" />
+    <Content Include="Controls\echarts\doc\asset\img\doc\kTheme.png" />
+    <Content Include="Controls\echarts\doc\asset\img\doc\legend.png" />
+    <Content Include="Controls\echarts\doc\asset\img\doc\lineTheme.png" />
+    <Content Include="Controls\echarts\doc\asset\img\doc\mapTheme.png" />
+    <Content Include="Controls\echarts\doc\asset\img\doc\multiControl.jpg" />
+    <Content Include="Controls\echarts\doc\asset\img\doc\pieTheme.png" />
+    <Content Include="Controls\echarts\doc\asset\img\doc\radarTheme.png" />
+    <Content Include="Controls\echarts\doc\asset\img\doc\scatterTheme.png" />
+    <Content Include="Controls\echarts\doc\asset\img\doc\title.png" />
+    <Content Include="Controls\echarts\doc\asset\img\doc\toolbox.png" />
+    <Content Include="Controls\echarts\doc\asset\img\doc\tooltip1.jpg" />
+    <Content Include="Controls\echarts\doc\asset\img\doc\tooltip2.jpg" />
+    <Content Include="Controls\echarts\doc\asset\img\draggable.gif" />
+    <Content Include="Controls\echarts\doc\asset\img\dynamic1.gif" />
+    <Content Include="Controls\echarts\doc\asset\img\dynamic2.gif" />
+    <Content Include="Controls\echarts\doc\asset\img\effect.gif" />
+    <Content Include="Controls\echarts\doc\asset\img\example\axis.png" />
+    <Content Include="Controls\echarts\doc\asset\img\example\bar.png" />
+    <Content Include="Controls\echarts\doc\asset\img\example\bar1.png" />
+    <Content Include="Controls\echarts\doc\asset\img\example\bar10.png" />
+    <Content Include="Controls\echarts\doc\asset\img\example\bar2.png" />
+    <Content Include="Controls\echarts\doc\asset\img\example\bar3.png" />
+    <Content Include="Controls\echarts\doc\asset\img\example\bar4.png" />
+    <Content Include="Controls\echarts\doc\asset\img\example\bar5.png" />
+    <Content Include="Controls\echarts\doc\asset\img\example\bar6.png" />
+    <Content Include="Controls\echarts\doc\asset\img\example\bar7.png" />
+    <Content Include="Controls\echarts\doc\asset\img\example\bar8.png" />
+    <Content Include="Controls\echarts\doc\asset\img\example\bar9.png" />
+    <Content Include="Controls\echarts\doc\asset\img\example\cache.png" />
+    <Content Include="Controls\echarts\doc\asset\img\example\chord.png" />
+    <Content Include="Controls\echarts\doc\asset\img\example\chord1.png" />
+    <Content Include="Controls\echarts\doc\asset\img\example\chord2.png" />
+    <Content Include="Controls\echarts\doc\asset\img\example\dataRange.png" />
+    <Content Include="Controls\echarts\doc\asset\img\example\dataRange1.png" />
+    <Content Include="Controls\echarts\doc\asset\img\example\dataZoom.png" />
+    <Content Include="Controls\echarts\doc\asset\img\example\dataZoom1.png" />
+    <Content Include="Controls\echarts\doc\asset\img\example\dynamicLineBar.png" />
+    <Content Include="Controls\echarts\doc\asset\img\example\dynamicPieRadar.png" />
+    <Content Include="Controls\echarts\doc\asset\img\example\dynamicScatterK.png" />
+    <Content Include="Controls\echarts\doc\asset\img\example\EChartsTheme.jpg" />
+    <Content Include="Controls\echarts\doc\asset\img\example\event.png" />
+    <Content Include="Controls\echarts\doc\asset\img\example\force1.png" />
+    <Content Include="Controls\echarts\doc\asset\img\example\force2.png" />
+    <Content Include="Controls\echarts\doc\asset\img\example\import.png" />
+    <Content Include="Controls\echarts\doc\asset\img\example\k.png" />
+    <Content Include="Controls\echarts\doc\asset\img\example\k1.png" />
+    <Content Include="Controls\echarts\doc\asset\img\example\lasagna.png" />
+    <Content Include="Controls\echarts\doc\asset\img\example\line.png" />
+    <Content Include="Controls\echarts\doc\asset\img\example\line1.png" />
+    <Content Include="Controls\echarts\doc\asset\img\example\line2.png" />
+    <Content Include="Controls\echarts\doc\asset\img\example\line3.png" />
+    <Content Include="Controls\echarts\doc\asset\img\example\line4.png" />
+    <Content Include="Controls\echarts\doc\asset\img\example\line5.png" />
+    <Content Include="Controls\echarts\doc\asset\img\example\loading.png" />
+    <Content Include="Controls\echarts\doc\asset\img\example\map.png" />
+    <Content Include="Controls\echarts\doc\asset\img\example\map1.png" />
+    <Content Include="Controls\echarts\doc\asset\img\example\map10.png" />
+    <Content Include="Controls\echarts\doc\asset\img\example\map11.png" />
+    <Content Include="Controls\echarts\doc\asset\img\example\map12.png" />
+    <Content Include="Controls\echarts\doc\asset\img\example\map13.png" />
+    <Content Include="Controls\echarts\doc\asset\img\example\map2.png" />
+    <Content Include="Controls\echarts\doc\asset\img\example\map3.png" />
+    <Content Include="Controls\echarts\doc\asset\img\example\map4.png" />
+    <Content Include="Controls\echarts\doc\asset\img\example\map5.png" />
+    <Content Include="Controls\echarts\doc\asset\img\example\map6.png" />
+    <Content Include="Controls\echarts\doc\asset\img\example\map7.png" />
+    <Content Include="Controls\echarts\doc\asset\img\example\map8.png" />
+    <Content Include="Controls\echarts\doc\asset\img\example\map9.png" />
+    <Content Include="Controls\echarts\doc\asset\img\example\mix1.png" />
+    <Content Include="Controls\echarts\doc\asset\img\example\mix10.png" />
+    <Content Include="Controls\echarts\doc\asset\img\example\mix2.png" />
+    <Content Include="Controls\echarts\doc\asset\img\example\mix3.png" />
+    <Content Include="Controls\echarts\doc\asset\img\example\mix4.png" />
+    <Content Include="Controls\echarts\doc\asset\img\example\mix5.png" />
+    <Content Include="Controls\echarts\doc\asset\img\example\mix6.png" />
+    <Content Include="Controls\echarts\doc\asset\img\example\mix7.png" />
+    <Content Include="Controls\echarts\doc\asset\img\example\mix8.png" />
+    <Content Include="Controls\echarts\doc\asset\img\example\mix9.png" />
+    <Content Include="Controls\echarts\doc\asset\img\example\pie.png" />
+    <Content Include="Controls\echarts\doc\asset\img\example\pie1.png" />
+    <Content Include="Controls\echarts\doc\asset\img\example\pie2.png" />
+    <Content Include="Controls\echarts\doc\asset\img\example\pie3.png" />
+    <Content Include="Controls\echarts\doc\asset\img\example\pie4.png" />
+    <Content Include="Controls\echarts\doc\asset\img\example\pie5.png" />
+    <Content Include="Controls\echarts\doc\asset\img\example\pie6.png" />
+    <Content Include="Controls\echarts\doc\asset\img\example\radar.png" />
+    <Content Include="Controls\echarts\doc\asset\img\example\radar1.png" />
+    <Content Include="Controls\echarts\doc\asset\img\example\radar2.png" />
+    <Content Include="Controls\echarts\doc\asset\img\example\radar3.png" />
+    <Content Include="Controls\echarts\doc\asset\img\example\scatter.png" />
+    <Content Include="Controls\echarts\doc\asset\img\example\scatter1.png" />
+    <Content Include="Controls\echarts\doc\asset\img\example\scatter2.png" />
+    <Content Include="Controls\echarts\doc\asset\img\example\scatter3.png" />
+    <Content Include="Controls\echarts\doc\asset\img\example\tooltip.png" />
+    <Content Include="Controls\echarts\doc\asset\img\example\webkit-dep.png" />
+    <Content Include="Controls\echarts\doc\asset\img\example\wormhole.png" />
+    <Content Include="Controls\echarts\doc\asset\img\explorer.png" />
+    <Content Include="Controls\echarts\doc\asset\img\glyphicons-halflings-white.png" />
+    <Content Include="Controls\echarts\doc\asset\img\glyphicons-halflings.png" />
+    <Content Include="Controls\echarts\doc\asset\img\groovepaper.png" />
+    <Content Include="Controls\echarts\doc\asset\img\legendSelected.gif" />
+    <Content Include="Controls\echarts\doc\asset\img\magicType.gif" />
+    <Content Include="Controls\echarts\doc\asset\img\mark.gif" />
+    <Content Include="Controls\echarts\doc\asset\img\mix.jpg" />
+    <Content Include="Controls\echarts\doc\asset\img\multiStack.png" />
+    <Content Include="Controls\echarts\doc\asset\img\scatter.gif" />
+    <Content Include="Controls\echarts\doc\asset\img\slide-01.png" />
+    <Content Include="Controls\echarts\doc\asset\img\slide-02.png" />
+    <Content Include="Controls\echarts\doc\asset\img\slide-03.png" />
+    <Content Include="Controls\echarts\doc\asset\img\subMapType.png" />
+    <Content Include="Controls\echarts\doc\asset\img\ticks.png" />
+    <Content Include="Controls\echarts\doc\asset\img\tweed.png" />
+    <Content Include="Controls\echarts\doc\asset\img\zrender.png" />
+    <Content Include="Controls\echarts\doc\asset\js\application.js" />
+    <Content Include="Controls\echarts\doc\asset\js\bootstrap-affix.js" />
+    <Content Include="Controls\echarts\doc\asset\js\bootstrap-alert.js" />
+    <Content Include="Controls\echarts\doc\asset\js\bootstrap-button.js" />
+    <Content Include="Controls\echarts\doc\asset\js\bootstrap-carousel.js" />
+    <Content Include="Controls\echarts\doc\asset\js\bootstrap-collapse.js" />
+    <Content Include="Controls\echarts\doc\asset\js\bootstrap-dropdown.js" />
+    <Content Include="Controls\echarts\doc\asset\js\bootstrap-modal.js" />
+    <Content Include="Controls\echarts\doc\asset\js\bootstrap-popover.js" />
+    <Content Include="Controls\echarts\doc\asset\js\bootstrap-scrollspy.js" />
+    <Content Include="Controls\echarts\doc\asset\js\bootstrap-tab.js" />
+    <Content Include="Controls\echarts\doc\asset\js\bootstrap-tooltip.js" />
+    <Content Include="Controls\echarts\doc\asset\js\bootstrap-transition.js" />
+    <Content Include="Controls\echarts\doc\asset\js\bootstrap-typeahead.js" />
+    <Content Include="Controls\echarts\doc\asset\js\bootstrap.js" />
+    <Content Include="Controls\echarts\doc\asset\js\bootstrap.min.js" />
+    <Content Include="Controls\echarts\doc\asset\js\codemirror.js" />
+    <Content Include="Controls\echarts\doc\asset\js\dataDancing.js" />
+    <Content Include="Controls\echarts\doc\asset\js\echartsConfig.js" />
+    <Content Include="Controls\echarts\doc\asset\js\echartsDoc.js" />
+    <Content Include="Controls\echarts\doc\asset\js\echartsExample.js" />
+    <Content Include="Controls\echarts\doc\asset\js\echartsTheme.js" />
+    <Content Include="Controls\echarts\doc\asset\js\echartsThemeDesigner.js" />
+    <Content Include="Controls\echarts\doc\asset\js\esl\css.js" />
+    <Content Include="Controls\echarts\doc\asset\js\esl\esl.js" />
+    <Content Include="Controls\echarts\doc\asset\js\esl\js.js" />
+    <Content Include="Controls\echarts\doc\asset\js\google-code-prettify.js" />
+    <Content Include="Controls\echarts\doc\asset\js\html5shiv.js" />
+    <Content Include="Controls\echarts\doc\asset\js\javascript.js" />
+    <Content Include="Controls\echarts\doc\asset\js\jquery.flexslider.js" />
+    <Content Include="Controls\echarts\doc\asset\js\jquery.js" />
+    <Content Include="Controls\echarts\doc\changelog.html" />
+    <Content Include="Controls\echarts\doc\doc.html" />
+    <Content Include="Controls\echarts\doc\example.html" />
+    <Content Include="Controls\echarts\doc\example\axis.html" />
+    <Content Include="Controls\echarts\doc\example\bar.html" />
+    <Content Include="Controls\echarts\doc\example\bar1.html" />
+    <Content Include="Controls\echarts\doc\example\bar10.html" />
+    <Content Include="Controls\echarts\doc\example\bar2.html" />
+    <Content Include="Controls\echarts\doc\example\bar3.html" />
+    <Content Include="Controls\echarts\doc\example\bar4.html" />
+    <Content Include="Controls\echarts\doc\example\bar5.html" />
+    <Content Include="Controls\echarts\doc\example\bar6.html" />
+    <Content Include="Controls\echarts\doc\example\bar7.html" />
+    <Content Include="Controls\echarts\doc\example\bar8.html" />
+    <Content Include="Controls\echarts\doc\example\bar9.html" />
+    <Content Include="Controls\echarts\doc\example\chord.html" />
+    <Content Include="Controls\echarts\doc\example\chord1.html" />
+    <Content Include="Controls\echarts\doc\example\chord2.html" />
+    <Content Include="Controls\echarts\doc\example\dataRange.html" />
+    <Content Include="Controls\echarts\doc\example\dataRange1.html" />
+    <Content Include="Controls\echarts\doc\example\dataZoom.html" />
+    <Content Include="Controls\echarts\doc\example\dataZoom1.html" />
+    <Content Include="Controls\echarts\doc\example\demo.html" />
+    <Content Include="Controls\echarts\doc\example\dynamicLineBar.html" />
+    <Content Include="Controls\echarts\doc\example\dynamicPieRadar.html" />
+    <Content Include="Controls\echarts\doc\example\dynamicScatterK.html" />
+    <Content Include="Controls\echarts\doc\example\event.html" />
+    <Content Include="Controls\echarts\doc\example\force1.html" />
+    <Content Include="Controls\echarts\doc\example\force2.html" />
+    <Content Include="Controls\echarts\doc\example\force3.html" />
+    <Content Include="Controls\echarts\doc\example\force4.html" />
+    <Content Include="Controls\echarts\doc\example\k.html" />
+    <Content Include="Controls\echarts\doc\example\k1.html" />
+    <Content Include="Controls\echarts\doc\example\lasagna.html" />
+    <Content Include="Controls\echarts\doc\example\legend.html" />
+    <Content Include="Controls\echarts\doc\example\line.html" />
+    <Content Include="Controls\echarts\doc\example\line1.html" />
+    <Content Include="Controls\echarts\doc\example\line2.html" />
+    <Content Include="Controls\echarts\doc\example\line3.html" />
+    <Content Include="Controls\echarts\doc\example\line4.html" />
+    <Content Include="Controls\echarts\doc\example\line5.html" />
+    <Content Include="Controls\echarts\doc\example\loading.html" />
+    <Content Include="Controls\echarts\doc\example\map.html" />
+    <Content Include="Controls\echarts\doc\example\map1.html" />
+    <Content Include="Controls\echarts\doc\example\map10.html" />
+    <Content Include="Controls\echarts\doc\example\map11.html" />
+    <Content Include="Controls\echarts\doc\example\map12.html" />
+    <Content Include="Controls\echarts\doc\example\map13.html" />
+    <Content Include="Controls\echarts\doc\example\map2.html" />
+    <Content Include="Controls\echarts\doc\example\map3.html" />
+    <Content Include="Controls\echarts\doc\example\map4.html" />
+    <Content Include="Controls\echarts\doc\example\map5.html" />
+    <Content Include="Controls\echarts\doc\example\map6.html" />
+    <Content Include="Controls\echarts\doc\example\map7.html" />
+    <Content Include="Controls\echarts\doc\example\map8.html" />
+    <Content Include="Controls\echarts\doc\example\map9.html" />
+    <Content Include="Controls\echarts\doc\example\middle-east-pre.js" />
+    <Content Include="Controls\echarts\doc\example\middle-east.js" />
+    <Content Include="Controls\echarts\doc\example\mix1.html" />
+    <Content Include="Controls\echarts\doc\example\mix10.html" />
+    <Content Include="Controls\echarts\doc\example\mix2.html" />
+    <Content Include="Controls\echarts\doc\example\mix3.html" />
+    <Content Include="Controls\echarts\doc\example\mix4.html" />
+    <Content Include="Controls\echarts\doc\example\mix5.html" />
+    <Content Include="Controls\echarts\doc\example\mix6.html" />
+    <Content Include="Controls\echarts\doc\example\mix7.html" />
+    <Content Include="Controls\echarts\doc\example\mix8.html" />
+    <Content Include="Controls\echarts\doc\example\mix9.html" />
+    <Content Include="Controls\echarts\doc\example\pie.html" />
+    <Content Include="Controls\echarts\doc\example\pie1.html" />
+    <Content Include="Controls\echarts\doc\example\pie2.html" />
+    <Content Include="Controls\echarts\doc\example\pie3.html" />
+    <Content Include="Controls\echarts\doc\example\pie4.html" />
+    <Content Include="Controls\echarts\doc\example\pie5.html" />
+    <Content Include="Controls\echarts\doc\example\pie6.html" />
+    <Content Include="Controls\echarts\doc\example\radar.html" />
+    <Content Include="Controls\echarts\doc\example\radar1.html" />
+    <Content Include="Controls\echarts\doc\example\radar2.html" />
+    <Content Include="Controls\echarts\doc\example\radar3.html" />
+    <Content Include="Controls\echarts\doc\example\scatter.html" />
+    <Content Include="Controls\echarts\doc\example\scatter1.html" />
+    <Content Include="Controls\echarts\doc\example\scatter2.html" />
+    <Content Include="Controls\echarts\doc\example\scatter3.html" />
+    <Content Include="Controls\echarts\doc\example\theme.html" />
+    <Content Include="Controls\echarts\doc\example\themeDesigner.html" />
+    <Content Include="Controls\echarts\doc\example\theme\blue.js" />
+    <Content Include="Controls\echarts\doc\example\theme\dark.js" />
+    <Content Include="Controls\echarts\doc\example\theme\erik.js" />
+    <Content Include="Controls\echarts\doc\example\theme\gray.js" />
+    <Content Include="Controls\echarts\doc\example\theme\green.js" />
+    <Content Include="Controls\echarts\doc\example\theme\red.js" />
+    <Content Include="Controls\echarts\doc\example\toolbox.html" />
+    <Content Include="Controls\echarts\doc\example\tooltip.html" />
+    <Content Include="Controls\echarts\doc\example\topic\10-me-china\index.html" />
+    <Content Include="Controls\echarts\doc\example\topic\10-me-china\js\data-a-china.js" />
+    <Content Include="Controls\echarts\doc\example\topic\10-me-china\js\data-china.js" />
+    <Content Include="Controls\echarts\doc\example\topic\10-me-china\js\data-formatter.js" />
+    <Content Include="Controls\echarts\doc\example\topic\10-me-china\js\djws.js" />
+    <Content Include="Controls\echarts\doc\example\topic\10-me-china\js\option0.js" />
+    <Content Include="Controls\echarts\doc\example\topic\10-me-china\js\option1.js" />
+    <Content Include="Controls\echarts\doc\example\topic\10-me-china\js\option2.js" />
+    <Content Include="Controls\echarts\doc\example\topic\10-me-china\js\option3.js" />
+    <Content Include="Controls\echarts\doc\example\topic\24-population-china\index.html" />
+    <Content Include="Controls\echarts\doc\example\topic\24-population-china\js\data-people.js" />
+    <Content Include="Controls\echarts\doc\example\topic\aqi-china\index.html" />
+    <Content Include="Controls\echarts\doc\example\topic\aqi-china\js\china_city_geo.js" />
+    <Content Include="Controls\echarts\doc\example\topic\aqi-china\js\data.js" />
+    <Content Include="Controls\echarts\doc\example\topic\aqi-china\js\main.js" />
+    <Content Include="Controls\echarts\doc\example\topic\aqi-china\js\option0.js" />
+    <Content Include="Controls\echarts\doc\example\topic\aqi-china\js\option1.js" />
+    <Content Include="Controls\echarts\doc\example\topic\aqi-china\js\option2.js" />
+    <Content Include="Controls\echarts\doc\example\topic\aqi-china\js\option3.js" />
+    <Content Include="Controls\echarts\doc\example\webkit-dep-pre.js" />
+    <Content Include="Controls\echarts\doc\example\webkit-dep.html" />
+    <Content Include="Controls\echarts\doc\example\webkit-dep.js" />
+    <Content Include="Controls\echarts\doc\example\wormhole.html" />
+    <Content Include="Controls\echarts\doc\example\www2\index.html" />
+    <Content Include="Controls\echarts\doc\example\www2\js\echarts-plain-map.js" />
+    <Content Include="Controls\echarts\doc\example\www2\js\echarts-plain.js" />
+    <Content Include="Controls\echarts\doc\example\www\index.html" />
+    <Content Include="Controls\echarts\doc\example\www\js\echarts-map.js" />
+    <Content Include="Controls\echarts\doc\example\www\js\echarts.js" />
+    <Content Include="Controls\echarts\doc\example\www\js\esl.js" />
+    <Content Include="Controls\echarts\doc\slide\css\echarts-slide.css" />
+    <Content Include="Controls\echarts\doc\slide\css\print\paper.css" />
+    <Content Include="Controls\echarts\doc\slide\css\print\pdf.css" />
+    <Content Include="Controls\echarts\doc\slide\css\reveal.css" />
+    <Content Include="Controls\echarts\doc\slide\css\reveal.min.css" />
+    <Content Include="Controls\echarts\doc\slide\css\theme\beige.css" />
+    <Content Include="Controls\echarts\doc\slide\css\theme\default.css" />
+    <Content Include="Controls\echarts\doc\slide\css\theme\moon.css" />
+    <Content Include="Controls\echarts\doc\slide\css\theme\night.css" />
+    <Content Include="Controls\echarts\doc\slide\css\theme\serif.css" />
+    <Content Include="Controls\echarts\doc\slide\css\theme\simple.css" />
+    <Content Include="Controls\echarts\doc\slide\css\theme\sky.css" />
+    <Content Include="Controls\echarts\doc\slide\css\theme\solarized.css" />
+    <Content Include="Controls\echarts\doc\slide\img\bigData.jpg" />
+    <Content Include="Controls\echarts\doc\slide\img\big_load.gif" />
+    <Content Include="Controls\echarts\doc\slide\img\echarts_logo.png" />
+    <Content Include="Controls\echarts\doc\slide\img\fork.png" />
+    <Content Include="Controls\echarts\doc\slide\img\iconBarChart.png" />
+    <Content Include="Controls\echarts\doc\slide\img\iconDataView.png" />
+    <Content Include="Controls\echarts\doc\slide\img\iconDataZoom.png" />
+    <Content Include="Controls\echarts\doc\slide\img\iconDataZoomReset.png" />
+    <Content Include="Controls\echarts\doc\slide\img\iconLineChart.png" />
+    <Content Include="Controls\echarts\doc\slide\img\iconStack.png" />
+    <Content Include="Controls\echarts\doc\slide\img\tableau.jpg" />
+    <Content Include="Controls\echarts\doc\slide\js\reveal.js" />
+    <Content Include="Controls\echarts\doc\slide\js\reveal.min.js" />
+    <Content Include="Controls\echarts\doc\slide\js\whyEcharts.js" />
+    <Content Include="Controls\echarts\doc\slide\lib\css\zenburn.css" />
+    <Content Include="Controls\echarts\doc\slide\lib\font\league_gothic-webfont.svg" />
+    <Content Include="Controls\echarts\doc\slide\lib\js\classList.js" />
+    <Content Include="Controls\echarts\doc\slide\lib\js\head.min.js" />
+    <Content Include="Controls\echarts\doc\slide\lib\js\html5shiv.js" />
+    <Content Include="Controls\echarts\doc\slide\plugin\highlight\highlight.js" />
+    <Content Include="Controls\echarts\doc\slide\plugin\markdown\example.html" />
+    <Content Include="Controls\echarts\doc\slide\plugin\markdown\markdown.js" />
+    <Content Include="Controls\echarts\doc\slide\plugin\markdown\marked.js" />
+    <Content Include="Controls\echarts\doc\slide\plugin\multiplex\client.js" />
+    <Content Include="Controls\echarts\doc\slide\plugin\multiplex\index.js" />
+    <Content Include="Controls\echarts\doc\slide\plugin\multiplex\master.js" />
+    <Content Include="Controls\echarts\doc\slide\plugin\notes-server\client.js" />
+    <Content Include="Controls\echarts\doc\slide\plugin\notes-server\index.js" />
+    <Content Include="Controls\echarts\doc\slide\plugin\notes-server\notes.html" />
+    <Content Include="Controls\echarts\doc\slide\plugin\notes\notes.html" />
+    <Content Include="Controls\echarts\doc\slide\plugin\notes\notes.js" />
+    <Content Include="Controls\echarts\doc\slide\plugin\postmessage\example.html" />
+    <Content Include="Controls\echarts\doc\slide\plugin\postmessage\postmessage.js" />
+    <Content Include="Controls\echarts\doc\slide\plugin\print-pdf\print-pdf.js" />
+    <Content Include="Controls\echarts\doc\slide\plugin\remotes\remotes.js" />
+    <Content Include="Controls\echarts\doc\slide\plugin\search\search.js" />
+    <Content Include="Controls\echarts\doc\slide\plugin\zoom-js\zoom.js" />
+    <Content Include="Controls\echarts\doc\slide\whyEcharts.html" />
+    <Content Include="Controls\echarts\doc\start.html" />
+    <Content Include="Controls\echarts\index.html" />
+    <Content Include="Controls\echarts\LICENSE.txt" />
+    <Content Include="Controls\echarts\src\chart.js" />
+    <Content Include="Controls\echarts\src\chart\bar.js" />
+    <Content Include="Controls\echarts\src\chart\calculableBase.js" />
+    <Content Include="Controls\echarts\src\chart\chord.js" />
+    <Content Include="Controls\echarts\src\chart\force.js" />
+    <Content Include="Controls\echarts\src\chart\island.js" />
+    <Content Include="Controls\echarts\src\chart\k.js" />
+    <Content Include="Controls\echarts\src\chart\line.js" />
+    <Content Include="Controls\echarts\src\chart\map.js" />
+    <Content Include="Controls\echarts\src\chart\pie.js" />
+    <Content Include="Controls\echarts\src\chart\radar.js" />
+    <Content Include="Controls\echarts\src\chart\scatter.js" />
+    <Content Include="Controls\echarts\src\component.js" />
+    <Content Include="Controls\echarts\src\component\axis.js" />
+    <Content Include="Controls\echarts\src\component\base.js" />
+    <Content Include="Controls\echarts\src\component\categoryAxis.js" />
+    <Content Include="Controls\echarts\src\component\dataRange.js" />
+    <Content Include="Controls\echarts\src\component\dataView.js" />
+    <Content Include="Controls\echarts\src\component\dataZoom.js" />
+    <Content Include="Controls\echarts\src\component\grid.js" />
+    <Content Include="Controls\echarts\src\component\legend.js" />
+    <Content Include="Controls\echarts\src\component\polar.js" />
+    <Content Include="Controls\echarts\src\component\title.js" />
+    <Content Include="Controls\echarts\src\component\toolbox.js" />
+    <Content Include="Controls\echarts\src\component\tooltip.js" />
+    <Content Include="Controls\echarts\src\component\valueAxis.js" />
+    <Content Include="Controls\echarts\src\config.js" />
+    <Content Include="Controls\echarts\src\echarts.js" />
+    <Content Include="Controls\echarts\src\theme\default.js" />
+    <Content Include="Controls\echarts\src\util\accMath.js" />
+    <Content Include="Controls\echarts\src\util\coordinates.js" />
+    <Content Include="Controls\echarts\src\util\ecData.js" />
+    <Content Include="Controls\echarts\src\util\ecQuery.js" />
+    <Content Include="Controls\echarts\src\util\kwargs.js" />
+    <Content Include="Controls\echarts\src\util\mapData\geoCoord.js" />
+    <Content Include="Controls\echarts\src\util\mapData\geoJson\an_hui_geo.js" />
+    <Content Include="Controls\echarts\src\util\mapData\geoJson\ao_men_geo.js" />
+    <Content Include="Controls\echarts\src\util\mapData\geoJson\bei_jing_geo.js" />
+    <Content Include="Controls\echarts\src\util\mapData\geoJson\china_geo.js" />
+    <Content Include="Controls\echarts\src\util\mapData\geoJson\chong_qing_geo.js" />
+    <Content Include="Controls\echarts\src\util\mapData\geoJson\fu_jian_geo.js" />
+    <Content Include="Controls\echarts\src\util\mapData\geoJson\gan_su_geo.js" />
+    <Content Include="Controls\echarts\src\util\mapData\geoJson\guang_dong_geo.js" />
+    <Content Include="Controls\echarts\src\util\mapData\geoJson\guang_xi_geo.js" />
+    <Content Include="Controls\echarts\src\util\mapData\geoJson\gui_zhou_geo.js" />
+    <Content Include="Controls\echarts\src\util\mapData\geoJson\hai_nan_geo.js" />
+    <Content Include="Controls\echarts\src\util\mapData\geoJson\hei_long_jiang_geo.js" />
+    <Content Include="Controls\echarts\src\util\mapData\geoJson\he_bei_geo.js" />
+    <Content Include="Controls\echarts\src\util\mapData\geoJson\he_nan_geo.js" />
+    <Content Include="Controls\echarts\src\util\mapData\geoJson\hu_bei_geo.js" />
+    <Content Include="Controls\echarts\src\util\mapData\geoJson\hu_nan_geo.js" />
+    <Content Include="Controls\echarts\src\util\mapData\geoJson\jiang_su_geo.js" />
+    <Content Include="Controls\echarts\src\util\mapData\geoJson\jiang_xi_geo.js" />
+    <Content Include="Controls\echarts\src\util\mapData\geoJson\ji_lin_geo.js" />
+    <Content Include="Controls\echarts\src\util\mapData\geoJson\liao_ning_geo.js" />
+    <Content Include="Controls\echarts\src\util\mapData\geoJson\nei_meng_gu_geo.js" />
+    <Content Include="Controls\echarts\src\util\mapData\geoJson\ning_xia_geo.js" />
+    <Content Include="Controls\echarts\src\util\mapData\geoJson\qing_hai_geo.js" />
+    <Content Include="Controls\echarts\src\util\mapData\geoJson\shang_hai_geo.js" />
+    <Content Include="Controls\echarts\src\util\mapData\geoJson\shan_dong_geo.js" />
+    <Content Include="Controls\echarts\src\util\mapData\geoJson\shan_xi_1_geo.js" />
+    <Content Include="Controls\echarts\src\util\mapData\geoJson\shan_xi_2_geo.js" />
+    <Content Include="Controls\echarts\src\util\mapData\geoJson\si_chuan_geo.js" />
+    <Content Include="Controls\echarts\src\util\mapData\geoJson\tai_wan_geo.js" />
+    <Content Include="Controls\echarts\src\util\mapData\geoJson\tian_jin_geo.js" />
+    <Content Include="Controls\echarts\src\util\mapData\geoJson\world_geo.js" />
+    <Content Include="Controls\echarts\src\util\mapData\geoJson\xiang_gang_geo.js" />
+    <Content Include="Controls\echarts\src\util\mapData\geoJson\xin_jiang_geo.js" />
+    <Content Include="Controls\echarts\src\util\mapData\geoJson\xi_zang_geo.js" />
+    <Content Include="Controls\echarts\src\util\mapData\geoJson\yun_nan_geo.js" />
+    <Content Include="Controls\echarts\src\util\mapData\geoJson\zhe_jiang_geo.js" />
+    <Content Include="Controls\echarts\src\util\mapData\params.js" />
+    <Content Include="Controls\echarts\src\util\mapData\rawData\encode.js" />
+    <Content Include="Controls\echarts\src\util\mapData\textFixed.js" />
+    <Content Include="Controls\echarts\src\util\ndarray.js" />
+    <Content Include="Controls\echarts\src\util\number.js" />
+    <Content Include="Controls\echarts\src\util\projection\albers.js" />
+    <Content Include="Controls\echarts\src\util\projection\mercator.js" />
+    <Content Include="Controls\echarts\src\util\projection\normal.js" />
+    <Content Include="Controls\echarts\src\util\shape\candle.js" />
+    <Content Include="Controls\echarts\src\util\shape\chord.js" />
+    <Content Include="Controls\echarts\src\util\shape\halfSmoothPolygon.js" />
+    <Content Include="Controls\echarts\src\util\shape\handlePolygon.js" />
+    <Content Include="Controls\echarts\src\util\shape\icon.js" />
+    <Content Include="Controls\echarts\src\util\shape\markLine.js" />
+    <Content Include="Controls\echarts\src\util\shape\symbol.js" />
+    <Content Include="Controls\echarts\test\allchart\all.html" />
+    <Content Include="Controls\echarts\test\allchart\all.js" />
+    <Content Include="Controls\jQuery.LoadingUI\images\loading-ui2.gif" />
+    <Content Include="Controls\jQuery.LoadingUI\jquery.loadingui.css" />
+    <Content Include="Controls\jQuery.LoadingUI\jquery.loadingui.js" />
+    <Content Include="Controls\jQuery.Select2\select2-spinner.gif" />
+    <Content Include="Controls\jQuery.Select2\select2.css" />
+    <Content Include="Controls\jQuery.Select2\select2.js" />
+    <Content Include="Controls\jQuery.Select2\select2.min.js" />
+    <Content Include="Controls\jQuery.Select2\select2.png" />
+    <Content Include="Controls\jQuery.Select2\select2x2.png" />
+    <Content Include="Controls\jQuery.Table2014\example.html" />
+    <Content Include="Controls\jQuery.Table2014\images\DefaultTableIcon.png" />
+    <Content Include="Controls\jQuery.Table2014\prototype.html" />
+    <Content Include="Controls\jQuery.Table2014\Table2014.css" />
+    <Content Include="Controls\jQuery.Table2014\Table2014.js" />
+    <Content Include="CowImage\Default-1.png" />
+    <Content Include="CowImage\Default-2.png" />
+    <Content Include="CowImage\Default-3.png" />
+    <Content Include="Global.asax" />
+    <Content Include="Images\CowStatus\chujian.png" />
+    <Content Include="Images\CowStatus\duniu.png" />
+    <Content Include="Images\CowStatus\faqing.png" />
+    <Content Include="Images\CowStatus\fujian.png" />
+    <Content Include="Images\CowStatus\jinpei.png" />
+    <Content Include="Images\CowStatus\peizhong.png" />
+    <Content Include="Images\emutong.ico" />
+    <Content Include="Images\emutong_logo.png" />
+    <Content Include="Images\Login\banner.png" />
+    <Content Include="Images\Login\nav-1.jpg" />
+    <Content Include="Images\Login\nav-2.jpg" />
+    <Content Include="Images\Login\nav-3.jpg" />
+    <Content Include="Images\main-bg.jpg" />
+    <Content Include="ligerUI\js\core\base.js" />
+    <Content Include="ligerUI\js\core\inject.js" />
+    <Content Include="ligerUI\js\ligerui.all.js" />
+    <Content Include="ligerUI\js\ligerui.min.js" />
+    <Content Include="ligerUI\js\plugins\ligerAccordion.js" />
+    <Content Include="ligerUI\js\plugins\ligerButton.js" />
+    <Content Include="ligerUI\js\plugins\ligerCheckBox.js" />
+    <Content Include="ligerUI\js\plugins\ligerCheckBoxList.js" />
+    <Content Include="ligerUI\js\plugins\ligerComboBox.js" />
+    <Content Include="ligerUI\js\plugins\ligerDateEditor.js" />
+    <Content Include="ligerUI\js\plugins\ligerDialog.js" />
+    <Content Include="ligerUI\js\plugins\ligerDrag.js" />
+    <Content Include="ligerUI\js\plugins\ligerEasyTab.js" />
+    <Content Include="ligerUI\js\plugins\ligerFilter.js" />
+    <Content Include="ligerUI\js\plugins\ligerForm.js" />
+    <Content Include="ligerUI\js\plugins\ligerGrid.js" />
+    <Content Include="ligerUI\js\plugins\ligerLayout.js" />
+    <Content Include="ligerUI\js\plugins\ligerListBox.js" />
+    <Content Include="ligerUI\js\plugins\ligerMenu.js" />
+    <Content Include="ligerUI\js\plugins\ligerMenuBar.js" />
+    <Content Include="ligerUI\js\plugins\ligerMessageBox.js" />
+    <Content Include="ligerUI\js\plugins\ligerPanel.js" />
+    <Content Include="ligerUI\js\plugins\ligerPopupEdit.js" />
+    <Content Include="ligerUI\js\plugins\ligerPortal.js" />
+    <Content Include="ligerUI\js\plugins\ligerRadio.js" />
+    <Content Include="ligerUI\js\plugins\ligerRadioList.js" />
+    <Content Include="ligerUI\js\plugins\ligerResizable.js" />
+    <Content Include="ligerUI\js\plugins\ligerSpinner.js" />
+    <Content Include="ligerUI\js\plugins\ligerTab.js" />
+    <Content Include="ligerUI\js\plugins\ligerTextBox.js" />
+    <Content Include="ligerUI\js\plugins\ligerTip.js" />
+    <Content Include="ligerUI\js\plugins\ligerToolBar.js" />
+    <Content Include="ligerUI\js\plugins\ligerTree.js" />
+    <Content Include="ligerUI\js\plugins\ligerWindow.js" />
+    <Content Include="ligerUI\skins\Aqua\css\ligerui-all.css" />
+    <Content Include="ligerUI\skins\Aqua\css\ligerui-common.css" />
+    <Content Include="ligerUI\skins\Aqua\css\ligerui-dialog.css" />
+    <Content Include="ligerUI\skins\Aqua\css\ligerui-form.css" />
+    <Content Include="ligerUI\skins\Aqua\css\ligerui-grid.css" />
+    <Content Include="ligerUI\skins\Aqua\css\ligerui-layout.css" />
+    <Content Include="ligerUI\skins\Aqua\css\ligerui-menu.css" />
+    <Content Include="ligerUI\skins\Aqua\css\ligerui-tab.css" />
+    <Content Include="ligerUI\skins\Aqua\css\ligerui-tree.css" />
+    <Content Include="ligerUI\skins\Aqua\images\common\bigloading.gif" />
+    <Content Include="ligerUI\skins\Aqua\images\common\button-disabled.gif" />
+    <Content Include="ligerUI\skins\Aqua\images\common\button-over.gif" />
+    <Content Include="ligerUI\skins\Aqua\images\common\button.gif" />
+    <Content Include="ligerUI\skins\Aqua\images\common\drop-icons.gif" />
+    <Content Include="ligerUI\skins\Aqua\images\common\exclamation.gif" />
+    <Content Include="ligerUI\skins\Aqua\images\common\invalid-line.gif" />
+    <Content Include="ligerUI\skins\Aqua\images\common\loading.gif" />
+    <Content Include="ligerUI\skins\Aqua\images\common\table.png" />
+    <Content Include="ligerUI\skins\Aqua\images\common\toggle.gif" />
+    <Content Include="ligerUI\skins\Aqua\images\controls\bg-panel-title-over.gif" />
+    <Content Include="ligerUI\skins\Aqua\images\controls\bg-panel-title-pressed.gif" />
+    <Content Include="ligerUI\skins\Aqua\images\controls\bg-panel-title.gif" />
+    <Content Include="ligerUI\skins\Aqua\images\controls\bg-tab-title-over.gif" />
+    <Content Include="ligerUI\skins\Aqua\images\controls\bg-tab-title-pressed.gif" />
+    <Content Include="ligerUI\skins\Aqua\images\controls\bg-tab-title.gif" />
+    <Content Include="ligerUI\skins\Aqua\images\controls\bg-text.gif" />
+    <Content Include="ligerUI\skins\Aqua\images\controls\bg-trigger-over.gif" />
+    <Content Include="ligerUI\skins\Aqua\images\controls\bg-trigger-pressed.gif" />
+    <Content Include="ligerUI\skins\Aqua\images\controls\bg-trigger.gif" />
+    <Content Include="ligerUI\skins\Aqua\images\controls\btn-l.gif" />
+    <Content Include="ligerUI\skins\Aqua\images\controls\btn-r.gif" />
+    <Content Include="ligerUI\skins\Aqua\images\controls\btn.gif" />
+    <Content Include="ligerUI\skins\Aqua\images\controls\button-bg-over.gif" />
+    <Content Include="ligerUI\skins\Aqua\images\controls\button-bg.gif" />
+    <Content Include="ligerUI\skins\Aqua\images\controls\checkbox.gif" />
+    <Content Include="ligerUI\skins\Aqua\images\controls\dateeditor-bar-bg.gif" />
+    <Content Include="ligerUI\skins\Aqua\images\controls\dateeditor-header-bg.gif" />
+    <Content Include="ligerUI\skins\Aqua\images\controls\radio.gif" />
+    <Content Include="ligerUI\skins\Aqua\images\dateeditor\date.gif" />
+    <Content Include="ligerUI\skins\Aqua\images\dateeditor\icon-first.gif" />
+    <Content Include="ligerUI\skins\Aqua\images\dateeditor\icon-last.gif" />
+    <Content Include="ligerUI\skins\Aqua\images\dateeditor\icon-next.gif" />
+    <Content Include="ligerUI\skins\Aqua\images\dateeditor\icon-prev.gif" />
+    <Content Include="ligerUI\skins\Aqua\images\form\verify-corner.gif" />
+    <Content Include="ligerUI\skins\Aqua\images\grid\grid-checkbox-checked.gif" />
+    <Content Include="ligerUI\skins\Aqua\images\grid\grid-checkbox.gif" />
+    <Content Include="ligerUI\skins\Aqua\images\grid\grid-detail-close.gif" />
+    <Content Include="ligerUI\skins\Aqua\images\grid\grid-detail-open.gif" />
+    <Content Include="ligerUI\skins\Aqua\images\grid\grid-tree-close.gif" />
+    <Content Include="ligerUI\skins\Aqua\images\grid\grid-tree-open.gif" />
+    <Content Include="ligerUI\skins\Aqua\images\grid\header-bg-over.gif" />
+    <Content Include="ligerUI\skins\Aqua\images\grid\header-bg.gif" />
+    <Content Include="ligerUI\skins\Aqua\images\grid\header2-bg.jpg" />
+    <Content Include="ligerUI\skins\Aqua\images\grid\popup-line.gif" />
+    <Content Include="ligerUI\skins\Aqua\images\grid\popup-row-over.gif" />
+    <Content Include="ligerUI\skins\Aqua\images\icon\bar-button-over.gif" />
+    <Content Include="ligerUI\skins\Aqua\images\icon\checkbox-checked.gif" />
+    <Content Include="ligerUI\skins\Aqua\images\icon\checkbox.gif" />
+    <Content Include="ligerUI\skins\Aqua\images\icon\cross.gif" />
+    <Content Include="ligerUI\skins\Aqua\images\icon\icon-close-over.gif" />
+    <Content Include="ligerUI\skins\Aqua\images\icon\icon-close.gif" />
+    <Content Include="ligerUI\skins\Aqua\images\icon\icon-down.gif" />
+    <Content Include="ligerUI\skins\Aqua\images\icon\icon-drop.gif" />
+    <Content Include="ligerUI\skins\Aqua\images\icon\icon-edited.gif" />
+    <Content Include="ligerUI\skins\Aqua\images\icon\icon-first.gif" />
+    <Content Include="ligerUI\skins\Aqua\images\icon\icon-last.gif" />
+    <Content Include="ligerUI\skins\Aqua\images\icon\icon-line.gif" />
+    <Content Include="ligerUI\skins\Aqua\images\icon\icon-load.gif" />
+    <Content Include="ligerUI\skins\Aqua\images\icon\icon-next.gif" />
+    <Content Include="ligerUI\skins\Aqua\images\icon\icon-prev.gif" />
+    <Content Include="ligerUI\skins\Aqua\images\icon\icon-select.gif" />
+    <Content Include="ligerUI\skins\Aqua\images\icon\icon-sort-asc.gif" />
+    <Content Include="ligerUI\skins\Aqua\images\icon\icon-sort-desc.gif" />
+    <Content Include="ligerUI\skins\Aqua\images\icon\icon-unselect.gif" />
+    <Content Include="ligerUI\skins\Aqua\images\icon\icon-up.gif" />
+    <Content Include="ligerUI\skins\Aqua\images\icon\spr_icons.gif" />
+    <Content Include="ligerUI\skins\Aqua\images\layout\accordion-content.gif" />
+    <Content Include="ligerUI\skins\Aqua\images\layout\accordion-header-over.gif" />
+    <Content Include="ligerUI\skins\Aqua\images\layout\accordion-header.gif" />
+    <Content Include="ligerUI\skins\Aqua\images\layout\layout-header-over.gif" />
+    <Content Include="ligerUI\skins\Aqua\images\layout\layout-header.gif" />
+    <Content Include="ligerUI\skins\Aqua\images\layout\layout-sidebar-header.gif" />
+    <Content Include="ligerUI\skins\Aqua\images\layout\mini-bottom.gif" />
+    <Content Include="ligerUI\skins\Aqua\images\layout\mini-left.gif" />
+    <Content Include="ligerUI\skins\Aqua\images\layout\mini-right.gif" />
+    <Content Include="ligerUI\skins\Aqua\images\layout\mini-top.gif" />
+    <Content Include="ligerUI\skins\Aqua\images\layout\panel-content.gif" />
+    <Content Include="ligerUI\skins\Aqua\images\layout\panel-header-over.gif" />
+    <Content Include="ligerUI\skins\Aqua\images\layout\panel-header.gif" />
+    <Content Include="ligerUI\skins\Aqua\images\layout\panel-header2.gif" />
+    <Content Include="ligerUI\skins\Aqua\images\layout\tabs-bg.gif" />
+    <Content Include="ligerUI\skins\Aqua\images\layout\tabs-item-bg.gif" />
+    <Content Include="ligerUI\skins\Aqua\images\layout\tabs-item-left-bg.gif" />
+    <Content Include="ligerUI\skins\Aqua\images\layout\tabs-item-over-bg.gif" />
+    <Content Include="ligerUI\skins\Aqua\images\layout\tabs-item-right-bg.gif" />
+    <Content Include="ligerUI\skins\Aqua\images\layout\tabs-tools.gif" />
+    <Content Include="ligerUI\skins\Aqua\images\layout\togglebar.gif" />
+    <Content Include="ligerUI\skins\Aqua\images\menu\menu-item-arrow.gif" />
+    <Content Include="ligerUI\skins\Aqua\images\menu\menu-item-down.gif" />
+    <Content Include="ligerUI\skins\Aqua\images\menu\menu-item-over-l.gif" />
+    <Content Include="ligerUI\skins\Aqua\images\menu\menu-item-over-m.gif" />
+    <Content Include="ligerUI\skins\Aqua\images\menu\menu-item-over-r.gif" />
+    <Content Include="ligerUI\skins\Aqua\images\menu\menu-line-x.gif" />
+    <Content Include="ligerUI\skins\Aqua\images\menu\menu-line-y.gif" />
+    <Content Include="ligerUI\skins\Aqua\images\panel\bar-bg.gif" />
+    <Content Include="ligerUI\skins\Aqua\images\panel\header-bg.gif" />
+    <Content Include="ligerUI\skins\Aqua\images\panel\header-bg.jpg" />
+    <Content Include="ligerUI\skins\Aqua\images\panel\header2-bg.jpg" />
+    <Content Include="ligerUI\skins\Aqua\images\panel\panel-btn-l.gif" />
+    <Content Include="ligerUI\skins\Aqua\images\panel\panel-btn-r.gif" />
+    <Content Include="ligerUI\skins\Aqua\images\panel\panel-btn.gif" />
+    <Content Include="ligerUI\skins\Aqua\images\panel\panel-header.gif" />
+    <Content Include="ligerUI\skins\Aqua\images\panel\panel-menu-item-down.gif" />
+    <Content Include="ligerUI\skins\Aqua\images\panel\panel-menu.gif" />
+    <Content Include="ligerUI\skins\Aqua\images\panel\panel-toolbar.gif" />
+    <Content Include="ligerUI\skins\Aqua\images\panel\panel-tools.gif" />
+    <Content Include="ligerUI\skins\Aqua\images\tree\folder-open.gif" />
+    <Content Include="ligerUI\skins\Aqua\images\tree\folder.gif" />
+    <Content Include="ligerUI\skins\Aqua\images\tree\loading.gif" />
+    <Content Include="ligerUI\skins\Aqua\images\tree\nodeloading.gif" />
+    <Content Include="ligerUI\skins\Aqua\images\tree\nodeloading2.gif" />
+    <Content Include="ligerUI\skins\Aqua\images\tree\nodeloading3.gif" />
+    <Content Include="ligerUI\skins\Aqua\images\tree\nodeloading4.gif" />
+    <Content Include="ligerUI\skins\Aqua\images\tree\tree-leaf.gif" />
+    <Content Include="ligerUI\skins\Aqua\images\tree\tree-level.gif" />
+    <Content Include="ligerUI\skins\Aqua\images\tree\tree-noline.gif" />
+    <Content Include="ligerUI\skins\Aqua\images\tree\tree-status-close.gif" />
+    <Content Include="ligerUI\skins\Aqua\images\tree\tree-status-open.gif" />
+    <Content Include="ligerUI\skins\Aqua\images\tree\tree-status.gif" />
+    <Content Include="ligerUI\skins\Aqua\images\tree\tree.gif" />
+    <Content Include="ligerUI\skins\Aqua\images\win\box-icons.gif" />
+    <Content Include="ligerUI\skins\Aqua\images\win\box.gif" />
+    <Content Include="ligerUI\skins\Aqua\images\win\dialog-bc.gif" />
+    <Content Include="ligerUI\skins\Aqua\images\win\dialog-icons.gif" />
+    <Content Include="ligerUI\skins\Aqua\images\win\dialog-tc.gif" />
+    <Content Include="ligerUI\skins\Aqua\images\win\dialog-winbtns.gif" />
+    <Content Include="ligerUI\skins\Aqua\images\win\dialog.gif" />
+    <Content Include="ligerUI\skins\Aqua\images\win\dialogbtn.gif" />
+    <Content Include="ligerUI\skins\Aqua\images\win\taskbar-task.gif" />
+    <Content Include="ligerUI\skins\Aqua\images\win\taskbar.gif" />
+    <Content Include="ligerUI\skins\Aqua\images\win\taskbar.png" />
+    <Content Include="ligerUI\skins\Aqua\images\win\taskicon.gif" />
+    <Content Include="ligerUI\skins\Gray2014\css\all.css" />
+    <Content Include="ligerUI\skins\Gray2014\css\common.css" />
+    <Content Include="ligerUI\skins\Gray2014\css\dialog.css" />
+    <Content Include="ligerUI\skins\Gray2014\css\form.css" />
+    <Content Include="ligerUI\skins\Gray2014\css\grid.css" />
+    <Content Include="ligerUI\skins\Gray2014\css\layout.css" />
+    <Content Include="ligerUI\skins\Gray2014\css\tab.css" />
+    <Content Include="ligerUI\skins\Gray2014\images\gridheader.png" />
+    <Content Include="ligerUI\skins\Gray2014\images\layout\accordion-header.gif" />
+    <Content Include="ligerUI\skins\Gray2014\images\layout\icon-close-over.gif" />
+    <Content Include="ligerUI\skins\Gray2014\images\layout\icon-close.gif" />
+    <Content Include="ligerUI\skins\Gray2014\images\layout\layout-header.gif" />
+    <Content Include="ligerUI\skins\Gray2014\images\layout\tabs-bg.gif" />
+    <Content Include="ligerUI\skins\Gray2014\images\layout\tabs-item-bg.gif" />
+    <Content Include="ligerUI\skins\Gray2014\images\layout\tabs-item-left-bg.gif" />
+    <Content Include="ligerUI\skins\Gray2014\images\layout\tabs-item-left-selected.gif" />
+    <Content Include="ligerUI\skins\Gray2014\images\layout\tabs-item-right-bg.gif" />
+    <Content Include="ligerUI\skins\Gray2014\images\layout\tabs-item-right-selected.gif" />
+    <Content Include="ligerUI\skins\Gray2014\images\layout\tabs-item-selected.gif" />
+    <Content Include="ligerUI\skins\Gray2014\images\layout\togglebar.gif" />
+    <Content Include="ligerUI\skins\Gray2014\images\tab_arrow_spr.png" />
+    <Content Include="ligerUI\skins\Gray2014\images\tab_close.png" />
+    <Content Include="ligerUI\skins\Gray2014\images\ui\btn.gif" />
+    <Content Include="ligerUI\skins\Gray2014\images\ui\button-disabled.gif" />
+    <Content Include="ligerUI\skins\Gray2014\images\ui\button-over.gif" />
+    <Content Include="ligerUI\skins\Gray2014\images\ui\button.gif" />
+    <Content Include="ligerUI\skins\Gray2014\images\ui\button1.gif" />
+    <Content Include="ligerUI\skins\Gray2014\images\ui\button2.gif" />
+    <Content Include="ligerUI\skins\Gray2014\images\ui\date.gif" />
+    <Content Include="ligerUI\skins\Gray2014\images\ui\dateeditor-bar.gif" />
+    <Content Include="ligerUI\skins\Gray2014\images\ui\dateeditor-btn-over.gif" />
+    <Content Include="ligerUI\skins\Gray2014\images\ui\dateeditor-btn.gif" />
+    <Content Include="ligerUI\skins\Gray2014\images\ui\dateeditor-thead.gif" />
+    <Content Include="ligerUI\skins\Gray2014\images\ui\grid-detail-close.gif" />
+    <Content Include="ligerUI\skins\Gray2014\images\ui\grid-detail-open.gif" />
+    <Content Include="ligerUI\skins\Gray2014\images\ui\gridalt.gif" />
+    <Content Include="ligerUI\skins\Gray2014\images\ui\gridbar.jpg" />
+    <Content Include="ligerUI\skins\Gray2014\images\ui\grideditor.gif" />
+    <Content Include="ligerUI\skins\Gray2014\images\ui\icon-down.gif" />
+    <Content Include="ligerUI\skins\Gray2014\images\ui\icon-select.gif" />
+    <Content Include="ligerUI\skins\Gray2014\images\ui\icon-select2.gif" />
+    <Content Include="ligerUI\skins\Gray2014\images\ui\icon-unselect.gif" />
+    <Content Include="ligerUI\skins\Gray2014\images\ui\icon-up.gif" />
+    <Content Include="ligerUI\skins\Gray2014\images\ui\input.gif" />
+    <Content Include="ligerUI\skins\Gray2014\images\ui\inputdisabled.gif" />
+    <Content Include="ligerUI\skins\Gray2014\images\ui\loading.gif" />
+    <Content Include="ligerUI\skins\Gray2014\images\ui\loading2.gif" />
+    <Content Include="ligerUI\skins\Gray2014\images\ui\loading3.gif" />
+    <Content Include="ligerUI\skins\Gray2014\images\ui\loading4.gif" />
+    <Content Include="ligerUI\skins\Gray2014\images\ui\loadingl.gif" />
+    <Content Include="ligerUI\skins\Gray2014\images\ui\spr_icons.gif" />
+    <Content Include="ligerUI\skins\Gray2014\images\ui\trigger.gif" />
+    <Content Include="ligerUI\skins\Gray2014\images\win\dialog-winbtns.gif" />
+    <Content Include="ligerUI\skins\Gray2014\images\win\dialogbtn.gif" />
+    <Content Include="ligerUI\skins\Gray2014\images\win\dialogicon.gif" />
+    <Content Include="ligerUI\skins\Gray\css\all.css" />
+    <Content Include="ligerUI\skins\Gray\css\common.css" />
+    <Content Include="ligerUI\skins\Gray\css\dialog.css" />
+    <Content Include="ligerUI\skins\Gray\css\form.css" />
+    <Content Include="ligerUI\skins\Gray\css\grid.css" />
+    <Content Include="ligerUI\skins\Gray\css\layout.css" />
+    <Content Include="ligerUI\skins\Gray\css\tab.css" />
+    <Content Include="ligerUI\skins\Gray\images\layout\accordion-header.gif" />
+    <Content Include="ligerUI\skins\Gray\images\layout\icon-close-over.gif" />
+    <Content Include="ligerUI\skins\Gray\images\layout\icon-close.gif" />
+    <Content Include="ligerUI\skins\Gray\images\layout\layout-header.gif" />
+    <Content Include="ligerUI\skins\Gray\images\layout\tabs-bg.gif" />
+    <Content Include="ligerUI\skins\Gray\images\layout\tabs-item-bg.gif" />
+    <Content Include="ligerUI\skins\Gray\images\layout\tabs-item-left-bg.gif" />
+    <Content Include="ligerUI\skins\Gray\images\layout\tabs-item-left-selected.gif" />
+    <Content Include="ligerUI\skins\Gray\images\layout\tabs-item-right-bg.gif" />
+    <Content Include="ligerUI\skins\Gray\images\layout\tabs-item-right-selected.gif" />
+    <Content Include="ligerUI\skins\Gray\images\layout\tabs-item-selected.gif" />
+    <Content Include="ligerUI\skins\Gray\images\layout\togglebar.gif" />
+    <Content Include="ligerUI\skins\Gray\images\ui\btn.gif" />
+    <Content Include="ligerUI\skins\Gray\images\ui\button-disabled.gif" />
+    <Content Include="ligerUI\skins\Gray\images\ui\button-over.gif" />
+    <Content Include="ligerUI\skins\Gray\images\ui\button.gif" />
+    <Content Include="ligerUI\skins\Gray\images\ui\button1.gif" />
+    <Content Include="ligerUI\skins\Gray\images\ui\button2.gif" />
+    <Content Include="ligerUI\skins\Gray\images\ui\dateeditor-bar.gif" />
+    <Content Include="ligerUI\skins\Gray\images\ui\dateeditor-btn-over.gif" />
+    <Content Include="ligerUI\skins\Gray\images\ui\dateeditor-btn.gif" />
+    <Content Include="ligerUI\skins\Gray\images\ui\dateeditor-thead.gif" />
+    <Content Include="ligerUI\skins\Gray\images\ui\grid-detail-close.gif" />
+    <Content Include="ligerUI\skins\Gray\images\ui\grid-detail-open.gif" />
+    <Content Include="ligerUI\skins\Gray\images\ui\gridalt.gif" />
+    <Content Include="ligerUI\skins\Gray\images\ui\gridbar.jpg" />
+    <Content Include="ligerUI\skins\Gray\images\ui\grideditor.gif" />
+    <Content Include="ligerUI\skins\Gray\images\ui\icon-down.gif" />
+    <Content Include="ligerUI\skins\Gray\images\ui\icon-select.gif" />
+    <Content Include="ligerUI\skins\Gray\images\ui\icon-unselect.gif" />
+    <Content Include="ligerUI\skins\Gray\images\ui\icon-up.gif" />
+    <Content Include="ligerUI\skins\Gray\images\ui\input.gif" />
+    <Content Include="ligerUI\skins\Gray\images\ui\inputdisabled.gif" />
+    <Content Include="ligerUI\skins\Gray\images\ui\loading.gif" />
+    <Content Include="ligerUI\skins\Gray\images\ui\loading2.gif" />
+    <Content Include="ligerUI\skins\Gray\images\ui\loading3.gif" />
+    <Content Include="ligerUI\skins\Gray\images\ui\loading4.gif" />
+    <Content Include="ligerUI\skins\Gray\images\ui\trigger.gif" />
+    <Content Include="ligerUI\skins\Gray\images\win\dialog-winbtns.gif" />
+    <Content Include="ligerUI\skins\Gray\images\win\dialogbtn.gif" />
+    <Content Include="ligerUI\skins\Gray\images\win\dialogicon.gif" />
+    <Content Include="ligerUI\skins\icons\add.gif" />
+    <Content Include="ligerUI\skins\icons\archives.gif" />
+    <Content Include="ligerUI\skins\icons\attibutes.gif" />
+    <Content Include="ligerUI\skins\icons\back.gif" />
+    <Content Include="ligerUI\skins\icons\bluebook.gif" />
+    <Content Include="ligerUI\skins\icons\bookpen.gif" />
+    <Content Include="ligerUI\skins\icons\busy.gif" />
+    <Content Include="ligerUI\skins\icons\calendar.gif" />
+    <Content Include="ligerUI\skins\icons\candle.gif" />
+    <Content Include="ligerUI\skins\icons\coffee.gif" />
+    <Content Include="ligerUI\skins\icons\comment.gif" />
+    <Content Include="ligerUI\skins\icons\communication.gif" />
+    <Content Include="ligerUI\skins\icons\config.gif" />
+    <Content Include="ligerUI\skins\icons\customers.gif" />
+    <Content Include="ligerUI\skins\icons\cut.gif" />
+    <Content Include="ligerUI\skins\icons\database.gif" />
+    <Content Include="ligerUI\skins\icons\delete.gif" />
+    <Content Include="ligerUI\skins\icons\discuss.gif" />
+    <Content Include="ligerUI\skins\icons\down.gif" />
+    <Content Include="ligerUI\skins\icons\edit.gif" />
+    <Content Include="ligerUI\skins\icons\graywarn.gif" />
+    <Content Include="ligerUI\skins\icons\greenwarn.gif" />
+    <Content Include="ligerUI\skins\icons\help.gif" />
+    <Content Include="ligerUI\skins\icons\home.gif" />
+    <Content Include="ligerUI\skins\icons\lock.gif" />
+    <Content Include="ligerUI\skins\icons\logout.gif" />
+    <Content Include="ligerUI\skins\icons\mailbox.gif" />
+    <Content Include="ligerUI\skins\icons\memeber.gif" />
+    <Content Include="ligerUI\skins\icons\modify.gif" />
+    <Content Include="ligerUI\skins\icons\msn.gif" />
+    <Content Include="ligerUI\skins\icons\myaccount.gif" />
+    <Content Include="ligerUI\skins\icons\ok.gif" />
+    <Content Include="ligerUI\skins\icons\outbox.gif" />
+    <Content Include="ligerUI\skins\icons\pager.gif" />
+    <Content Include="ligerUI\skins\icons\photograph.gif" />
+    <Content Include="ligerUI\skins\icons\plus.gif" />
+    <Content Include="ligerUI\skins\icons\prev.gif" />
+    <Content Include="ligerUI\skins\icons\print.gif" />
+    <Content Include="ligerUI\skins\icons\process.gif" />
+    <Content Include="ligerUI\skins\icons\qq.gif" />
+    <Content Include="ligerUI\skins\icons\refresh.gif" />
+    <Content Include="ligerUI\skins\icons\right.gif" />
+    <Content Include="ligerUI\skins\icons\role.gif" />
+    <Content Include="ligerUI\skins\icons\save-disabled.gif" />
+    <Content Include="ligerUI\skins\icons\save.gif" />
+    <Content Include="ligerUI\skins\icons\search.gif" />
+    <Content Include="ligerUI\skins\icons\search2.gif" />
+    <Content Include="ligerUI\skins\icons\settings.gif" />
+    <Content Include="ligerUI\skins\icons\true.gif" />
+    <Content Include="ligerUI\skins\icons\up.gif" />
+    <Content Include="ligerUI\skins\ligerui-icons.css" />
+    <Content Include="ligerUI\skins\Silvery\css\form.css" />
+    <Content Include="ligerUI\skins\Silvery\css\grid.css" />
+    <Content Include="ligerUI\skins\Silvery\css\layout.css" />
+    <Content Include="ligerUI\skins\Silvery\css\style.css" />
+    <Content Include="ligerUI\skins\Silvery\images\form\checkboxradio.gif" />
+    <Content Include="ligerUI\skins\Silvery\images\form\icon-down-over.gif" />
+    <Content Include="ligerUI\skins\Silvery\images\form\icon-down.gif" />
+    <Content Include="ligerUI\skins\Silvery\images\form\icon-up-over.gif" />
+    <Content Include="ligerUI\skins\Silvery\images\form\icon-up.gif" />
+    <Content Include="ligerUI\skins\Silvery\images\form\invalid_line.gif" />
+    <Content Include="ligerUI\skins\Silvery\images\form\text-date-icon.gif" />
+    <Content Include="ligerUI\skins\Silvery\images\form\text-down-icon.gif" />
+    <Content Include="ligerUI\skins\Silvery\images\form\text-focus.gif" />
+    <Content Include="ligerUI\skins\Silvery\images\form\text-l-focus.gif" />
+    <Content Include="ligerUI\skins\Silvery\images\form\text-l-over.gif" />
+    <Content Include="ligerUI\skins\Silvery\images\form\text-l.gif" />
+    <Content Include="ligerUI\skins\Silvery\images\form\text-over.gif" />
+    <Content Include="ligerUI\skins\Silvery\images\form\text-r-focus.gif" />
+    <Content Include="ligerUI\skins\Silvery\images\form\text-r-over.gif" />
+    <Content Include="ligerUI\skins\Silvery\images\form\text-r.gif" />
+    <Content Include="ligerUI\skins\Silvery\images\form\text.gif" />
+    <Content Include="ligerUI\skins\Silvery\images\grid\gridheaderbg.jpg" />
+    <Content Include="ligerUI\skins\Silvery\images\layout\accordion-header-over.jpg" />
+    <Content Include="ligerUI\skins\Silvery\images\layout\accordion-header.jpg" />
+    <Content Include="ligerUI\skins\Silvery\images\layout\layout-header-over.jpg" />
+    <Content Include="ligerUI\skins\Silvery\images\layout\layout-header.jpg" />
+    <Content Include="ligerUI\skins\Silvery\images\layout\tabs-bg.jpg" />
+    <Content Include="ligerUI\skins\Silvery\images\layout\tabs-item-bg.jpg" />
+    <Content Include="ligerUI\skins\Silvery\images\layout\tabs-item-left-bg.gif" />
+    <Content Include="ligerUI\skins\Silvery\images\layout\tabs-item-over-bg.gif" />
+    <Content Include="ligerUI\skins\Silvery\images\layout\tabs-item-right-bg.gif" />
+    <Content Include="ligerUI\skins\Silvery\images\layout\tabs-tools.gif" />
+    <Content Include="ligerUI\skins\Tab\css\all.css" />
+    <Content Include="ligerUI\skins\Tab\css\dialog.css" />
+    <Content Include="ligerUI\skins\Tab\css\form.css" />
+    <Content Include="ligerUI\skins\Tab\css\grid.css" />
+    <Content Include="ligerUI\skins\Tab\css\tab.css" />
+    <Content Include="ligerUI\skins\Tab\images\gridheader.png" />
+    <Content Include="ligerUI\skins\Tab\images\layout\accordion-header.gif" />
+    <Content Include="ligerUI\skins\Tab\images\layout\icon-close-over.gif" />
+    <Content Include="ligerUI\skins\Tab\images\layout\icon-close.gif" />
+    <Content Include="ligerUI\skins\Tab\images\layout\layout-header.gif" />
+    <Content Include="ligerUI\skins\Tab\images\layout\tabs-bg.gif" />
+    <Content Include="ligerUI\skins\Tab\images\layout\tabs-item-bg.gif" />
+    <Content Include="ligerUI\skins\Tab\images\layout\tabs-item-left-bg.gif" />
+    <Content Include="ligerUI\skins\Tab\images\layout\tabs-item-left-selected.gif" />
+    <Content Include="ligerUI\skins\Tab\images\layout\tabs-item-right-bg.gif" />
+    <Content Include="ligerUI\skins\Tab\images\layout\tabs-item-right-selected.gif" />
+    <Content Include="ligerUI\skins\Tab\images\layout\tabs-item-selected.gif" />
+    <Content Include="ligerUI\skins\Tab\images\layout\togglebar.gif" />
+    <Content Include="ligerUI\skins\Tab\images\tab_arrow_spr.png" />
+    <Content Include="ligerUI\skins\Tab\images\tab_close.png" />
+    <Content Include="ligerUI\skins\Tab\images\ui\btn.gif" />
+    <Content Include="ligerUI\skins\Tab\images\ui\button-disabled.gif" />
+    <Content Include="ligerUI\skins\Tab\images\ui\button-over.gif" />
+    <Content Include="ligerUI\skins\Tab\images\ui\button.gif" />
+    <Content Include="ligerUI\skins\Tab\images\ui\button1.gif" />
+    <Content Include="ligerUI\skins\Tab\images\ui\button2.gif" />
+    <Content Include="ligerUI\skins\Tab\images\ui\date.gif" />
+    <Content Include="ligerUI\skins\Tab\images\ui\dateeditor-bar.gif" />
+    <Content Include="ligerUI\skins\Tab\images\ui\dateeditor-btn-over.gif" />
+    <Content Include="ligerUI\skins\Tab\images\ui\dateeditor-btn.gif" />
+    <Content Include="ligerUI\skins\Tab\images\ui\dateeditor-thead.gif" />
+    <Content Include="ligerUI\skins\Tab\images\ui\grid-detail-close.gif" />
+    <Content Include="ligerUI\skins\Tab\images\ui\grid-detail-open.gif" />
+    <Content Include="ligerUI\skins\Tab\images\ui\gridalt.gif" />
+    <Content Include="ligerUI\skins\Tab\images\ui\gridbar.jpg" />
+    <Content Include="ligerUI\skins\Tab\images\ui\grideditor.gif" />
+    <Content Include="ligerUI\skins\Tab\images\ui\icon-down.gif" />
+    <Content Include="ligerUI\skins\Tab\images\ui\icon-select.gif" />
+    <Content Include="ligerUI\skins\Tab\images\ui\icon-select2.gif" />
+    <Content Include="ligerUI\skins\Tab\images\ui\icon-unselect.gif" />
+    <Content Include="ligerUI\skins\Tab\images\ui\icon-up.gif" />
+    <Content Include="ligerUI\skins\Tab\images\ui\input.gif" />
+    <Content Include="ligerUI\skins\Tab\images\ui\inputdisabled.gif" />
+    <Content Include="ligerUI\skins\Tab\images\ui\loading.gif" />
+    <Content Include="ligerUI\skins\Tab\images\ui\loading2.gif" />
+    <Content Include="ligerUI\skins\Tab\images\ui\loading3.gif" />
+    <Content Include="ligerUI\skins\Tab\images\ui\loading4.gif" />
+    <Content Include="ligerUI\skins\Tab\images\ui\loadingl.gif" />
+    <Content Include="ligerUI\skins\Tab\images\ui\spr_icons.gif" />
+    <Content Include="ligerUI\skins\Tab\images\ui\trigger.gif" />
+    <Content Include="ligerUI\skins\Tab\images\win\dialog-winbtns.gif" />
+    <Content Include="ligerUI\skins\Tab\images\win\dialogbtn.gif" />
+    <Content Include="ligerUI\skins\Tab\images\win\dialogicon.gif" />
+    <Content Include="packages.config" />
+    <Content Include="bootstrap\css\bootstrap-theme.css.map" />
+    <Content Include="bootstrap\css\bootstrap.css.map" />
+    <Content Include="bootstrap\fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="bootstrap\fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="bootstrap\fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="Controls\echarts\.gitignore" />
+    <Content Include="Controls\echarts\.jshintignore" />
+    <Content Include="Controls\echarts\.jshintrc" />
+    <Content Include="Controls\echarts\.npmignore" />
+    <Content Include="Controls\echarts\doc\asset\js\jquery-1.10.2.min.map" />
+    <Content Include="Controls\echarts\doc\example\geoJson\continent_geo.json" />
+    <Content Include="Controls\echarts\doc\example\geoJson\HK_geo.json" />
+    <Content Include="Controls\echarts\doc\example\geoJson\UK_geo.json" />
+    <Content Include="Controls\echarts\doc\example\geoJson\USA_geo.json" />
+    <Content Include="Controls\echarts\doc\slide\css\theme\README.md" />
+    <Content Include="Controls\echarts\doc\slide\css\theme\source\beige.scss" />
+    <Content Include="Controls\echarts\doc\slide\css\theme\source\default.scss" />
+    <Content Include="Controls\echarts\doc\slide\css\theme\source\moon.scss" />
+    <Content Include="Controls\echarts\doc\slide\css\theme\source\night.scss" />
+    <Content Include="Controls\echarts\doc\slide\css\theme\source\serif.scss" />
+    <Content Include="Controls\echarts\doc\slide\css\theme\source\simple.scss" />
+    <Content Include="Controls\echarts\doc\slide\css\theme\source\sky.scss" />
+    <Content Include="Controls\echarts\doc\slide\css\theme\source\solarized.scss" />
+    <Content Include="Controls\echarts\doc\slide\css\theme\template\mixins.scss" />
+    <Content Include="Controls\echarts\doc\slide\css\theme\template\settings.scss" />
+    <Content Include="Controls\echarts\doc\slide\css\theme\template\theme.scss" />
+    <Content Include="Controls\echarts\doc\slide\lib\font\league_gothic-webfont.eot" />
+    <Content Include="Controls\echarts\doc\slide\lib\font\league_gothic-webfont.ttf" />
+    <Content Include="Controls\echarts\doc\slide\lib\font\league_gothic-webfont.woff" />
+    <Content Include="Controls\echarts\doc\slide\lib\font\league_gothic_license" />
+    <Content Include="Controls\echarts\doc\slide\plugin\markdown\example.md" />
+    <Content Include="Controls\echarts\package.json" />
+    <Content Include="Controls\echarts\README.md" />
+    <Content Include="Controls\echarts\src\util\mapData\rawData\geoJson\an_hui_geo.json" />
+    <Content Include="Controls\echarts\src\util\mapData\rawData\geoJson\ao_men_geo.json" />
+    <Content Include="Controls\echarts\src\util\mapData\rawData\geoJson\bei_jing_geo.json" />
+    <Content Include="Controls\echarts\src\util\mapData\rawData\geoJson\china_city.json" />
+    <Content Include="Controls\echarts\src\util\mapData\rawData\geoJson\china_geo.json" />
+    <Content Include="Controls\echarts\src\util\mapData\rawData\geoJson\chong_qing_geo.json" />
+    <Content Include="Controls\echarts\src\util\mapData\rawData\geoJson\fu_jian_geo.json" />
+    <Content Include="Controls\echarts\src\util\mapData\rawData\geoJson\gan_su_geo.json" />
+    <Content Include="Controls\echarts\src\util\mapData\rawData\geoJson\guang_dong_geo.json" />
+    <Content Include="Controls\echarts\src\util\mapData\rawData\geoJson\guang_xi_geo.json" />
+    <Content Include="Controls\echarts\src\util\mapData\rawData\geoJson\gui_zhou_geo.json" />
+    <Content Include="Controls\echarts\src\util\mapData\rawData\geoJson\hai_nan_geo.json" />
+    <Content Include="Controls\echarts\src\util\mapData\rawData\geoJson\hei_long_jiang_geo.json" />
+    <Content Include="Controls\echarts\src\util\mapData\rawData\geoJson\he_bei_geo.json" />
+    <Content Include="Controls\echarts\src\util\mapData\rawData\geoJson\he_nan_geo.json" />
+    <Content Include="Controls\echarts\src\util\mapData\rawData\geoJson\hu_bei_geo.json" />
+    <Content Include="Controls\echarts\src\util\mapData\rawData\geoJson\hu_nan_geo.json" />
+    <Content Include="Controls\echarts\src\util\mapData\rawData\geoJson\jiang_su_geo.json" />
+    <Content Include="Controls\echarts\src\util\mapData\rawData\geoJson\jiang_xi_geo.json" />
+    <Content Include="Controls\echarts\src\util\mapData\rawData\geoJson\ji_lin_geo.json" />
+    <Content Include="Controls\echarts\src\util\mapData\rawData\geoJson\liao_ning_geo.json" />
+    <Content Include="Controls\echarts\src\util\mapData\rawData\geoJson\nei_meng_gu_geo.json" />
+    <Content Include="Controls\echarts\src\util\mapData\rawData\geoJson\ning_xia_geo.json" />
+    <Content Include="Controls\echarts\src\util\mapData\rawData\geoJson\qing_hai_geo.json" />
+    <Content Include="Controls\echarts\src\util\mapData\rawData\geoJson\shang_hai_geo.json" />
+    <Content Include="Controls\echarts\src\util\mapData\rawData\geoJson\shan_dong_geo.json" />
+    <Content Include="Controls\echarts\src\util\mapData\rawData\geoJson\shan_xi_1_geo.json" />
+    <Content Include="Controls\echarts\src\util\mapData\rawData\geoJson\shan_xi_2_geo.json" />
+    <Content Include="Controls\echarts\src\util\mapData\rawData\geoJson\si_chuan_geo.json" />
+    <Content Include="Controls\echarts\src\util\mapData\rawData\geoJson\tai_wan_geo.json" />
+    <Content Include="Controls\echarts\src\util\mapData\rawData\geoJson\tian_jin_geo.json" />
+    <Content Include="Controls\echarts\src\util\mapData\rawData\geoJson\world_geo.json" />
+    <Content Include="Controls\echarts\src\util\mapData\rawData\geoJson\xiang_gang_geo.json" />
+    <Content Include="Controls\echarts\src\util\mapData\rawData\geoJson\xin_jiang_geo.json" />
+    <Content Include="Controls\echarts\src\util\mapData\rawData\geoJson\xi_zang_geo.json" />
+    <Content Include="Controls\echarts\src\util\mapData\rawData\geoJson\yun_nan_geo.json" />
+    <Content Include="Controls\echarts\src\util\mapData\rawData\geoJson\zhe_jiang_geo.json" />
+    <Content Include="Controls\echarts\build\build.bat" />
+    <Content Include="Controls\echarts\build\build.sh" />
+    <None Include="Properties\PublishProfiles\1mutong.pubxml" />
+    <None Include="Properties\PublishProfiles\a.pubxml" />
+    <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Scripts\bdhm.js" />
+    <Content Include="Scripts\common.js" />
+    <Content Include="Scripts\jquery-1.10.2.js" />
+    <Content Include="Scripts\jquery-1.10.2.min.js" />
+    <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery-tools-min.js" />
+    <Content Include="Scripts\jquery.validate.js" />
+    <Content Include="Scripts\jquery.validate.min.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\json2.js" />
+    <Content Include="Scripts\menu.js" />
+    <Content Include="Scripts\settingData.js" />
+    <Content Include="Style\base.css" />
+    <Content Include="Style\Breeding\Index\List.css" />
+    <Content Include="Style\button_bg.png" />
+    <Content Include="Style\common.css" />
+    <Content Include="Style\emutong_style.css" />
+    <Content Include="Style\Feed\Formula\Select.css" />
+    <Content Include="Style\Feed\Index\ModifyCowGroup.css" />
+    <Content Include="Style\Home\Index.css" />
+    <Content Include="Web.config" />
+    <Content Include="Scripts\jquery-1.10.2.min.map" />
+    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Home\Create.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App_Start\EMuTongAuthorizeAttribute.cs" />
+    <Compile Include="App_Start\EMuTongFormsAuthentication.cs" />
+    <Compile Include="App_Start\EMuTongFormsPrincipal.cs" />
+    <Compile Include="App_Start\EMuTongUserDataPrincipal .cs" />
+    <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\Breed\CalfController.cs" />
+    <Compile Include="Controllers\Feed\DryMilkController.cs" />
+    <Compile Include="Controllers\Medical\ForbidInseminationController.cs" />
+    <Compile Include="Controllers\Breed\IndexController.cs" />
+    <Compile Include="Controllers\Breed\InitialInspectionController.cs" />
+    <Compile Include="Controllers\Breed\ReInspectionController.cs" />
+    <Compile Include="Controllers\Medical\UnforbidInseminationController.cs" />
+    <Compile Include="Controllers\CowController.cs" />
+    <Compile Include="Controllers\FarmAdmin\InGroupController.cs" />
+    <Compile Include="Controllers\FarmAdmin\OutGroupController.cs" />
+    <Compile Include="Controllers\Feed\CowGroupController.cs" />
+    <Compile Include="Controllers\Feed\CowHouseController.cs" />
+    <Compile Include="Controllers\Feed\EmptyController.cs" />
+    <Compile Include="Controllers\Feed\FodderController.cs" />
+    <Compile Include="Controllers\Feed\FormulaController.cs" />
+    <Compile Include="Controllers\Feed\GradeController.cs" />
+    <Compile Include="Controllers\Feed\IndexController.cs" />
+    <Compile Include="Controllers\Feed\PastureController.cs" />
+    <Compile Include="Controllers\Feed\RemainController.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\Breed\InseminationController.cs" />
+    <Compile Include="Controllers\LoginController.cs" />
+    <Compile Include="Controllers\Medical\AdjustController.cs" />
+    <Compile Include="Controllers\Medical\DiagnosesController.cs" />
+    <Compile Include="Controllers\Medical\IndexController.cs" />
+    <Compile Include="Controllers\Medical\MastitisController.cs" />
+    <Compile Include="Controllers\Medical\RemoveAddMilkController.cs" />
+    <Compile Include="Controllers\Medical\RepairHoofController.cs" />
+    <Compile Include="Controllers\Milk\DailyMilkYieldController.cs" />
+    <Compile Include="Controllers\Milk\IndexController.cs" />
+    <Compile Include="Controllers\Milk\MilkabilityCheckController.cs" />
+    <Compile Include="Controllers\Milk\ParameterController.cs" />
+    <Compile Include="Controllers\Platform\FarmController.cs" />
+    <Compile Include="Controllers\Platform\FodderController.cs" />
+    <Compile Include="Controllers\Platform\FormulaController.cs" />
+    <Compile Include="Controllers\QueryController.cs" />
+    <Compile Include="Controllers\Task\IndexController.cs" />
+    <Compile Include="Controllers\Task\TaskCompleteCalfController.cs" />
+    <Compile Include="Controllers\Task\TaskCompleteImmuneController.cs" />
+    <Compile Include="Controllers\Task\TaskCompleteQuarantineController.cs" />
+    <Compile Include="Controllers\Task\TaskDay10AfterBornController.cs" />
+    <Compile Include="Controllers\Task\TaskDay15AfterBornController.cs" />
+    <Compile Include="Controllers\Task\TaskDay21ToBornController.cs" />
+    <Compile Include="Controllers\Task\TaskDay3AfterBornController.cs" />
+    <Compile Include="Controllers\Task\TaskDay7ToBornController.cs" />
+    <Compile Include="Controllers\Task\TaskInitialInspectionController.cs" />
+    <Compile Include="Controllers\Task\TaskInseminationController.cs" />
+    <Compile Include="Controllers\Task\TaskRegroupingController.cs" />
+    <Compile Include="Controllers\Task\TaskReInspectionController.cs" />
+    <Compile Include="Controllers\Users\IndexController.cs" />
+    <Compile Include="Controllers\Users\UserController.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Model\AccountViewModels.cs" />
+    <Compile Include="Model\IdentityModels.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Cow\Detail.cshtml" />
+    <Content Include="Views\Breed\Insemination\Edit.cshtml" />
+    <Content Include="Views\Breed\Insemination\View.cshtml" />
+    <Content Include="Views\Breed\Insemination\Assign.cshtml" />
+    <Content Include="Views\Cow\AssignGroup.cshtml" />
+    <Content Include="Views\Medical\ForbidInsemination\Edit.cshtml" />
+    <Content Include="Views\Feed\Grade\Add.cshtml" />
+    <Content Include="Views\Platform\Formula\List.cshtml" />
+    <Content Include="Views\Feed\Fodder\Calculate.cshtml" />
+    <Content Include="Views\Feed\Empty\Add.cshtml" />
+    <Content Include="Views\Feed\Remain\Add.cshtml" />
+    <Content Include="Views\Milk\Hall\Parameters.cshtml" />
+    <Content Include="Views\Milk\MilkabilityCheck\Add.cshtml" />
+    <Content Include="Views\Medical\Diagnoses\Add.cshtml" />
+    <Content Include="Views\Account\_ChangePasswordPartial.cshtml" />
+    <Content Include="Views\Account\_ExternalLoginsListPartial.cshtml" />
+    <Content Include="Views\Account\_RemoveAccountPartial.cshtml" />
+    <Content Include="Views\Account\_SetPasswordPartial.cshtml" />
+    <Content Include="Views\Account\ExternalLoginConfirmation.cshtml" />
+    <Content Include="Views\Account\ExternalLoginFailure.cshtml" />
+    <Content Include="Views\Account\Login.cshtml" />
+    <Content Include="Views\Account\Manage.cshtml" />
+    <Content Include="Views\Account\Register.cshtml" />
+    <Content Include="Views\web.config" />
+    <Content Include="Views\Feed\Formula\Select.cshtml" />
+    <Content Include="Views\Medical\Mastitis\Add.cshtml" />
+    <Content Include="Views\Medical\FootParing\Add.cshtml" />
+    <Content Include="Views\Medical\MilkBreast\Add.cshtml" />
+    <Content Include="Views\CowGroup\ModifyCowGroup.cshtml" />
+    <Content Include="Views\Medical\UnForbidInsemination\List.cshtml" />
+    <Content Include="Views\Platform\Formula\Modify.cshtml" />
+    <Content Include="Views\Users\List.cshtml" />
+    <Content Include="Views\Users\AddUser.cshtml" />
+    <Content Include="Views\Users\UpdatePassword.cshtml" />
+    <Content Include="Views\_ViewStart.cshtml" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\Milk\DailyMilkYield\Add.cshtml" />
+    <Content Include="Views\Task\Index.cshtml" />
+    <Content Include="Views\Breed\Index.cshtml" />
+    <Content Include="Views\Feed\Index.cshtml" />
+    <Content Include="Views\CowGroup\List.cshtml" />
+    <Content Include="Views\Milk\Index.cshtml" />
+    <Content Include="Views\Medical\Index.cshtml" />
+    <Content Include="Views\Task\TaskInsemination.cshtml" />
+    <Content Include="Views\Task\TaskInitialInspection.cshtml" />
+    <Content Include="Views\Task\TaskReInspection.cshtml" />
+    <Content Include="Views\Task\TaskDay21ToBorn.cshtml" />
+    <Content Include="Views\Task\TaskDay7ToBorn.cshtml" />
+    <Content Include="Views\Task\TaskDay3AfterBorn.cshtml" />
+    <Content Include="Views\Task\TaskDay10AfterBorn.cshtml" />
+    <Content Include="Views\Task\TaskDay15AfterBorn.cshtml" />
+    <Content Include="Views\Task\TaskCompleteImmune.cshtml" />
+    <Content Include="Views\Task\TaskCompleteQuarantine.cshtml" />
+    <Content Include="Views\Task\TaskCompleteGrouping.cshtml" />
+    <Content Include="Views\Task\TaskCompleteCalf.cshtml" />
+    <Content Include="Views\Breed\Calf.cshtml" />
+    <Content Include="Views\Feed\Fodder\Maintain.cshtml" />
+    <Content Include="Views\Platform\Farm\List.cshtml" />
+    <Content Include="Views\Platform\Fodder\List.cshtml" />
+    <Content Include="Views\Platform\Formula\Assign.cshtml" />
+    <Content Include="Views\FarmAdmin\InGroup\List.cshtml" />
+    <Content Include="Views\FarmAdmin\OutGroup\List.cshtml" />
+    <Content Include="Views\Feed\CowHouse\List.cshtml" />
+    <Content Include="Views\CowGroup\Remind.cshtml" />
+    <Content Include="Views\CowGroup\Adjust.cshtml" />
+    <Content Include="Views\CowGroup\Assign.cshtml" />
+    <Content Include="Views\Task\Adjust.cshtml" />
+    <Content Include="Views\Medical\UnForbidInsemination\UnForbid.cshtml" />
+    <Content Include="Views\CowGroup\Add.cshtml" />
+    <Content Include="Views\Medical\Recover\Recover.cshtml" />
+    <Content Include="Views\Cow\List.cshtml" />
+    <Content Include="Views\Task\TaskError.cshtml" />
+    <Content Include="Views\Feed\DryMilk\Add.cshtml" />
+    <Content Include="Views\CowGroup\Query.cshtml" />
+    <Content Include="Views\Task\TaskRegrouping.cshtml" />
+    <Content Include="Views\Platform\Formula\ModifyFodderQuantity.cshtml" />
+    <Content Include="Views\Platform\Formula\AddFodder.cshtml" />
+    <Content Include="Views\Platform\Formula\AddFormula.cshtml" />
+    <Content Include="Views\CowGroup\ChangeGroup.cshtml" />
+    <None Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <None Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Controllers\Task\Platform\" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup />
+  <ItemGroup />
+  <ItemGroup />
+  <ItemGroup />
+  <ItemGroup />
+  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\BLL\BLL.csproj">
+      <Project>{9b74b509-7d05-454a-8211-d16dbc2abb0e}</Project>
+      <Name>BLL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Common\Common.csproj">
+      <Project>{12efe4a3-a447-4305-b327-1bc4aa49b3a9}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Model\Model.csproj">
+      <Project>{cfdcf28e-a231-47a3-84de-d097b56a23c0}</Project>
+      <Name>Model</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>6559</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:6559/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

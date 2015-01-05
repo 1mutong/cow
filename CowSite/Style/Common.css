@@ -1,0 +1,59 @@
+﻿.l-dialog-tc {
+    background-color: #000 !important;
+}
+
+.l-dialog-title {
+    color: #fff !important;
+}
+
+.l-button-submit {
+    width: 80px;
+    float: left;
+    margin-left: 10px;
+    padding-bottom: 2px;
+}
+
+/*页面背景图，class加到body里*/
+.content-bg {
+    
+}
+
+/*牧场信息的样式*/
+.farmInfo .title {
+    font-size: 18px;
+    font-family: "微软雅黑";
+    color: #333333;
+    font-weight: bold;
+    margin: 5px;
+}
+
+.farmInfo .info {
+    font-size: 12px;
+    clear: both;
+    height: 30px;
+}
+
+.farmInfo .detail {
+    font-size: 12px;
+    width: 90%;
+}
+
+.farmInfo .info span {
+    font-size: 12px;
+    font-weight: bold;
+    color: #333333;
+}
+
+.farmInfo .info li {
+    list-style-type: none;
+    float: left;
+    margin-left: 10px;
+}
+/*页面标题样式*/
+.page-title {
+    font-size: 18px;
+    font-family: "微软雅黑";
+    color: #333333;
+    font-weight: bold;
+    margin: 20px 0px 0px 0px;
+}

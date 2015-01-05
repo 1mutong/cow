@@ -1,0 +1,324 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>饲料加工</title>
+    <link rel="stylesheet" href="~/ligerUI/skins/Aqua/css/ligerui-all.css">
+    <link rel="stylesheet" href="~/Style/base.css">    
+    <link rel="stylesheet" href="~/bootstrap/css/bootstrap-theme1.min.css">    
+    <link href="~/Controls/bootstrap.datepicker/datepicker.css" rel="stylesheet" />    
+    <link href="~/Controls/bootstrap.timepicker/css/bootstrap-timepicker.min.css" rel="stylesheet" />    
+    <link href="~/Controls/jQuery.Select2/select2.css" rel="stylesheet" />    
+    <link rel="stylesheet" href="~/Controls/jQuery.LoadingUI/jquery.loadingui.css" /> 
+    
+</head>
+<body>
+    <div class="container">
+        <div id="menu"></div>
+        <div class="content">
+            <form id="formulaAndFeedInfo">
+                <div class="input-group mt10">
+                    <span class="input-group-addon w200">牛群</span>
+                    <select class="w200" name="group"></select>
+                    <button type="button" class="btn btn-primary inline" id="btnGo">生成加工单饲喂单</button>
+                </div>
+                <div class="input-group mt10 inline">
+                    <span class="input-group-addon w200">配方</span>
+                    <span class="form-control js-formula" style="min-width:200px;"></span>
+                </div>
+                <div class="input-group mt10">
+                    <span class="input-group-addon w200">每日班次选择</span>
+                    <select class="w200" name="roundOfDay">
+                        <option value="1">加工一次</option>
+                        <option value="2">早晚两班</option>
+                        <option value="3">早中晚三班</option>
+                    </select>
+                </div>
+                <div class="input-group mt10">
+                    <span class="input-group-addon w200">是否夏季处理</span>
+                    <select class="w200" name="isSummer">
+                        <option value="0">否</option>
+                        <option value="1">是</option>
+                    </select>
+                </div>
+                <div class="input-group mt10">
+                    <span class="input-group-addon w200">加工机器数</span>
+                    <input type="text" class="form-control w200 " placeholder="加工机器数" name="machineNum">
+                </div>
+                <div>
+                    <div id="processGrid"></div>
+                    <div id="message"></div>
+                    <div class="l-loading" id="pageloading"></div>
+                </div>
+                <div>
+                    <div id="feedGrid" class="displayBlock ml5 mr5"></div>
+                    <div id="message"></div>
+                    <div class="l-loading" id="pageloading1"></div>
+                </div>
+                @*<div class="mt10">
+                    <button type="button" class="btn btn-primary" id="btnPrint">打印</button>
+                </div>*@
+            </form>
+        </div>
+    </div>
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/ligerUI/js/ligerui.min.js"></script>
+    <script src="~/bootstrap/js/bootstrap.min.js"></script>
+    <script src="~/Controls/bootstrap.datepicker/bootstrap-datepicker.js"></script>
+    <script src="~/Controls/bootstrap.timepicker/js/bootstrap-timepicker.min.js"></script>
+    <script src="~/Controls/jQuery.Select2/select2.min.js"></script>
+    <script src="~/Scripts/menu.js"></script>
+    <script src="~/Scripts/common.js"></script>
+    <script src="~/Controls/jQuery.LoadingUI/jquery.loadingui.js"></script>
+    <script>
+        var groupList;
+        var currentGroupID;
+        var currentGroup;
+        var formulaID;
+        var fodderList;
+        var houseList;
+        var isFormulaReady = false;
+        var processes = {}, feeds = {};
+
+        $(function () {
+            $('#menu').menu({ mainMenuSelectedID: "Feed", subMenuSelectedID: "Feed-Formua" });
+            initComponents();
+        });
+
+        function loadGroups() {
+            $.ajax({
+                type: 'get',
+                url: "../../Feed/Fodder/GetGroups",
+                dataType: 'json',
+                cache: false,
+                beforeSend: function () { $('.content').loadingUI(); },
+                success: function (group) {
+                    groupList = group;
+                    $("select[name=group]").empty();
+                    $("select[name=group]").append('<option></option>');
+                    if (typeof (group) != 'undefined' && group && group.length > 0) {
+                        $.each(group, function () {
+                            $("select[name=group]").append('<option value="' + this.ID + '">' + this.Name + '</option>');
+                        });
+                    }
+                    $('.content').loadingUI('hide');
+                }
+            });
+
+            $("select[name=group]").change(function () {
+                currentGroupID = $("select[name=group]").val();
+                if (typeof (groupList) != 'undefined' && groupList && groupList.length > 0) {
+                    $.each(groupList, function () {
+                        if (this.ID == currentGroupID) {
+                            formulaID = this.FormulaID;
+                            currentGroup = this;
+                        }
+                    });
+
+                    $.ajax({
+                        type: 'get',
+                        url: "../../Feed/Fodder/CheckFormulaFodders",
+                        dataType: 'json',
+                        cache: false,
+                        data: { FormulaID: formulaID },
+                        success: function (result) {
+                            //pasture fodder table?
+                            if (result.Result == 0) {
+                                $("span.js-formula").text(result.FormulaName);
+                                //alert(result.Msg);
+                                $.ajax({
+                                    type: 'get',
+                                    url: "../../Feed/Fodder/GetFormulaFodders",
+                                    dataType: 'json',
+                                    cache: false,
+                                    data: { FormulaID: formulaID },
+                                    success: function (fodders) {
+                                        //pasture fodder table?
+                                        fodderList = fodders;
+                                        //alert("fodders got");
+                                    }
+                                });
+                                $.ajax({
+                                    type: 'get',
+                                    url: "../../Feed/Fodder/GetHouses",
+                                    dataType: 'json',
+                                    cache: false,
+                                    data: { GroupID: currentGroupID },
+                                    success: function (houses) {
+                                        //house table?
+                                        houseList = houses;
+                                        //alert(houseList.length.toString());
+                                    }
+                                });
+                                //
+                                //alert("FormulaReady");
+                                isFormulaReady = true;
+                            }
+                            else {
+                                if (result.Result == 2) {
+                                    $("input[name=formula]").val("");
+                                }
+                                alert(result.Msg);
+                            }
+                        }
+                    });
+                }
+            });
+        }
+
+        function initComponents() {
+            loadGroups();
+            initBtnGo();
+        }
+
+        function loadProcessList() {
+            $.each(processes.Rows, function () {
+                this.Quantity = this.Quantity.toFixed(2);
+            });
+            var processGridManager = $("#processGrid").ligerGrid({
+                columns: [
+                    { display: '班次', name: 'Round', width: 100 },
+                    { display: '饲料', name: 'Name', align: 'left', width: 250 },
+                    { display: "加工量", name: "Quantity", width: 250, type: 'float', editor: { type: 'float' } }
+                ],
+                pageSize: 15,
+                width: '90%',
+                height: 'auto',
+                isScroll: false,
+                data: processes,
+                title: '加工单',
+                showTitle: true,
+                enabledEdit: false,
+                clickToEdit: false,
+                pager: false,
+                usePager: false
+            });
+            $("#pageloading").hide();
+        }
+
+        function loadFeedList() {
+            var feedGridManager = $("#feedGrid").ligerGrid({
+                columns: [
+                    { display: '班次', name: 'Round', width: 100 },
+                    { display: '牛舍', name: 'HouseName', align: 'left', width: 250 },
+                    { display: "饲料量", name: "Quantity", width: 250, type: 'float', editor: { type: 'float' } }
+                ],
+                pageSize: 15,
+                width: '90%',
+                height: 'auto',
+                isScroll: false,
+                data: feeds,
+                title: '饲喂单',
+                showTitle: true,
+                enabledEdit: false,
+                clickToEdit: false,
+                pager: false,
+                usePager: false
+            });
+            $("#pageloading1").hide();
+        }
+
+        function initBtnGo() {
+            $("#btnGo").click(function () {
+                if (isFormulaReady) {
+                    //processGridManager.
+                    var mNum = $("input[name=machineNum]").val();
+                    var totalQuantity = 0.0;
+                    for (var i = 0; i < fodderList.length; i++) {
+                        totalQuantity = totalQuantity + fodderList[i].Usage;
+                    }
+                    if (mNum != "") {
+                        var machine = parseInt(mNum, 10);
+                        var isSummer = $("select[name=isSummer]").val();
+                        var round = $("select[name=roundOfDay]").val();
+                        var processList = [];
+                        var feedList = [];
+                        //alert("round + isSummer: " + Number(round).toString() + "    " + Number(isSummer).toString());
+                        switch (round) {
+                            case '1':
+                                var quantity;
+                                for (var i = 0; i < fodderList.length; i++) {
+                                    quantity = fodderList[i].Usage * currentGroup.CowNumber / machine;
+                                    processList[i] = { Round: '1', Name: fodderList[i].FodderName, Quantity: quantity };
+                                    //alert(processList[i].Round + processList[i].Name + Number(processList[i].Quantity).toString());
+                                }
+                                //alert(fodderList.length);
+                                for (var i = 0; i < houseList.length; i++) {
+                                    quantity = houseList[i].CowNumber * totalQuantity;
+                                    feedList[i] = { Round: '1', HouseName: houseList[i].Name, Quantity: quantity };
+                                    //alert(feedList[i].Round + feedList[i].HouseName + Number(feedList[i].Quantity).toString());
+                                }
+                                break;
+                            case '2':
+                                var quantity;
+                                for (var i = 0; i < fodderList.length; i++) {
+                                    quantity = fodderList[i].Usage * currentGroup.CowNumber / 2.0 / machine;
+                                    processList[i] = { Round: '早、晚班', Name: fodderList[i].FodderName, Quantity: quantity };
+                                    //alert(processList[i].Round + processList[i].Name + Number(processList[i].Quantity).toString());
+                                }
+                                for (var i = 0; i < houseList.length; i++) {
+                                    quantity = houseList[i].CowNumber * totalQuantity / 2;
+                                    feedList[i] = { Round: '早、晚班', HouseName: houseList[i].Name, Quantity: quantity };
+                                    //alert(feedList[i].Round + feedList[i].HouseName + Number(feedList[i].Quantity).toString());
+                                }
+                                break;
+                            case '3':
+                                var quantity;
+                                if (isSummer == 1) {
+                                    for (var i = 0; i < fodderList.length; i++) {
+                                        quantity = fodderList[i].Usage * currentGroup.CowNumber * 0.35 / machine;
+                                        processList[i] = { Round: '早、晚班', Name: fodderList[i].FodderName, Quantity: quantity };
+                                        //alert(processList[i].Round + processList[i].Name + Number(processList[i].Quantity).toString());
+                                        quantity = fodderList[i].Usage * currentGroup.CowNumber * 0.3 / machine;
+                                        processList[i + fodderList.length] = { Round: '中班', Name: fodderList[i].FodderName, Quantity: quantity };
+
+                                    }
+                                    for (var i = 0; i < houseList.length; i++) {
+                                        quantity = houseList[i].CowNumber * totalQuantity * 0.35;
+                                        feedList[i] = { Round: '早、晚班', HouseName: houseList[i].Name, Quantity: quantity };
+                                        //alert(feedList[i].Round + feedList[i].HouseName + Number(feedList[i].Quantity).toString());
+                                        quantity = houseList[i].CowNumber * totalQuantity * 0.3;
+                                        feedList[i + houseList.length] = { Round: '中班', HouseName: houseList[i].Name, Quantity: quantity };
+                                    }
+                                }
+                                else {
+                                    for (var i = 0; i < fodderList.length; i++) {
+                                        quantity = fodderList[i].Usage * currentGroup.CowNumber / 3.0 / machine;
+                                        processList[i] = { Round: '早、中、晚班', Name: fodderList[i].FodderName, Quantity: quantity };
+                                        //alert(processList[i].Round + processList[i].Name + Number(processList[i].Quantity).toString());
+                                    }
+                                    for (var i = 0; i < houseList.length; i++) {
+                                        quantity = houseList[i].CowNumber * totalQuantity / 3.0;
+                                        feedList[i] = { Round: '早、中、晚班', HouseName: houseList[i].Name, Quantity: quantity };
+                                        //alert(feedList[i].Round + feedList[i].HouseName + Number(feedList[i].Quantity).toString());
+                                    }
+                                }
+
+                                break;
+                            default:
+                                alert("case error");
+                                break;
+                        }
+                        processes.Rows = processList;
+                        feeds.Rows = feedList;
+
+                        loadProcessList();
+                        loadFeedList();
+
+                    }
+                    else {
+                        alert("必须输入机器数目！");
+                    }
+                }
+                else {
+                    alert("配方饲料未准备好！");
+                }
+            });
+        }
+    </script>
+    <script src="~/Scripts/bdhm.js"></script>
+</body>
+</html>

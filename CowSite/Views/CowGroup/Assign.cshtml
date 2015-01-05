@@ -1,0 +1,198 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>牛群分配</title>
+    <link rel="stylesheet" href="~/ligerUI/skins/Aqua/css/ligerui-all.css">
+    <link rel="stylesheet" href="~/Style/base.css">
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/ligerUI/js/ligerui.min.js"></script>
+    <link rel="stylesheet" href="~/bootstrap/css/bootstrap-theme1.min.css">
+    <script src="~/bootstrap/js/bootstrap.min.js"></script>
+    <link href="~/Controls/bootstrap.datepicker/datepicker.css" rel="stylesheet" />
+    <script src="~/Controls/bootstrap.datepicker/bootstrap-datepicker.js"></script>
+    <link href="~/Controls/bootstrap.timepicker/css/bootstrap-timepicker.min.css" rel="stylesheet" />
+    <script src="~/Controls/bootstrap.timepicker/js/bootstrap-timepicker.min.js"></script>
+    <link href="~/Controls/jQuery.Select2/select2.css" rel="stylesheet" />
+    <script src="~/Controls/jQuery.Select2/select2.min.js"></script>
+    <script src="~/Scripts/menu.js"></script>
+    <script src="~/Scripts/common.js"></script>
+    <script>
+        $(function () {
+            $('#menu').menu({ mainMenuSelectedID: "FarmAdmin", subMenuSelectedID: "FarmAdmin-GroupAssign" });
+            loadCowGroupList();
+            initSelectors();
+            initBtn();
+        });
+
+        var cowGroupGridManager;
+        var cowGroups;
+        var insemOperators, feeders, doctors;
+        function loadCowGroupList() {
+            $.ajax({
+                type: 'get',
+                url: "../../Feed/CowGroup/GetCowGroupInfo",
+                dataType: 'json',
+                cache: false,
+                //data: { GroupID: currentGroupID },
+                success: function (cowGroupData) {
+                    cowGroups = cowGroupData;
+                    initGrid();
+                    //alert(houseList.length.toString());
+                }
+            });
+        }
+
+        function initSelectors(){
+            $.ajax({
+                type: 'get',
+                url: "../../Feed/CowGroup/GetPastureDoctors",
+                dataType: 'json',
+                cache: false,
+                //data: { GroupID: currentGroupID },
+                success: function (list) {
+                     doctors= list;
+                    $('select[name=doctor]').empty();
+                    if (typeof (doctors) != 'undefined' && doctors && doctors.length > 0) {
+                        $.each(doctors, function () {
+                            $("select[name=doctor]").append('<option value="' + this.ID + '">' + this.Name + '</option>');
+                        });
+                    }
+                }
+            });
+            $.ajax({
+                type: 'get',
+                url: "../../Feed/CowGroup/GetPastureInsemOperators",
+                dataType: 'json',
+                cache: false,
+                //data: { GroupID: currentGroupID },
+                success: function (list) {
+                    insemOperators = list;
+                    $('select[name=insemOperator]').empty();
+                    if (typeof (insemOperators) != 'undefined' && insemOperators && insemOperators.length > 0) {
+                        $.each(insemOperators, function () {
+                            $("select[name=insemOperator]").append('<option value="' + this.ID + '">' + this.Name + '</option>');
+                        });
+                    }
+                }
+            });
+            $.ajax({
+                type: 'get',
+                url: "../../Feed/CowGroup/GetPastureFeeders",
+                dataType: 'json',
+                cache: false,
+                //data: { GroupID: currentGroupID },
+                success: function (list) {
+                    feeders = list;
+                    $('select[name=feeder]').empty();
+                    if (typeof (feeders) != 'undefined' && feeders && feeders.length > 0) {
+                        $.each(feeders, function () {
+                            $("select[name=feeder]").append('<option value="' + this.ID + '">' + this.Name + '</option>');
+                        });
+                    }
+                }
+            });
+
+        }
+
+        function initBtn() {
+            $("#btnAssign").click(function () {
+                var row = cowGroupGridManager.getSelectedRow();
+                if (row) {
+                    $('input[name=cowGroup]').val(row["Name"]);
+                    var cowGroupID = row["ID"];
+                    var insemID = $('select[name=insemOperator]').val();
+                    var feederID = $('select[name=feeder]').val();
+                    var doctorID = $('select[name=doctor]').val();
+                    $.ajax({
+                        type: 'get',
+                        url: "../../Feed/CowGroup/UpdateOperators",
+                        dataType: 'json',
+                        cache: false,
+                        data: { cowGroupID: cowGroupID, insemID: insemID, feederID: feederID, doctorID: doctorID },
+                        success: function (result) {
+                            if (result.Count == 3) {
+                                alert("分配配种员，兽医，饲养员成功！");
+                            }
+                            else {
+                                alert("分配配种员，兽医，饲养员失败！");
+                            }
+                            loadCowGroupList();
+                            initGrid();
+                        }
+                    });
+                }
+                else {
+                    alert("请先选中牛群。");
+                }
+            });
+        }
+    
+
+        function initGrid() {
+            
+            cowGroupGridManager = $("#cowGroupGrid").ligerGrid({
+                checkbox: false,
+                columns: [
+                    { display: '牛群ID', name: 'ID', type: 'int', hide: true, width: 50 },
+                    { display: '牧场', name: 'PastureName', align: 'left', hide: true, width: 150 },
+                    {display: '牛群', name: 'Name', align: 'left', width: 250,editor: { type: 'text' }},
+                    {display: '牛群类型', name: 'CowGroupTypeString', type: 'text', align: 'left', width: 150},
+                    { display: '牛群说明', name: 'Description', align: 'left', width: 200 },
+                    { display: '配种员ID', name: 'InsemOperatorID', type: 'int', hide: true, width: 50 },
+                    { display: '配种员', name: 'InsemOperatorName',  width: 100 },
+                    { display: '饲养员ID', name: 'FeederID', type: 'int', hide: true, width: 50 },
+                    { display: '饲养员', name: 'FeederName', width:100 },
+                    { display: '兽医ID', name: 'DoctorID', type: 'int', hide: true, width: 50 },
+                    { display: '兽医', name: 'DoctorName',  width: 100 }
+                ],
+                pageSize: 15,
+                width: '100%',
+                height: 'auto',
+                isScroll: false,
+                data:cowGroups
+            });
+            $("#pageloading").hide();
+        }
+
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div id="menu"></div>
+        <div class="content">
+            <form id="cowGroupInfo">
+                @*<div class="input-group mt10">
+                    <span class="input-group-addon w200">牛群</span>
+                    <input type="text" class="form-control w200 disabled" placeholder="牛群" contenteditable="false" name="cowGroup">
+                </div>*@
+                <div class="input-group mt10">
+                    <span class="input-group-addon w200">配种员</span>
+                    <select class="w200" name="insemOperator"></select>
+                </div>
+                <div class="input-group mt10">
+                    <span class="input-group-addon w200">饲养员</span>
+                    <select class="w200" name="feeder"></select>
+                </div>
+                <div class="input-group mt10">
+                    <span class="input-group-addon w200">兽医</span>
+                    <select class="w200" name="doctor"></select>
+                </div>
+                <div class="mt10">
+                    <button type="button" class="btn btn-primary" id="btnAssign">分配</button>
+                </div>
+                <div>
+                    <div id="cowGroupGrid" class="displayBlock ml5 mr5"></div>
+                    <div id="message"></div>
+                    <div class="l-loading" id="pageloading"></div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script src="~/Scripts/bdhm.js"></script>
+</body>
+</html>

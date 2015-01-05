@@ -1,0 +1,104 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>选择配方</title>
+    <link rel="stylesheet" type="text/css" href="../../ligerUI/skins/Aqua/css/ligerui-all.css">
+    <link rel="stylesheet" type="text/css" href="../../Style/base.css">
+    <script type="text/javascript" src="../../../Scripts/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript" src="../../ligerUI/js/ligerui.min.js"></script>
+    <link rel="stylesheet" href="../../bootstrap/css/bootstrap-theme1.min.css">
+    <script type="text/javascript" src="../../bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+        var cowGroupID = "@ViewBag.CowGroupID";
+
+        $(function () {
+            loadFormula();
+            $('#btnAdd').click(function () {
+                window.open('../../Feed/Formula/Modify', '', 'alwaysRaised=yes,height=500,width=500,top=200,left=400,toolbar=no,menubar=no,scrollbars=no,resizable=no,location=no,status=no');
+            });
+            $('#btnModify').click(function () {
+                window.open('../../Feed/Formula/Modify?formulaID=' + $($('#formulaList')[0]).val(), '', 'alwaysRaised=yes,height=500,width=500,top=200,left=400,toolbar=no,menubar=no,scrollbars=no,resizable=no,location=no,status=no');
+            });
+            $('#btnSave').click(function () {
+                saveFormulaOfCowGroup();
+            });
+            $('#btnCancel').click(function () {
+                window.close();
+            });
+            $('#formulaList').change(function () {
+                loadFodderList($(this).val());
+            });
+        })
+
+        function loadFormula() {
+            $.ajax({
+                url: "../../../Feed/Formula/GetFormula",
+                cache: false
+            }).success(function (formula) {
+                if (formula && formula.length > 0) {
+                    $.each(formula, function () {
+                        $('#formulaList').append('<option value="' + this.ID + '">' + this.Name + '</option>');
+                    });
+
+                    //$("#formulaList").ligerComboBox();
+                    $('.formulaListContainer').show();
+                    loadFodderList(formula[0].ID);
+                }
+                else {
+                    $('.noFormulaMSG').show();
+                }
+            });
+        }
+
+        function loadFodderList(formulaID) {
+            var fooderGridManager = $("#fooderGrid").ligerGrid({
+                columns: [
+                    { display: '饲料名称', name: 'Name', align: 'left', width: 160 },
+                    { display: "量", name: "Quantity", width: 193, type: 'int' }
+                ],
+                isScroll: false,
+                url: "../../../Feed/Fodder/GetFodderOfFormula?formulaID=" + formulaID,
+                usePager: false
+            });
+            $("#pageloading").hide();
+        }
+
+        function saveFormulaOfCowGroup() {
+            var formulaID = $($('#formulaList')[0]).val();
+            $.ajax({
+                url: "../../../Feed/Formula/UpdateFormulaOfCowGroup",
+                cache: false,
+                data: { formulaID: formulaID, cowGroupID: cowGroupID }
+            }).success(function (formula) {
+                window.close();
+            });
+        }
+    </script>
+</head>
+<body>
+    <div>
+        <div class="formulaListContainer none">
+            选择配方：<select id="formulaList"></select>
+        </div>
+        <div class="noFormulaMSG none">
+            没有配方
+        </div>
+        <div class="">
+            <input type="button" value="添加" id="btnAdd" />
+            <input type="button" value="修改" id="btnModify" />
+        </div>
+    </div>
+    <div>
+        <div id="fooderGrid"></div>
+    </div>
+    <div>
+        <input type="button" value="保存" id="btnSave" />
+        <input type="button" value="取消" id="btnCancel" />
+    </div>
+    <script src="~/Scripts/bdhm.js"></script>
+</body>
+</html>

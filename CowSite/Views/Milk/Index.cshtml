@@ -1,0 +1,122 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>奶厅首页</title>
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/Scripts/jquery-tools-min.js"></script>
+    <script src="~/ligerUI/js/ligerui.min.js"></script>
+    <link rel="stylesheet" href="~/bootstrap/css/bootstrap-theme1.min.css">
+    <script src="~/bootstrap/js/bootstrap.min.js"></script>
+    <link href="~/Controls/jQuery.Select2/select2.css" rel="stylesheet" />
+    <script src="~/Controls/jQuery.Select2/select2.min.js"></script>
+    <script src="~/Scripts/menu.js"></script>
+    <link rel="stylesheet" href="~/Style/base.css">
+    <link rel="stylesheet" href="~/ligerUI/skins/Aqua/css/ligerui-all.css">
+    <link href="~/Controls/bootstrap.datepicker/datepicker.css" rel="stylesheet" />
+    <script src="~/Controls/bootstrap.datepicker/bootstrap-datepicker.js"></script>
+    <script>
+        $(function () {
+            $('#menu').menu({ mainMenuSelectedID: "Milk", subMenuSelectedID: "Milk-Home" });            
+            initDateSelector();
+            initBtn();
+        });         
+
+        function initDateSelector() {
+            $('input[name=startDate]').datepicker({
+                language: 'zh-CN',
+                autoclose: 1,
+                todayHighlight: 1,
+                format: "yyyy-mm-dd"
+            });
+
+            $('input[name=endDate]').datepicker({
+                language: 'zh-CN',
+                autoclose: 1,
+                todayHighlight: 1,
+                format: "yyyy-mm-dd"
+            });
+        }
+        
+        function initBtn() {
+            $('#btnQuery').click(function () {
+                $("#pageloading").show();
+                var startD = $('input[name=startDate]').val();
+                if (startD == '' || Date.parse(startD) > Date.now) {
+                    alert('请选择开始日期，今天以前！');
+                    return;
+                }
+                var endD = $('input[name=endDate]').val();
+                if (endD == '' || (Date.parse(endD) > Date.now) || Date.parse(startD) > Date.parse(endD)) {
+                    alert('请选择正确结束日期，开始日期之后，今天以前！');
+                    return;
+                }
+                $.ajax({
+                    type: 'post',
+                    url: '../../Milk/Index/GetMilkData',
+                    data: { startDate: startD, endDate: endD },
+                    dataType: 'json',
+                    success: function (reportData) {
+                        var milkData = reportData;
+                        initGrid(milkData);
+                    }
+                });
+            });
+        }
+
+        function initGrid(milkData) {            
+            cowGroupGridManager = $("#milkGrid").ligerGrid({
+                checkbox: false,
+                columns: [
+                    { display: '产奶日期', name: 'MilkDateStr', width: 100 },
+                    { display: '售奶量', name: 'TotalMilkSale', align: 'left', width: 100 },
+                    { display: '总金额', name: 'TotalAmount', align: 'left', width: 100 },
+                    { display: '犊牛用奶', name: 'MilkForCalf', type: 'text', align: 'left', width: 100 },
+                    { display: '坏奶', name: 'BadMilk', align: 'left', width: 100 },
+                    { display: '非正常售奶', name: 'AbnormalMilk', width: 100 },
+                    { display: '其余奶', name: 'LeftMilk', width: 100 },
+                    { display: '总奶量', name: 'TotalWeight', width: 100 },
+                ],
+                pageSize: 15,
+                width: '100%',
+                height: 'auto',
+                isScroll: false,
+                data: milkData
+            });
+            $("#pageloading").hide();
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div id="menu"></div>
+        <div class="content">
+            <form id="milkInfo">
+                日产奶量报告查询
+                <div class="input-group mt10">
+                    <span class="input-group-addon w100">开始日期</span>
+                    <input type="text" class="form-control w200" placeholder="开始日期" name="startDate">
+                </div>
+                <div class="input-group mt10">
+                    <span class="input-group-addon w100">结束日期</span>
+                    <input type="text" class="form-control w200" placeholder="结束日期" name="endDate">
+                </div>
+                <div class="mt10">
+                    <button type="button" class="btn btn-primary" id="btnQuery">查询</button>
+                </div>
+                <div>
+                    <div id="milkGrid" class="displayBlock ml5 mr5"></div>
+                    <div id="message"></div>
+                    <div class="l-loading" id="pageloading"></div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script src="~/Scripts/bdhm.js"></script>
+</body>
+</html>

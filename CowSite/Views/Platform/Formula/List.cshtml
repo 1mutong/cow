@@ -1,0 +1,166 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>配方维护</title>
+    <link href="~/ligerUI/skins/Aqua/css/ligerui-all.css" rel="stylesheet" />
+    <link href="~/bootstrap/css/bootstrap-theme1.min.css" rel="stylesheet" />
+    <link href="~/Controls/jQuery.Select2/select2.css" rel="stylesheet" />
+    <link href="~/Style/base.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="container">
+        <div id="menu"></div>
+        <div class="content">
+            <div style="margin: 10px 0px 10px 0px; position: relative; height: 30px; width: 100%;">
+                <div style="display: inline-block; position: absolute; left: 0px;">
+                    <select id="formulaSelector" style="width: 350px; height: 30px"></select>
+                </div>
+                <div style="display: inline-block; position: absolute; right: 0px;">
+                    <button id="btnAddFodder" class="btn-primary">为配方添加饲料</button>
+                    <button id="btnDeleteFodder" class="btn-danger">删除配方中选中的饲料</button>
+                    <button id="btnAddFormula" class="btn-success">添加配方</button>
+                </div>
+            </div>
+            <div>
+                <div id="fooderGrid"></div>
+                <div id="message"></div>
+                <div class="l-loading" id="pageloading"></div>
+            </div>
+        </div>
+    </div>
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/ligerUI/js/ligerui.min.js"></script>
+    <script src="~/bootstrap/js/bootstrap.min.js"></script>
+    <script src="~/Controls/jQuery.Select2/select2.min.js"></script>
+    <script src="~/Scripts/menu.js"></script>
+    <script type="text/javascript">
+        var formulaID = "@ViewBag.FormulaID";
+        var fooderGridManager = null;
+
+        $('#menu').menu({ mainMenuSelectedID: "Platform", subMenuSelectedID: "Platform-Formula" });
+
+        $(function () {            
+            loadFormulaList();
+            bindEvent();
+        });
+
+        function setFormulaId(id) {
+            formulaID = id;
+        }
+
+        // 配方下拉列表
+        function loadFormulaList() {
+            $.ajax({
+                type: 'get',
+                url: "../../Platform/Formula/GetFormulaList",
+                cache: false,
+                dataType: "json"
+            }).success(function (formula) {
+                if (formula) {
+                    $("#formulaSelector").empty();
+                    $.each(formula, function () {
+                        $('#formulaSelector').append('<option value="' + this.ID + '">' + this.Name + '</option>');
+                    });
+                    
+                    $("#formulaSelector").select2({
+                        placeholder: "配方",
+                        allowClear: true,
+                        minimumResultsForSearch: -1
+                    }).change(function () {
+                        formulaID = $('#formulaSelector').val();
+                        loadFodderList(formulaID);
+                    });
+
+                    if (formulaID == "") {
+                        formulaID = formula[0].ID;
+                    }
+
+                    //$('#formulaSelector').val(formulaID);
+                    $('#formulaSelector').select2("val", formulaID);
+                    loadFodderList(formulaID);
+                }
+            });
+        }
+
+        // 每个配方对应的饲料列表
+        function loadFodderList(formulaID) {
+            $.ajax({
+                type: 'get',
+                url: "../../Platform/Formula/GetFormulaInfoList",
+                cache: false,
+                data: { formulaID: formulaID },
+                dataType: "json"
+            }).success(function (formulaInfo) {
+                if (formulaInfo) {
+                    fooderGridManager = $("#fooderGrid").ligerGrid({
+                        columns: [
+                            { display: '饲料ID', name: 'ID', width: 1, hide: true },
+                            { display: '饲料名称', name: 'Name', align: 'left', width: 600, },
+                            { display: "量(kg)", name: "Quantity", width: 100, type: 'int', editor: { type: 'int' } },
+                            { display: '营养成分A', name: 'DryMatter', align: 'left', width: 0, hide: true },
+                            { display: '营养成分B', name: 'NND', align: 'left', width: 0, hide: true },
+                            { display: '营养成分C', name: 'Calcium', align: 'left', width: 0, hide: true },
+                            { display: '营养成分D', name: 'Phosphorus', align: 'left', width: 0, hide: true },
+                            { display: '营养成分E', name: 'Protein', align: 'left', width: 0, hide: true },
+                            { display: '营养成分C2', name: 'RefPrice', align: 'left', width: 0, hide: true },
+                            {
+                                display: '编辑', isAllowHide: false,
+                                render: function (row) {
+                                    var html = '<a href="javascript:void(0);" onclick="editFodderQuantity(' + row.ID + ')">编辑</a>';
+                                    return html;
+                                }
+                            }
+                        ],
+                        pageSize: 15,
+                        isScroll: false,
+                        data: formulaInfo,
+                        enabledEdit: false,
+                        clickToEdit: false,
+                        pager: false
+                    });
+                    $("#pageloading").hide();
+                }
+            });
+        }
+
+        function editFodderQuantity(fodderId) {
+            var editUrl = '../../Platform/Formula/ModifyFodderQuantity?FormulaID=' + formulaID + '&FodderID=' + fodderId;
+            $.ligerDialog.open({ title: "编辑配方中饲料量", height: 100, width: 185, url: editUrl });
+        }
+
+        function bindEvent() {
+            $('#btnAddFodder').click(function () {
+                var editUrl = "../../Platform/Formula/AddFodder?FormulaID=" + $('#formulaSelector').val();
+                $.ligerDialog.open({ title: "为配方添加饲料", height: 285, width: 375, url: editUrl });
+            });
+
+            $('#btnDeleteFodder').click(function () {
+                var row = fooderGridManager.getSelectedRow();
+                var fodderId = row["ID"];
+                $.ajax({
+                    type: 'get',
+                    url: '../../Platform/Formula/DeleteFodder',
+                    data: { formulaId: formulaID, fodderId: fodderId },
+                    dataType: 'json',
+                    cache: false,
+                    success: function () {
+                        alert('配方中的饲料删除成功！');
+                        loadFodderList(formulaID);
+                    }
+                });
+            });
+
+            $('#btnAddFormula').click(function () {
+                var editUrl = "../../Platform/Formula/AddFormula";
+                $.ligerDialog.open({ title: "添加配方", height: 120, width: 375, url: editUrl });
+            });
+        }
+    </script>
+    <script src="~/Scripts/bdhm.js"></script>
+</body>
+</html>

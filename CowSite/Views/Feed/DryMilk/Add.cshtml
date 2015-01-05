@@ -1,0 +1,167 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>干奶</title>
+    <link rel="stylesheet" href="~/bootstrap/css/bootstrap-theme1.min.css">
+    
+    <link href="~/Controls/jQuery.Select2/select2.css" rel="stylesheet" />
+    
+    <link rel="stylesheet" href="~/Style/base.css">
+    <link rel="stylesheet" href="~/ligerUI/skins/Aqua/css/ligerui-all.css">
+    <link href="~/Controls/bootstrap.datepicker/datepicker.css" rel="stylesheet" />
+    
+</head>
+<body>
+    <div class="container">
+        <div id="menu"></div>
+        <div class="content">
+            <form id="careInfo">
+                <div class="input-group mt10">
+                    <span class="input-group-addon w100">耳号</span>
+                    <input type="text" class="form-control w200 js-DisplayEarNum" placeholder="耳号" name="DisplayEarNum">
+                </div>
+                <div class="input-group mt10">
+                    <span class="input-group-addon w100">干奶日期</span>
+                    <input type="text" class="form-control w200" placeholder="干奶日期" name="dryDate">
+                </div>
+                <div class="input-group mt10">
+                    <span class="input-group-addon w100">干奶状态</span>
+                    <select class="w200" name="drySituation">
+                        <option value="0">正常干奶</option>
+                        <option value="1">提前干奶</option>
+                        <option value="2">推后干奶</option>
+                    </select>
+                </div>
+                <div class="input-group mt10">
+                    <span class="input-group-addon w100">干奶原因</span>
+                    <input type="text" class="form-control w200" placeholder="干奶原因" name="dryReason">
+                </div>
+                <div class="input-group mt10">
+                    <span class="input-group-addon w100">操作人员</span>
+                    <select class="w200" name="feeder"></select>
+                </div>
+                <div class="mt10">
+                    <button type="button" class="btn btn-primary" id="btnAdd">记录</button>
+                </div>
+            </form>
+            <div class="mt10">
+                <div id="cowGrid"></div>
+                <div id="message"></div>
+                <div class="l-loading" id="pageloading"></div>
+            </div>
+        </div>
+    </div>
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/Scripts/jquery-tools-min.js"></script>
+    <script src="~/ligerUI/js/ligerui.min.js"></script>
+    <script src="~/bootstrap/js/bootstrap.min.js"></script>
+    <script src="~/Controls/jQuery.Select2/select2.min.js"></script>
+    <script src="~/Scripts/menu.js"></script>
+    <script src="~/Controls/bootstrap.datepicker/bootstrap-datepicker.js"></script>
+    <script src="~/Scripts/common.js"></script>
+    <script>
+        $(function () {
+            $('#menu').menu({ mainMenuSelectedID: "Feed", subMenuSelectedID: "Feed-DryMilk" });
+            initSelector();
+            initBtn();
+            initDateSelector();
+            loadMilkDayLT225CowList();
+        });
+
+        function initDateSelector() {
+            $('input[name=dryDate]').datepicker({
+                language: 'zh-CN',
+                autoclose: 1,
+                todayHighlight: 1,
+                format: "yyyy-mm-dd"
+            });
+        }
+
+        function initSelector() {
+            $.ajax({
+                type: 'get',
+                url: "../../Feed/CowGroup/GetPastureFeeders",
+                dataType: 'json',
+                cache: false,
+                //data: { GroupID: currentGroupID },
+                success: function (list) {
+                    feeders = list;
+                    $('select[name=feeder]').empty();
+                    if (typeof (feeders) != 'undefined' && feeders && feeders.length > 0) {
+                        $.each(feeders, function () {
+                            $("select[name=feeder]").append('<option value="' + this.ID + '">' + this.Name + '</option>');
+                        });
+                    }
+                }
+            });
+        }
+
+        function initBtn() {
+            $('#btnAdd').click(function () {
+                var earNum = $('input[name=DisplayEarNum]').val();
+                var dryDate = $('input[name=dryDate]').val();
+                if (dryDate == '' || Date.parse(dryDate) > Date.now) {
+                    alert('请选择干奶日期，今天以前！');
+                    return;
+                }
+                var drySitudation = $('select[name=drySituation]').val();
+                if (drySitudation == '') {
+                    alert('请选择正确干奶状态！');
+                    return;
+                }
+                var dryReason = $('input[name=dryReason]').val();
+                var operatorID = $('select[name=feeder]').val();
+                $.ajax({
+                    type: 'post',
+                    url: '../../Feed/DryMilk/InsertDryMilk',
+                    data: { earNum: earNum, dryDate: dryDate, drySitudation: drySitudation, dryReason: dryReason, operatorID: operatorID },
+                    dataType: 'json',
+                    success: function (result) {
+                        if (result.count == 1) {
+                            alert("成功记录干奶！");
+                            window.location.href = window.location.href;
+                        }
+                    }
+                });
+            });
+        }
+
+        // 加载配种天数>225天的牛列表，显示耳号，和泌乳天数
+        function loadMilkDayLT225CowList() {
+            $.ajax({
+                type: 'get',
+                url: "../../Cow/GetCowForInseminatedDayGT210",
+                dataType: 'json',
+                cache: false,
+                success: function (cowList) {
+                    var processGridManager = $("#cowGrid").ligerGrid({
+                        columns: [
+                            { display: '耳号', name: 'DisplayEarNum' },
+                            { display: '怀孕天数', name: 'DaysOfPregnant', align: 'left' }
+                        ],
+                        pageSize: 15,
+                        width: '90%',
+                        height: 'auto',
+                        isScroll: false,
+                        data: cowList,
+                        title: '怀孕天数大于210天的牛',
+                        showTitle: true,
+                        enabledEdit: false,
+                        clickToEdit: false,
+                        pager: false,
+                        usePager: false
+                    });
+                    $("#pageloading").hide();
+                }
+            });
+        }
+    </script>
+    <script src="~/Scripts/bdhm.js"></script>
+</body>
+</html>

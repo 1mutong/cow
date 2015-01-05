@@ -1,0 +1,189 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>产犊</title>
+    <link rel="stylesheet" href="~/ligerUI/skins/Aqua/css/ligerui-all.css">
+    <link rel="stylesheet" href="~/Style/base.css">
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/ligerUI/js/ligerui.min.js"></script>
+    <link rel="stylesheet" href="~/bootstrap/css/bootstrap-theme1.min.css">
+    <script src="~/bootstrap/js/bootstrap.min.js"></script>
+    <link href="~/Controls/bootstrap.datepicker/datepicker.css" rel="stylesheet" />
+    <script src="~/Controls/bootstrap.datepicker/bootstrap-datepicker.js"></script>
+    <link href="~/Controls/bootstrap.timepicker/css/bootstrap-timepicker.min.css" rel="stylesheet" />
+    <script src="~/Controls/bootstrap.timepicker/js/bootstrap-timepicker.min.js"></script>
+    <link href="~/Controls/jQuery.Select2/select2.css" rel="stylesheet" />
+    <script src="~/Controls/jQuery.Select2/select2.min.js"></script>
+    <script src="~/Scripts/menu.js"></script>
+    <script src="~/Scripts/common.js"></script>
+    <script>
+        $(function () {
+            $('#menu').menu({ mainMenuSelectedID: "Breed", subMenuSelectedID: "Breed-Calf" });
+            initForm();
+        });
+
+        function initForm() {
+            $('input[name=Birthday]').datepicker({
+                language: 'zh-CN',
+                autoclose: 1,
+                todayHighlight: 1,
+                format: "yyyy-mm-dd"
+            });
+
+            $('input[name=BirthTime]').timepicker({
+                showMeridian: false, showSeconds: true, minuteStep: 1, secondStep: 1
+            });
+
+            $("select[name=BirthType]").select2({
+                placeholder: "产犊类型",
+                allowClear: true,
+                minimumResultsForSearch: -1
+            });
+
+            $("input.js-DisplayEarNum").blur(function () {
+                $(document).off("blur", "input.js-DisplayEarNum")
+                    .on("blur", "input.js-DisplayEarNum", function () {
+                        var displayEarNumInput = $(this);
+                        var displayEarNum = displayEarNumInput.val();
+                        if (typeof (displayEarNum) != 'undefined' && displayEarNum) {
+                            $.ajax({
+                                type: "post",
+                                url: "../../Cow/CheckDisplayEarNum",
+                                data: { displayEarNum: displayEarNum },
+                                dataType: "json",
+                                cache: false,
+                                success: function (response) {
+                                    if (typeof (response.result) != 'undefined') {
+                                        if (response.result == false) {
+                                            alert("耳号不存在，请重新输入！");
+                                            displayEarNumInput.focus();
+                                        }
+                                        else if (response.result == true) {
+                                            renderDaysOfPregnant(displayEarNum);
+                                        }
+                                    }
+                                }
+                            });
+                        }
+                    });
+            });
+
+            $('#btnSave').click(function () {
+                var cowEarNum = $('input[name=EarNum]').val();
+                if (cowEarNum == '') {
+                    alert('请填写母牛耳号！');
+                    return;
+                }
+
+                var birthday = $('input[name=Birthday]').val();
+                if (birthday == '') {
+                    alert('请填写产犊日期！');
+                    return;
+                }
+
+                var birthTime = $('input[name=BirthTime]').val();
+                if (birthTime == '') {
+                    alert('请填写时分秒！');
+                    return;
+                }
+
+                $.ajax({
+                    type: 'post',
+                    url: '../../Breed/Calf/InsertCalving',
+                    data: $("#calfInfo").serialize(),
+                    dataType: 'json',
+                    success: function (response) {
+                        if (response.Result = 1) {
+                            alert('保存产犊记录成功！');
+                        }
+                    }
+                });
+            });
+        }
+
+        function renderDaysOfPregnant(displayEarNum) {
+            $.ajax({
+                type: "get",
+                url: "../../Cow/GetDaysOfPregnant",
+                data: { displayEarNum: displayEarNum },
+                dataType: "json",
+                cache: false,
+                success: function (cow) {
+                    $("input[name=DaysOfPregnant]").val(cow.DaysOfPregnant);
+                }
+            });
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div id="menu"></div>
+        <div class="content">
+            <form id="calfInfo">
+                <div class="input-group mt10">
+                    <span class="input-group-addon w100">母牛耳号</span>
+                    <input type="text" class="form-control w200 js-DisplayEarNum" placeholder="耳号" name="EarNum">
+                </div>
+                <div class="input-group mt10">
+                    <span class="input-group-addon w100">产犊日期</span>
+                    <input type="text" class="form-control w200" placeholder="产犊日期" name="Birthday">
+                </div>
+                
+                <div class="input-group mt10">
+                    <span class="input-group-addon w100">时分秒</span>
+                    <div class="input-group bootstrap-timepicker w200">
+                        <input type="text" class="form-control" placeholder="时分秒" name="BirthTime">
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
+                    </div>                    
+                </div>
+                <div class="input-group mt10">
+                    <span class="input-group-addon w100">受孕天数</span>
+                    <input type="text" class="form-control w200" readonly="readonly" name="DaysOfPregnant">
+                </div>
+                <div class="input-group mt10">
+                    <span class="input-group-addon w100">产犊类型</span>
+                    <select class="w200" name="BirthType">
+                        <option value="0">正常</option>
+                        <option value="1">早产</option>
+                        <option value="2">流产</option>
+                    </select>
+                    <span class="input-group-addon w100">  *受孕天数7个月以上算早产，以下算流产。</span>
+                </div>
+                <div class="input-group mt10">
+                    <span class="input-group-addon w100">产犊难易</span>
+                    <input type="text" class="form-control w200" placeholder="产犊难易" name="Difficulty">
+                </div>
+                <div class="input-group mt10">
+                    <span class="input-group-addon w100">胎位</span>
+                    <input type="text" class="form-control w200" placeholder="胎位" name="PositionOfFetus">
+                </div>
+                <div class="input-group mt10">
+                    <span class="input-group-addon w100">接产员</span>
+                    <input type="text" class="form-control w200" placeholder="接产员" name="OperatorName">
+                </div>
+                <div class="input-group mt10">
+                    <span class="input-group-addon w100">公犊数量</span>
+                    <input type="text" class="form-control w200" placeholder="公犊数量" name="NumberOfMale">
+                </div>
+                <div class="input-group mt10">
+                    <span class="input-group-addon w100">母犊数量</span>
+                    <input type="text" class="form-control w200" placeholder="母犊数量" name="NumberOfFemale">
+                </div>
+                <div class="input-group mt10">
+                    <span class="input-group-addon w100">备注</span>
+                    <textarea class="form-control h100 w500" placeholder="备注" name="Comment"></textarea>
+                </div>
+                <div class="mt10">
+                    <button type="button" class="btn btn-primary" id="btnSave">保存</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script src="~/Scripts/bdhm.js"></script>
+</body>
+</html>

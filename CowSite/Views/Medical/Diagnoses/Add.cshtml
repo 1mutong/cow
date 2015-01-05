@@ -1,0 +1,194 @@
+﻿﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>疾病诊治</title>
+    <link rel="stylesheet" href="~/ligerUI/skins/Aqua/css/ligerui-all.css">
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/Scripts/jquery-tools-min.js"></script>
+    <script src="~/ligerUI/js/ligerui.min.js"></script>
+    <link rel="stylesheet" href="~/bootstrap/css/bootstrap-theme1.min.css">
+    <script src="~/bootstrap/js/bootstrap.min.js"></script>
+    <link href="~/Controls/jQuery.Select2/select2.css" rel="stylesheet" />
+    <script src="~/Controls/jQuery.Select2/select2.min.js"></script>
+    <script src="~/Scripts/menu.js"></script>
+    <script src="~/Scripts/common.js"></script>
+    <link rel="stylesheet" href="~/Style/base.css">
+    <script>
+        var diseaseList = null;
+
+        $(function () {
+            $('#menu').menu({ mainMenuSelectedID: "Medical", subMenuSelectedID: "Medical-Diagnoses" });
+            initDiseaseSelector();
+            loadDiseases();
+            initBtn();
+        });
+
+        function loadDiseasesType() {
+            $.ajax({
+                type: 'get',
+                url: '../../Medical/Diagnoses/GetDiseasesType',
+                dataType: 'json',
+                cache: false,
+                success: function (diseasesType) {
+                    $("select[name=diseasesType]").empty();
+                    $("select[name=diseasesType]").append('<option></option>');
+                    if (typeof (diseasesType) != 'undefined' && diseasesType && diseasesType.length > 0) {
+                        $.each(diseasesType, function () {
+                            $("select[name=diseasesType]").append('<option value="' + this.ID + '">' + this.Name + '</option>');
+                        });
+                    }
+                }
+            });
+        }
+
+        function loadDiseases() {
+            $.ajax({
+                type: 'get',
+                url: '../../Medical/Diagnoses/GetDiseases',
+                dataType: 'json',
+                cache: false,
+                success: function (diseases) {
+                    diseaseList = diseases;
+                    loadDiseasesType();
+                }
+            });
+        }
+
+        function initDiseaseSelector() {
+            $("select[name=diseasesType]").select2({
+                placeholder: "疾病类型",
+                allowClear: true,
+                minimumResultsForSearch: -1
+            }).change(function () {
+                var diseaseTypeID = $("select[name=diseasesType]").val()
+                bindDiseaseSeletor(diseaseTypeID);
+                $("select[name=diseases]").select2("val", "");
+
+                if (diseaseTypeID == 137 || diseaseTypeID == 174) {
+                    $('div.js-diseasePosition').show();
+                }
+                else {
+                    $('div.js-diseasePosition').hide();
+                }
+            });
+
+            $("select[name=diseases]").select2({
+                placeholder: "疾病",
+                allowClear: true,
+                minimumResultsForSearch: -1
+            });
+        }
+
+        function bindDiseaseSeletor(diseaseTypeID) {
+            $("select[name=diseases]").empty();
+            $("select[name=diseases]").append('<option></option>');
+            if (typeof (diseaseList) != 'undefined' && diseaseList && diseaseList.length > 0) {
+                $.each(diseaseList, function () {
+                    if (this.DiseaseTypeID == diseaseTypeID) {
+                        $("select[name=diseases]").append('<option value="' + this.ID + '">' + this.Name + '</option>');
+                    }
+                });
+            }
+        }
+
+        function initBtn() {
+            $('#btnSave').click(function () {
+                var displayEarNum = $('input[name=DisplayEarNum]').val();
+                if (displayEarNum == '') {
+                    alert('请填写耳号！');
+                    return;
+                }
+
+                var diseases = $('select[name=diseases]').val();
+                if (diseases == '') {
+                    alert('请选择疾病！');
+                    return;
+                }
+
+                $.ajax({
+                    type: 'post',
+                    url: '../../Medical/Diagnoses/InsertCare',
+                    data: $("#careInfo").serialize(),
+                    dataType: 'json',
+                    success: function (response) {
+                        if (response.Result = 1) {
+                            alert('保存疾病记录成功！');
+                        }
+                    }
+                });
+            });
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div id="menu"></div>
+        <div class="content">
+            <form id="careInfo">
+                <div class="input-group mt10">
+                    <span class="input-group-addon w100">耳号</span>
+                    <input type="text" class="form-control w200 js-DisplayEarNum" placeholder="耳号" name="DisplayEarNum">
+                </div>
+                <div class="input-group mt10">
+                    <span class="input-group-addon w100">疾病类型</span>
+                    <select class="w200" name="diseasesType"></select>
+                </div>
+                <div class="input-group mt10">
+                    <span class="input-group-addon w100">疾病</span>
+                    <select class="w200" name="diseases"></select>
+                </div>
+                <div class="input-group mt10">
+                    <span class="input-group-addon">治疗</span>
+                    <textarea class="form-control h200 w500" placeholder="治疗" name="Prescription"></textarea>
+                </div>
+                <div class="mt10 none js-diseasePosition">
+                    <div class="inline">
+                        <div class="input-group w100">
+                            <span class="input-group-addon">左前</span>
+                            <select class="w50" name="pLeftFront">
+                                <option value="1">+</option>
+                                <option value="0">-</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="inline ml10">
+                        <div class="input-group w100">
+                            <span class="input-group-addon">右前</span>
+                            <select class="w50" name="pRightFront">
+                                <option value="1">+</option>
+                                <option value="0">-</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="inline ml10">
+                        <div class="input-group w100">
+                            <span class="input-group-addon">左后</span>
+                            <select class="w50" name="pLeftBack">
+                                <option value="1">+</option>
+                                <option value="0">-</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="inline ml10">
+                        <div class="input-group w100">
+                            <span class="input-group-addon">右后</span>
+                            <select class="w50" name="pRightBack">
+                                <option value="1">+</option>
+                                <option value="0">-</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt10">
+                    <button type="button" class="btn btn-primary" id="btnSave">保存</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script src="~/Scripts/bdhm.js"></script>
+</body>
+</html>

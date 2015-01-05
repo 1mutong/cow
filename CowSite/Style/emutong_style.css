@@ -1,0 +1,652 @@
+/* Credit: http://www.cssmoban.com */
+
+/* general */
+body {
+    font-family: 'Microsoft YaHei';
+    font-size: 14px;
+    color: #000;
+}
+
+a:active {
+    outline: 0;
+}
+
+.clear {
+    clear: both;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Microsoft YaHei';
+    line-height: 1.1em;
+    margin-bottom: 20px;
+}
+
+h1 {
+    text-align: center;
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+
+.margin_top {
+    margin-top: 20px;
+}
+
+/* header */
+header {
+    border-bottom: 8px solid #262223;
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 200;
+    height: 66px;
+    background-color: #b7cf63;
+    WIDTH: 100%;
+}
+
+    header #emutong_logo {
+        padding-top: 15px;
+        float: left;
+        display: block;
+    }
+
+        header #emutong_logo img {
+            width: 100%;
+        }
+
+.element-bg {
+    display: block;
+    width: 12px;
+    height: 12px;
+    overflow: hidden;
+    position: absolute;
+    top: -12px;
+    left: 0;
+    cursor: default;
+}
+
+    .element-bg img {
+        vertical-align: top;
+        cursor: default;
+    }
+
+header ul {
+    float: left;
+    min-height: 60px;
+    margin-top: 8px;
+}
+
+    header ul li {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        float: left;
+        height: 44px;
+    }
+
+        header ul li a {
+            font: normal normal normal 20px/20px 'Microsoft YaHei';
+            text-align: center;
+            float: left;
+            color: #1b1f25;
+            height: 44px;
+        }
+
+            header ul li:hover a, header ul li:active a, header ul li:focus a, header ul li a.current {
+                color: #353c43;
+                border-bottom: 4px solid #9db44d;
+                text-decoration: none;
+            }
+
+header .nav li a:hover, header .nav li a:focus {
+    background-color: #b7cf63;
+    color: #353c43;
+}
+
+.copyrights {
+    text-indent: -9999px;
+    height: 0;
+    line-height: 0;
+    font-size: 0;
+    overflow: hidden;
+}
+/*solid line*/
+.solidline {
+    border-top: 1px solid #c9cbca;
+    margin: 30px 0 30px 0;
+    width: 100%;
+}
+/* scroll */
+.scrollup {
+    position: fixed;
+    width: 55px;
+    height: 55px;
+    bottom: 65px;
+    right: 18px;
+    background: #222;
+    background: url("../images/templatemo_arrow.png")no-repeat;
+}
+/*templatemo_slideshow*/
+#templatemo_slideshow .container .row {
+    margin-bottom: 3.5%;
+}
+
+.btn-lg {
+    padding: 10px 25px;
+    border-radius: 6px;
+    text-transform: lowercase;
+    background: #c9cbca;
+    font-size: 12px;
+}
+
+/*templatemo_footer*/
+#templatemo_footer {
+    height: 55px;
+}
+
+    #templatemo_footer p,
+    #templatemo_footer a {
+        font: normal normal normal 14px/55px 'Microsoft YaHei';
+        text-align: center;
+        color: #000;
+    }
+/* Banner */
+@-moz-keyframes reveal-banner {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+@-webkit-keyframes reveal-banner {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+@-o-keyframes reveal-banner {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+@-ms-keyframes reveal-banner {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes reveal-banner {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+#banner {
+    background-attachment: scroll, scroll, scroll, fixed;
+    background-color: #645862;
+    background-image: url("../Images/Login/banner.png");
+    background-position: bottom left, bottom right, top left, top center;
+    background-repeat: no-repeat, no-repeat, repeat, no-repeat;
+    background-size: 100%, 100%, contain,cover;
+    color: white;
+    cursor: default;
+    padding: 15em 3em 7em;
+    text-align: center;
+}
+
+    #banner .inner {
+        -moz-animation: reveal-banner 1s 0.25s ease-in-out;
+        -webkit-animation: reveal-banner 1s 0.25s ease-in-out;
+        -o-animation: reveal-banner 1s 0.25s ease-in-out;
+        -ms-animation: reveal-banner 1s 0.25s ease-in-out;
+        animation: reveal-banner 1s 0.25s ease-in-out;
+        -moz-animation-fill-mode: forwards;
+        -webkit-animation-fill-mode: forwards;
+        -o-animation-fill-mode: forwards;
+        -ms-animation-fill-mode: forwards;
+        animation-fill-mode: forwards;
+        background: rgba(52, 27, 43, 0.5);
+        color: white;
+        display: inline-block;
+        padding: 5em 2em 3em;
+        text-align: center;
+    }
+
+        #banner .inner div {
+            text-align: left;
+        }
+
+        #banner .inner p {
+            letter-spacing: 0.1em;
+            margin-bottom: 2em;
+            text-transform: uppercase;
+        }
+
+        #banner .inner input {
+            color: #333;
+            width: 150px;
+        }
+
+            #banner .inner input.logininput {
+                color: #333;
+                border: #ccc solid 1px;
+                padding: 2px;
+                background-color: #FFFFFF;
+            }
+
+        #banner .inner p a {
+            color: inherit;
+            font-weight: 400;
+            text-decoration: none;
+        }
+
+        #banner .inner footer {
+            margin: 2em 0 0 0;
+        }
+
+            #banner .inner footer a {
+                color: #FFFFFF;
+            }
+
+/*nav style*/
+
+div#emutong_nav {
+    margin: 10px auto 25px;
+    padding: 0 10px;
+    min-height: 220px;
+    _height: 220px;
+}
+
+    div#emutong_nav ul {
+        margin: 10px auto 25px;
+        padding: 0 30px;
+        min-height: 220px;
+        _height: 220px;
+    }
+
+        div#emutong_nav ul li {
+            width: 350px;
+            height: 120px;
+            list-style: none;
+            display: inline;
+            float: left;
+            text-align: center;
+        }
+
+#index_foot {
+    background-color: #333333;
+    color: #ffffff;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+}
+
+    #index_foot a {
+        color: #ffffff;
+    }
+/*列表 style*/
+#list_style {
+    margin: 70px auto 10px;
+    min-height: 400px;
+    text-align: center;
+}
+
+    #list_style table {
+        background-color: #FFF;
+        border: none;
+        color: #565;
+        font: 12px arial;
+        width: 100%;
+        box-shadow: 0 1px 1px #ccc;
+    }
+
+        #list_style table caption {
+            font-size: 24px;
+            border-bottom: 2px solid #B3DE94;
+            border-top: 2px solid #B3DE94;
+        }
+
+    #list_style table, #list_style td, #list_style th {
+        margin: 0;
+        padding: 0;
+        vertical-align: middle;
+        text-align: left;
+    }
+
+    #list_style tbody td, #list_style tbody th {
+        background-color: #eFe;
+        border-bottom: 2px solid #B3DE94;
+        border-top: 3px solid #FFFFFF;
+        padding: 9px;
+        color: #111111;
+    }
+
+    #list_style tfoot td, #list_style tfoot th {
+        font-weight: bold;
+        padding: 10px 8px;
+        text-align: left;
+    }
+
+    #list_style thead th {
+        font-size: 14px;
+        font-weight: bold;
+        line-height: 25px;
+        padding: 10px 8px;
+        text-align: left;
+        color: #999999;
+    }
+
+    #list_style tbody tr.odd th, #list_style tbody tr.odd td {
+        background-color: #fff;
+        border-bottom: 2px solid #67BD2A;
+    }
+/*编辑表格 style*/
+.edit_table {
+    background-color: #FFFFFF;
+    margin: 70px auto 10px;
+    min-height: 400px;
+    text-align: center !important;
+    width: 100%;
+}
+
+    .edit_table table {
+        margin: 10px auto 10px;
+    }
+
+    .edit_table h2 {
+        font-family: "Microsoft YaHei";
+        font-size: 24px;
+        text-align: center;
+        margin: 15px auto 5px !important;
+        display: block;
+        height: 50px;
+    }
+
+    .edit_table td {
+        padding: 5px;
+        text-align: left;
+    }
+
+    .edit_table textarea, .edit_table input, .edit_table select {
+        background: #FFFFFF;
+        border: 1px solid #CCCCCC;
+        color: #000000;
+        font-family: verdana, tahoma, sans-serif;
+        font-size: 0.95em;
+    }
+
+    .inner .logininput, .edit_table .inputtext {
+        background-color: #eFe;
+        padding-left: 5px;
+        height: 30px;
+        FONT-SIZE: 12px;
+    }
+
+    .edit_table textarea {
+        background-color: #eFe;
+        padding-left: 5px;
+        FONT-SIZE: 12px;
+        width: 100%;
+    }
+
+.inner .btn {
+    padding: 5px 20px;
+}
+
+/*按钮样式*/
+.buttonbox .button {
+    font: 15px "Microsoft YaHei";
+    /* A semi-transparent text shadow */
+    text-shadow: 1px 1px 0 rgba(255,255,255,0.4);
+    /* Overriding the default underline styling of the links */
+    text-decoration: none !important;
+    white-space: nowrap;
+    display: inline-block;
+    vertical-align: baseline;
+    position: relative;
+    cursor: pointer;
+    padding: 8px 15px;
+    background-repeat: no-repeat;
+    /* The following two rules are fallbacks, in case
+	   the browser does not support multiple backgrounds. */
+    background-position: bottom left;
+    background-image: url('button_bg.png');
+    /* Multiple backgrounds version. The background images
+	   are defined individually in color classes */
+    background-position: bottom left, top right, 0 0, 0 0;
+    background-clip: border-box;
+    /* Applying a default border raidus of 8px */
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
+    /* A 1px highlight inside of the button */
+    -moz-box-shadow: 0 0 1px #fff inset;
+    -webkit-box-shadow: 0 0 1px #fff inset;
+    box-shadow: 0 0 1px #fff inset;
+    /* Animating the background positions with CSS3 */
+    /* Currently works only in Safari/Chrome */
+    -webkit-transition: background-position 1s;
+    -moz-transition: background-position 1s;
+    transition: background-position 1s;
+}
+
+    .buttonbox .button:hover {
+        /* The first rule is a fallback, in case the browser
+	   does not support multiple backgrounds
+	*/
+        background-position: top left;
+        background-position: top left, bottom right, 0 0, 0 0;
+    }
+
+    .buttonbox .button:active {
+        /* Moving the button 1px to the bottom when clicked */
+        bottom: -1px;
+    }
+
+/* The three buttons sizes */
+
+.buttonbox .big {
+    font-size: 20px;
+}
+
+.buttonbox .rounded {
+    -moz-border-radius: 4em;
+    -webkit-border-radius: 4em;
+    border-radius: 4em;
+}
+/* Green Button */
+
+.buttonbox .green {
+    color: #345903 !important;
+    border: 1px solid #96a37b !important;
+    background-color: #79be1e;
+    background-image: url('button_bg.png'), url('button_bg.png'), -moz-radial-gradient(center bottom, circle, rgba(162,211,30,1) 0,rgba(162,211,30,0) 100px),-moz-linear-gradient(#82cc27, #74b317);
+    background-image: url('button_bg.png'), url('button_bg.png'), -webkit-gradient(radial, 50% 100%, 0, 50% 100%, 100, from(rgba(162,211,30,1)), to(rgba(162,211,30,0))),-webkit-gradient(linear, 0% 0%, 0% 100%, from(#82cc27), to(#74b317));
+}
+
+    .buttonbox .green:hover {
+        background-color: #89d228;
+        background-image: url('button_bg.png'), url('button_bg.png'), -moz-radial-gradient(center bottom, circle, rgba(183,229,45,1) 0,rgba(183,229,45,0) 100px),-moz-linear-gradient(#90de31, #7fc01e);
+        background-image: url('button_bg.png'), url('button_bg.png'), -webkit-gradient(radial, 50% 100%, 0, 50% 100%, 100, from(rgba(183,229,45,1)), to(rgba(183,229,45,0))),-webkit-gradient(linear, 0% 0%, 0% 100%, from(#90de31), to(#7fc01e));
+    }
+/*分页 css*/
+.pagination-centered {
+    text-align: center;
+    width: 100%;
+}
+
+.pagination {
+    margin: 20px 0;
+}
+
+    .pagination ul {
+        border-radius: 4px;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+        display: inline-block;
+        margin-bottom: 0;
+        margin-left: 0;
+    }
+
+        .pagination ul > li {
+            display: inline;
+            padding: 0 !important;
+        }
+
+            .pagination ul > li:first-child > a {
+                border-bottom-left-radius: 4px;
+                border-left-width: 1px;
+                border-top-left-radius: 4px;
+            }
+
+            .pagination ul > li:last-child > a {
+                border-bottom-right-radius: 4px;
+                border-top-right-radius: 4px;
+            }
+
+            .pagination ul > li > a {
+                -moz-border-bottom-colors: none;
+                -moz-border-left-colors: none;
+                -moz-border-right-colors: none;
+                -moz-border-top-colors: none;
+                background-color: #FFFFFF;
+                border-color: #DDDDDD;
+                border-image: none;
+                border-style: solid;
+                border-width: 1px 1px 1px 0;
+                float: left;
+                line-height: 20px;
+                padding: 4px 12px;
+                text-decoration: none;
+                color: #666;
+            }
+
+            .pagination ul > li.page-ellipsis {
+                border-right: 1px solid #DDDDDD;
+                float: left;
+                height: 30px;
+                line-height: 26px;
+                padding: 0 12px;
+            }
+
+        .pagination ul > .active > a {
+            color: #999999;
+            cursor: default;
+        }
+
+        .pagination ul > li > a:hover, .pagination ul > li > a:focus, .pagination ul > .active > a, .pagination ul > .active > span {
+            background-color: #F5F5F5;
+            color: #005580;
+            text-decoration: none;
+        }
+
+    .pagination a:hover, .pagination a:focus {
+        color: #005580;
+    }
+/*分页 css end*/
+
+/*th{background: #0066FF;color:#FFFFFF;line-height: 20px;height: 30px;}
+td{padding: 6px 11px;border-bottom: 1px solid #95bce2;vertical-align: top;text-align: center;}
+td *{ padding: 6px 11px;}
+tr.alt td{background: #ecf6fc;}
+tr.over td{background: #bcd4ec;}*/
+
+/*responsive setting*/
+@media (min-width: 1025px) {
+    header ul li {
+        margin: 10px 10px 0 10px;
+    }
+
+        header ul li a {
+            margin: 0;
+            padding: 0 5% 0 5%;
+        }
+}
+
+@media (min-width: 992px) and (max-width: 1200px) {
+    header ul li {
+        margin: 10px 5px 0 5px;
+    }
+
+        header ul li a {
+            margin: 0;
+            padding: 0px 2% 0 2%;
+        }
+}
+
+@media (min-width: 768px) and (max-width: 992px) {
+    header ul li {
+        margin: 10px 0 0 0;
+        padding: 0;
+    }
+
+        header ul li a {
+            margin: 0;
+            padding: 0 12px 0 12px !important;
+        }
+}
+
+@media (max-width: 768px) {
+    header ul li a {
+        margin: 0;
+        padding: 22px 0 0 0;
+    }
+
+    header #mobile_menu {
+        font-size: 35px;
+        margin-top: -37px;
+        float: right;
+        color: #353c43;
+    }
+
+    header #mobile_menu_list ul {
+        list-style: none;
+        float: left;
+        margin: 0;
+        padding: 0;
+        width: 100%;
+    }
+
+    header #mobile_menu_list li {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 50px;
+        background: #353c43;
+        text-align: center;
+        border-bottom: 1px solid #b7cf63;
+    }
+
+        header #mobile_menu_list li:hover {
+            background: #9db44d;
+            border-bottom: 1px solid #b7cf63;
+        }
+
+        header #mobile_menu_list li a {
+            width: 100%;
+            color: #fff;
+            margin: 0;
+            padding: 0;
+            line-height: 50px;
+            border-bottom: none;
+            text-decoration: none;
+        }
+}

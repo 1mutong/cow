@@ -1,0 +1,103 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>新增用户</title>
+    <link rel="stylesheet" href="~/ligerUI/skins/Aqua/css/ligerui-all.css">
+    <link rel="stylesheet" href="~/bootstrap/css/bootstrap-theme1.min.css">
+    <link href="~/Controls/jQuery.Select2/select2.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/Style/base.css">
+    <link rel="stylesheet" href="~/Style/Feed/Index/ModifyCowGroup.css" />
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/Controls/jQuery.Select2/select2.min.js"></script>
+    <script src="~/ligerUI/js/ligerui.min.js"></script>
+    <script src="~/bootstrap/js/bootstrap.min.js"></script>
+    <script src="~/Scripts/menu.js"></script>
+    <script src="~/Scripts/settingData.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            //loadUserInfo();
+            loadOperator();
+            InitBtnEvent();
+        })
+
+        function loadOperator() {
+            $.ajax({
+                type: 'get',
+                url: '../../Users/User/GetRoleItems',
+                dataType: 'json',
+                cache: false,
+                success: function (user) {
+                    if (user) {
+                        $("#PastureID").empty();
+                        $("#PastureID").append('<option value="0" selected = "selected">' + "请选择角色" + '</option>');
+                        $.each(user, function () {
+                            $("#PastureID").append('<option value="' + this.ID + '">' + this.Name + '</option>');
+                        });
+                    }
+                }
+            });
+        }
+
+        function InitBtnEvent() {
+            $('#btnSubmit').ligerButton({
+                width: 60,
+                text: '保存',
+                click: function () {
+                    //提交表单
+                    document.getElementById('userInfo').submit();
+                    parent.window.loadUserList();
+                    parent.$.ligerDialog.close();
+                    parent.$(".l-dialog,.l-window-mask").hide();
+                },
+                icon: null
+            });
+            $('#btnCancel').ligerButton({
+                width: 60,
+                text: '取消',
+                click: function () {
+                    parent.$.ligerDialog.close();
+                    parent.$(".l-dialog,.l-window-mask").hide();
+                },
+                icon: null
+            });
+        }
+    </script>
+</head>
+<body>
+    <form class="form-inline" action="~/Users/User/SaveAddedUser" method="post" id="userInfo">
+        <div class="container">
+            <div class="form-group">
+                <span style="width:200px">账&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;号:</span>
+                <span><input type="text" name="Account" style="width: 350px; height: 30px" /></span>
+            </div>
+            <div class="form-group">
+                <span style="width:200px">名&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;称:</span>
+                <span><input type="text" name="Name" style="width: 350px; height: 30px" /></span>
+            </div>
+            <div class="form-group">
+                <span style="width:200px">角&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;色:</span>
+                <span><select name="RoleID" id="PastureID" style="width: 350px; height: 30px"></select></span>
+            </div>
+            <div class="form-group">
+                <span style="width:200px">密&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;码:</span>
+                <span><input type="password" name="Password" style="width: 350px; height: 30px" /></span>
+            </div>
+            <div class="form-group">
+                <span style="width:200px">确认密码:</span>
+                <span><input type="password" name="EnsurePassword" style="width: 350px; height: 30px" /></span>
+            </div>
+        </div>
+    </form>
+    <div style="text-align:center;">
+        <input type="button" id="btnSubmit" value="确认" />
+        <input type="button" id="btnCancel" value="取消" />
+    </div>
+    <script src="~/Scripts/bdhm.js"></script>
+</body>
+</html>

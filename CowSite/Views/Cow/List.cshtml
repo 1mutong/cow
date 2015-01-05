@@ -1,0 +1,90 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>奶牛列表</title>
+    <link rel="shortcut icon" href="images/emutong.ico">
+    <link rel="stylesheet" href="~/ligerUI/skins/Aqua/css/ligerui-all.css">
+    <link rel="stylesheet" href="~/bootstrap/css/bootstrap-theme1.min.css">
+    <link rel="stylesheet" href="~/Style/base.css">
+    <link rel="stylesheet" href="~/Style/common.css">
+    <link rel="stylesheet" href="~/Style/Home/Index.css">
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/ligerUI/js/ligerui.min.js"></script>
+    <script src="~/bootstrap/js/bootstrap.min.js"></script>
+    <script src="~/Controls/echarts/doc/asset/js/esl/esl.js"></script>
+    <link href="~/Controls/jQuery.LoadingUI/jquery.loadingui.css" rel="stylesheet" />
+    <script src="~/Controls/jQuery.LoadingUI/jquery.loadingui.js"></script>
+    <style>
+        .cowListTitle {
+            font-size: 18px;
+            font-weight: bold;
+            display: inline-block;
+        }
+    </style>
+    <script>
+        var cowType = "@ViewBag.CowType";
+
+        $(function () {
+            document.title = cowType + "列表";
+            $('.cowListTitle').html(cowType + "列表");
+            loadCowList(cowType);
+        });
+
+        function loadCowList(cowType) {
+            $.ajax({
+                type: 'get',
+                url: '../../Cow/GetCowList',
+                data: { cowType: cowType },
+                dataType: 'json',
+                beforeSend: function () { $('.content').loadingUI(); },
+                success: function (data) {
+                    $(".cowList").ligerGrid({
+                        checkbox: false,
+                        columns: [
+                            {
+                                display: '耳号', name: 'DisplayEarNum', type: 'string', width: 100,
+                                render: function (row) {
+                                    var html = '<a target="-blank" href="../../Cow/CowDetail?displayEarNum=' + row.DisplayEarNum + '">' + row.DisplayEarNum + '</a>';
+                                    return html;
+                                },
+                            },
+                            { display: '群', name: 'GroupName', type: 'double', width: 100 },
+                            { display: '性别', name: 'Gender', type: 'double', width: 100 },
+                            { display: '月龄', name: 'AgeMonth', type: 'double', width: 100 },
+                            { display: '类型', name: 'CowType', type: 'string', width: 100 },
+                            { display: '状态', name: 'Status', type: 'string', width: 100 }
+                        ],
+                        width: '100%',
+                        height: '100%',
+                        isScroll: false,
+                        data: data,
+                        usePager: false
+                    });
+                    $('.content').loadingUI('hide');
+                }
+            });
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div id="menu">
+            <div class="mt10 mb10">
+                <div style="display: inline">
+                    <img src="../../Images/emutong_logo.png" style="width:164px; height:33px;" />
+                </div>
+                <div class="cowListTitle"></div>
+            </div>
+        </div>
+        <div class="content mt20">
+            <div class="cowList"></div>
+        </div>
+    </div>
+    <script src="~/Scripts/bdhm.js"></script>
+</body>
+</html>

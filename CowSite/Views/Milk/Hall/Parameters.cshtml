@@ -1,0 +1,123 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>奶厅参数</title>
+    <link rel="stylesheet" href="~/ligerUI/skins/Aqua/css/ligerui-all.css">
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/Scripts/jquery-tools-min.js"></script>
+    <script src="~/ligerUI/js/ligerui.min.js"></script>
+    <link rel="stylesheet" href="~/bootstrap/css/bootstrap-theme1.min.css">
+    <script src="~/bootstrap/js/bootstrap.min.js"></script>
+    <link href="~/Controls/jQuery.Select2/select2.css" rel="stylesheet" />
+    <script src="~/Controls/jQuery.Select2/select2.min.js"></script>
+    <script src="~/Scripts/menu.js"></script>
+    <script src="~/Scripts/common.js"></script>
+    <link href="~/Controls/bootstrap.datepicker/datepicker.css" rel="stylesheet" />
+    <script src="~/Controls/bootstrap.datepicker/bootstrap-datepicker.js"></script>
+    <link rel="stylesheet" href="~/Style/base.css">
+    <script>
+        $(function () {
+            $('#menu').menu({ mainMenuSelectedID: "Milk", subMenuSelectedID: "Milk-Parameter" });
+            loadTask();
+            initBtnEvent();
+        });
+
+        function loadTask() {
+            $.ajax({
+                type: 'get',
+                url: "../../Milk/Parameter/LoadTask",
+                dataType: "json",
+                cache: false
+            }).success(function (milkData) {
+                $('#VacuumPressure').val(milkData.vacuumPressure);
+                $('#Pulsation').val(milkData.pulsation);
+                $('#CleanupCount').val(milkData.cleanupCount);
+            });
+        }
+
+        @*function loadMilkHallInfo() {
+            $("#milkHallInfo").ligerForm({
+                inputWidth: 160, labelWidth: 160, space: 40,
+                fields: [
+                { display: "真空压力(mpa)", name: "VacuumPressure", type: "text", width: 270, validate: { required: true } },
+                { display: "脉动次数(次/min)", name: "Pulsation", type: "text", width: 270, validate: { required: true } },
+                { display: "设备清洗次数", name: "CleanupCount", type: "text", width: 270, validate: { required: true } }
+                //{ display: "奶厅备注", name: "Name", type: "textarea", width: 270 }
+                ]
+            });
+            liger.get("milkHallInfo").getEditor("VacuumPressure").setValue("@ViewBag.VacuumPressure");
+            liger.get("milkHallInfo").getEditor("Pulsation").setValue("@ViewBag.Pulsation");
+            liger.get("milkHallInfo").getEditor("CleanupCount").setValue("@ViewBag.CleanupCount");
+        }*@
+
+        function initBtnEvent() {
+            $('#btnSubmit').ligerButton({
+                width: 60,
+                text: '保存',
+                click: function () {
+                    //提交表单
+                    //document.getElementById('milkHallInfo').submit();
+                    //parent.$.ligerDialog.close();
+                    //parent.$(".l-dialog,.l-window-mask").hide();
+                    var VacuumPressure = $("#VacuumPressure").val();
+                    var v = parseFloat(VacuumPressure);
+                    if (v < 4.2 || v > 4.6) {
+                        alert('真空压力预警标准值：4.2mpa-4.6mpa，请检查设备是否正常！');
+                        return;
+                    }
+                    var Pulsation = $("#Pulsation").val();
+                    var p = parseInt(Pulsation);
+                    if (p < 60 || p > 68) {
+                        alert('脉动次数预警标准值：60-68次/min，请检查设备是否正常！');
+                        return;
+                    }
+                    var CleanupCount = $("#CleanupCount").val();
+
+                    $.ajax({
+                        type: 'get',
+                        url: "../../Milk/Parameter/Update",
+                        dataType: "json",
+                        data: { VacuumPressure: VacuumPressure, Pulsation: Pulsation, CleanupCount: CleanupCount },
+                        cache: false
+                    }).success(function () {
+                        alert("保存成功！");
+                    });
+                },
+                icon: null
+            });
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div id="menu"></div>
+        <div class="content">
+            <form id="milkHallInfo">
+                <div class="input-group mt10">
+                    <span class="input-group-addon w100">真空压力(mpa)</span>
+                    <input type="text" class="form-control w200" placeholder="真空压力" id="VacuumPressure" name="vacPressure">
+                    标准值：4.2mpa-4.6mpa
+                </div>
+                <div class="input-group mt10">
+                    <span class="input-group-addon w100">脉动次数(次/min)</span>
+                    <input type="text" class="form-control w200" placeholder="脉动次数" id="Pulsation" name="pulsat" />
+                    标准值：60-68次/min
+                </div>
+                <div class="input-group mt10">
+                    <span class="input-group-addon w100">设备清洗次数</span>
+                    <input type="text" class="form-control w200" placeholder="设备清洗次数" id="CleanupCount" name="cleaCount" />
+                </div>
+                <div class="btn-group mt10">
+                    <input type="button" id="btnSubmit" value="保存" />
+                </div>
+            </form>
+        </div>
+    </div>
+    <script src="~/Scripts/bdhm.js"></script>
+</body>
+</html>

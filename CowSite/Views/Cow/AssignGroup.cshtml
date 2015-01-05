@@ -1,0 +1,34 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>分配牛群</title>
+    <link rel="stylesheet" type="text/css" href="../ligerUI/skins/Aqua/css/ligerui-all.css">
+    <link rel="stylesheet" type="text/css" href="../Style/base.css">
+    <script type="text/javascript" src="../Scripts/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript" src="../ligerUI/js/core/base.js"></script>
+    <script type="text/javascript" src="../ligerUI/js/plugins/ligerGrid.js"></script>
+    <script type="text/javascript" src="../ligerUI/js/plugins/ligerButton.js"></script>
+    <link rel="stylesheet" href="../bootstrap/css/bootstrap-theme1.min.css">
+    <script type="text/javascript" src="../bootstrap/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="header mt10 mb10">
+            <div class="btn-group">
+                <img src="../../Images/emutong_logo.png" style="width:164px; height:33px;" />
+            </div>
+            <div class="btn-group">
+                牛群分配
+            </div>
+        </div>
+        <div id="cowGrid" class="displayBlock ml5 mr5"></div>
+        <div id="message"></div>
+        <div class="l-loading" id="pageloading"></div>
+    </div>
+    <script src="~/Scripts/bdhm.js"></script>
+</body>
+</html>

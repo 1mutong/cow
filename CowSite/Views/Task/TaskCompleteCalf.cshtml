@@ -1,0 +1,135 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>犊牛饲喂任务单</title>
+    <link rel="stylesheet" href="~/ligerUI/skins/Aqua/css/ligerui-all.css">
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/Scripts/jquery-tools-min.js"></script>
+    <script src="~/ligerUI/js/ligerui.min.js"></script>
+    <link rel="stylesheet" href="~/bootstrap/css/bootstrap-theme1.min.css">
+    <script src="~/bootstrap/js/bootstrap.min.js"></script>
+    <link href="~/Controls/jQuery.Select2/select2.css" rel="stylesheet" />
+    <script src="~/Controls/jQuery.Select2/select2.min.js"></script>
+    <script src="~/Scripts/menu.js"></script>
+    <script src="~/Scripts/common.js"></script>
+    <link href="~/Controls/bootstrap.datepicker/datepicker.css" rel="stylesheet" />
+    <script src="~/Controls/bootstrap.datepicker/bootstrap-datepicker.js"></script>
+    <link rel="stylesheet" href="~/Style/base.css">
+    <link rel="stylesheet" href="~/Style/common.css">
+    <script>
+        var taskID = "@ViewBag.TaskID";
+        $(function () {
+            $('#menu').menu({ mainMenuSelectedID: "Task", subMenuSelectedID: "Task-CompleteCalf", showSubMemu: false });
+            loadTask();
+        });
+
+        function loadTask() {
+            $.ajax({
+                type: 'get',
+                url: "../../TaskCompleteCalf/LoadTask",
+                data: { taskID: taskID },
+                dataType: "json",
+                cache: false,
+                success: function (taskData) {
+                    $('input[name=id]').val(taskID);
+                    $('#taskid').text(taskID);
+                    $('input[name=DisplayEarNum]').val(taskData.DisplayEarNum);
+
+                    initDateSelector(taskData.ArrivalTime);
+                    loadOperator(taskData.Operator);
+                }
+            });
+        }
+
+
+
+        function loadOperator(op) {
+            $.ajax({
+                type: 'get',
+                url: '../../Users/User/GetUserItems',
+                dataType: 'json',
+                cache: false,
+                success: function (user) {
+                    if (user) {
+                        $("#OperatorID").empty();
+                        $("#OperatorID").append('<option value="0" selected = "selected">' + "请选择操作人员" + '</option>');
+                        $.each(user, function () {
+                            $("#OperatorID").append('<option value="' + this.ID + '">' + this.Name + '</option>');
+                        })
+                        $('select[name=operatorName]').val(op);
+                        ;
+                    }
+                }
+            });
+        }
+
+        function initDateSelector(start) {
+            $('input[name=start]').datepicker({
+                language: 'zh-CN',
+                autoclose: 1,
+                todayHighlight: 1,
+                format: "yyyy-mm-dd",
+            });
+
+            $('input[name=start]').val(start);
+
+            $('input[name=end]').datepicker({
+                language: 'zh-CN',
+                autoclose: 1,
+                todayHighlight: 1,
+                format: "yyyy-mm-dd"
+            });
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div id="menu"></div>
+        <div class="content">
+            <div class="page-title">犊牛饲喂任务单</div>
+            <div>
+                <form action="../../TaskCompleteCalf/SaveTask" method="post">
+                    <input type="hidden" name="id" />
+                    <div>任务单ID：<span id="taskid"></span></div>
+                    <div>任务单类型：分群任务单</div>
+                    <div>任务指导：请按照以下饲喂要求，进行犊牛饲养。</div>
+                    <br />
+                    <div>1、出生1-3天，喂初乳。</div>
+                    <div>2、出生后第4天开始诱食，饲喂犊牛料。</div>
+                    <div>3、出生后第15天犊牛做去角处理.</div>
+                    <div>4、出生第30天做驱虫处理。</div>
+                    <div>5、出生第45天添加优质牧草。</div>
+                    <div>6、出生第60天开始断奶，连续三天达到750-800克时/天，可断奶。</div>
+                    <br />
+                    <div class="input-group mt10">
+                        <span class="input-group-addon w200">牛耳号：</span>
+                        <input type="text" class="form-control w200 js-DisplayEarNum" placeholder="耳号" id="earNum" name="DisplayEarNum" readonly="readonly" />
+                    </div>
+                    <div class="input-group mt10">
+                        <span class="input-group-addon w200">任务开始时间:</span>
+                        <input type="text" class="form-control w200" id="startDate" name="start" readonly="readonly" />
+                    </div>
+                    <div class="input-group mt10">
+                        <span class="input-group-addon w200">任务完成时间: </span>
+                        <input type="text" class="form-control w200" id="endDate" name="end" />
+                    </div>
+                    <div class="input-group mt10">
+                        <span class="input-group-addon w200">操作人员：</span>
+                        <select name="operatorName" class="form-control w200" id="OperatorID"></select>
+                    </div>
+                    <div class="mt10">
+                        <input type="submit" class="btn btn-primary" id="btnSave" value="提交" />
+                    </div>
+                </form>
+            </div>            
+        </div>
+    </div>
+    <script src="~/Scripts/bdhm.js"></script>
+</body>
+</html>

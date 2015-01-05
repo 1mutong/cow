@@ -1,0 +1,247 @@
+﻿@model DairyCow.Model.Cow
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>牛档案卡</title>
+    <link rel="shortcut icon" href="images/emutong.ico">
+    <link rel="stylesheet" href="~/ligerUI/skins/Aqua/css/ligerui-all.css">
+    <link rel="stylesheet" href="~/bootstrap/css/bootstrap-theme1.min.css">
+    <link rel="stylesheet" href="~/Style/base.css">
+    <link rel="stylesheet" href="~/Style/Home/Index.css">
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/ligerUI/js/ligerui.min.js"></script>
+    <script src="~/bootstrap/js/bootstrap.min.js"></script>
+    <script src="~/Controls/echarts/doc/asset/js/esl/esl.js"></script>
+    <script src="~/Scripts/common.js"></script>
+    <script src="~/Scripts/menu.js"></script>
+    <style type="text/css">
+        .cowBaseImage img{
+            width: 150px;
+            height: 120px;
+            cursor: pointer;
+        }
+    </style>
+    <script>
+        var displayEarNum = "@ViewBag.DisplayEarNum";
+
+        $(function () {
+            $('#menu').menu({ mainMenuSelectedID: "Query", subMenuSelectedID: "Query-Cow" });
+            $('input[name=DisplayEarNum]').val(displayEarNum);
+            renderCowInfo();
+            loadCowImage();
+            initBtn();
+            initUploadCowImage();
+        });
+
+        function initBtn() {
+            $('#btnQuery').click(function () {
+                displayEarNum = $('input[name=DisplayEarNum]').val();
+                renderCowInfo(displayEarNum);
+                loadCowImage();
+            });
+        }
+
+        function renderCowInfo() {
+            $.ajax({
+                type: 'get',
+                url: '../../Cow/GetCowInfo',
+                dataType: 'json',
+                data: { displayEarNum: displayEarNum },
+                timeout: 90000000,
+                success: function (myCow) {
+                    $('input[name=AgeMonth]').val(myCow.AgeMonth);
+                    $('input[name=CowType]').val(myCow.CowType);
+                    $('input[name=BirthDate]').val(myCow.BirthDateStr);
+                    $('input[name=Color]').val(myCow.Color);
+                    $('input[name=BirthWeight]').val(myCow.BirthWeight);
+                    $('input[name=Gender]').val(myCow.Gender);
+                    $('input[name=FatherNum]').val(myCow.FatherNum);
+                    $('input[name=MotherNum]').val(myCow.MotherNum);
+                    $('input[name=IllStatus]').val(myCow.IllStatus);
+                    $('input[name=Status]').val(myCow.Status);
+                    $('input[name=TimesOfInsemination]').val(myCow.TimesOfInsemination);
+                    $('input[name=DaysOfPregnant]').val(myCow.DaysOfPregnant);
+                    $('input[name=Parity]').val(myCow.Parity);
+                    $('input[name=AverageParityInterval]').val(myCow.AverageParityInterval);
+                    $('input[name=MilkType]').val(myCow.MilkType);
+                    $('input[name=DaysInMilk]').val(myCow.DaysInMilk);
+                    $('input[name=DaysInDry]').val(myCow.DaysInDry);
+                    $('input[name=LatestInseminationDateString]').val(myCow.LatestInseminationDateString);
+                }
+            });
+        }
+
+        function loadCowImage() {
+            $.ajax({
+                type: 'get',
+                url: '../../Cow/GetCowImage',
+                dataType: 'json',
+                data: { displayEarNum: displayEarNum },
+                timeout: 90000000,
+                success: function (cowImage) {
+                    if (typeof (cowImage) != 'undefined' && cowImage && cowImage.length == 3) {
+                        var host = window.location.host;
+                        var initializationTime = (new Date()).getTime();
+                        $('#cowImage-1').attr('src', 'http://' + host + '/CowImage/' + cowImage[0] + "?t=" + initializationTime);
+                        $('#cowImage-2').attr('src', 'http://' + host + '/CowImage/' + cowImage[1] + "?t=" + initializationTime);
+                        $('#cowImage-3').attr('src', 'http://' + host + '/CowImage/' + cowImage[2] + "?t=" + initializationTime);
+                    }
+                }
+            });
+        }
+
+        function initUploadCowImage() {
+            $('.js-uploadImage').click(function (e) {
+                e.preventDefault();
+                var id = $(this).attr('id');
+                displayEarNum = $('input[name=DisplayEarNum]').val();
+                if (displayEarNum == "请输入耳号！") {
+                    alert("");
+                    $('input[name=DisplayEarNum]').focus();
+                    return;
+                }
+                $('#imgFileInput').click();
+                // create a new FormData object
+                var formData = new FormData();
+                formData.append('DisplayEarNum', displayEarNum);
+                var imgIndex = $(this).attr('id').split('-')[1];
+                formData.append('ImgIndex', imgIndex);
+                // get the file and append it to the FormData object                
+                formData.append('ImgFile', $('input[name=imgFile]')[0].files[0]);
+                $.ajax({
+                    type: "POST",
+                    url: '../../Cow/UploadCowImage',
+                    data: formData,
+                    success: function (data) {
+                        var host = window.location.host;
+                        var imgUrl = 'http://' + host + '/CowImage/' + data.ImgUrl;
+                        $('#' + id).attr("src", imgUrl);
+                    },
+                    cache: false,
+                    contentType: false,
+                    processData: false
+                });
+            });
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div id="menu">            
+        </div>
+        <div class="content mt20">
+            <form id="cowInfo" enctype="multipart/form-data" method="post" action="../../Cow/UploadCowImage" target="uploadFrame">
+                <div class="input-group mt10">
+                    <span class="input-group-addon w100">牛耳号</span>
+                    <input type="text" class="form-control w200 js-DisplayEarNum" placeholder="牛耳号" name="DisplayEarNum">
+                    <button type="button" class="btn btn-primary inline" id="btnQuery">刷新</button>
+                </div>
+                <div>
+                    <div class="cowBaseInfo inline">
+                        <div class="mt10">
+                            基本信息
+                        </div>
+                        <div class="input-group mt10">
+                            <span class="input-group-addon w100">月龄</span>
+                            <input type="text" class="form-control w200" contenteditable="false" placeholder="月龄" name="AgeMonth">
+                        </div>
+                        <div class="input-group mt10">
+                            <span class="input-group-addon w100">牛类型</span>
+                            <input type="text" class="form-control w200" contenteditable="false" placeholder="牛类型" name="CowType">
+                        </div>
+                        <div class="input-group mt10">
+                            <span class="input-group-addon w100">出生日期</span>
+                            <input type="text" class="form-control w200" contenteditable="false" placeholder="出生日期" name="BirthDate">
+                        </div>
+                        <div class="input-group mt10">
+                            <span class="input-group-addon w100">花色</span>
+                            <input type="text" class="form-control w200" contenteditable="false" placeholder="花色" name="Color">
+                        </div>
+                        <div class="input-group mt10">
+                            <span class="input-group-addon w100">出生体重</span>
+                            <input type="text" class="form-control w200" contenteditable="false" placeholder="出生体重" name="BirthWeight">
+                        </div>
+                        <div class="input-group mt10">
+                            <span class="input-group-addon w100">性别</span>
+                            <input type="text" class="form-control w200" contenteditable="false" placeholder="性别" name="Gender">
+                        </div>
+                        <div class="input-group mt10">
+                            <span class="input-group-addon w100">父亲号</span>
+                            <input type="text" class="form-control w200" contenteditable="false" placeholder="父亲号" name="FatherNum">
+                        </div>
+                        <div class="input-group mt10">
+                            <span class="input-group-addon w100">母亲号</span>
+                            <input type="text" class="form-control w200" contenteditable="false" placeholder="母亲号" name="MotherNum">
+                        </div>
+                        <div class="input-group mt10">
+                            <span class="input-group-addon w100">生病状态</span>
+                            <input type="text" class="form-control w200" contenteditable="false" placeholder="生病状态" name="IllStatus">
+                        </div>
+                    </div>
+                    <div class="cowBaseImage inline ml40 mt40" style="vertical-align: top;">
+                        <img class="js-uploadImage" id="cowImage-1" alt="" />
+                        <img class="js-uploadImage" id="cowImage-2" alt="" />
+                        <img class="js-uploadImage" id="cowImage-3" alt="" />
+                        <input id="imgFileInput" name="imgFile" type="file" style="display: none;" />
+                    </div>
+                </div>
+                <div class="input-group mt10" id="breedGroup">
+                    <div class="mt10">
+                        繁殖相关信息
+                    </div>
+                    <div class="input-group mt10">
+                        <span class="input-group-addon w100">繁殖状态</span>
+                        <input type="text" class="form-control w200" contenteditable="false" placeholder="繁殖状态" name="Status">
+                    </div>
+                    <div class="input-group mt10">
+                        <span class="input-group-addon w100">配次</span>
+                        <input type="text" class="form-control w200" contenteditable="false" placeholder="配次" name="TimesOfInsemination">
+                    </div>
+                    <div class="input-group mt10">
+                        <span class="input-group-addon w100">配种天数</span>
+                        <input type="text" class="form-control w200" contenteditable="false" placeholder="配种天数" name="DaysOfPregnant">
+                    </div>
+                    <div class="input-group mt10">
+                        <span class="input-group-addon w100">最近配种日期</span>
+                        <input type="text" class="form-control w200" contenteditable="false" placeholder="最近配种日期" name="LatestInseminationDateString">
+                    </div>
+                    <div class="input-group mt10">
+                        <span class="input-group-addon w100">胎次</span>
+                        <input type="text" class="form-control w200" contenteditable="false" placeholder="胎次" name="Parity">
+                    </div>
+                    <div class="input-group mt10">
+                        <span class="input-group-addon w100">胎间距</span>
+                        <input type="text" class="form-control w200" contenteditable="false" placeholder="胎间距" name="AverageParityInterval">
+                    </div>
+                </div>
+                <div id="milkGroup" class="input-group mt10">
+                    <div class="mt10">
+                        泌乳相关信息
+                    </div>
+                    <div class="input-group mt10">
+                        <span class="input-group-addon w100">泌乳状态</span>
+                        <input type="text" class="form-control w200" contenteditable="false" placeholder="泌乳状态" name="MilkType">
+                    </div>
+                    <div class="input-group mt10">
+                        <span class="input-group-addon w100">泌乳天数</span>
+                        <input type="text" class="form-control w200" contenteditable="false" placeholder="泌乳天数" name="DaysInMilk">
+                    </div>
+                    <div class="input-group mt10">
+                        <span class="input-group-addon w100">干奶天数</span>
+                        <input type="text" class="form-control w200" contenteditable="false" placeholder="干奶天数" name="DaysInDry">
+                    </div>
+                </div>
+            </form>
+            <iframe id="uploadFrame" style="display:none;"></iframe>
+        </div>
+    </div>
+    <script src="~/Scripts/bdhm.js"></script>
+</body>
+</html>

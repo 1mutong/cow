@@ -1,0 +1,171 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>饲料维护</title>
+    <link rel="stylesheet" href="~/ligerUI/skins/Aqua/css/ligerui-all.css">
+    <link rel="stylesheet" href="~/Style/base.css">
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/ligerUI/js/ligerui.min.js"></script>
+    <link rel="stylesheet" href="~/bootstrap/css/bootstrap-theme1.min.css">
+    <script src="~/bootstrap/js/bootstrap.min.js"></script>
+    <script src="~/Scripts/menu.js"></script>
+    <script>
+        var fooderGridManager;
+        $(function () {
+            $('#menu').menu({ mainMenuSelectedID: "Feed", subMenuSelectedID: "Feed-Fodder" });
+            loadFodderList();
+            initButton();
+        });
+
+        function loadFodderList() {
+            $.ajax({
+                type: 'get',
+                url: "../../Feed/Fodder/GetPastureFoldders",
+                cache: false,
+                //data: { formulaID: formulaID },
+                dataType: "json"
+            }).success(function (fodders) {
+                if (fodders) {
+                    fooderGridManager = $("#fodderGrid").ligerGrid({
+                        columns: [
+                            { display: '饲料ID', name: 'FodderID', width: 1, hide: true },
+                            { display: '牧场饲料名称', name: 'FodderName', width: 100, align: 'left' },
+                            { display: "对应标准饲料", name: "SysFodderName", width: 100 },
+                            { display: '状态', name: 'Status', align: 'left', width: 100 },
+                            { display: '价格', name: 'Price', align: 'left', width: 100 },
+                            { display: '标准饲料说明', name: 'Description', align: 'left', width: 100 }
+                        ],
+                        pageSize: 15,
+                        title: '牧场饲料列表',
+                        showTitle: true,
+                        width: '100%',
+                        height: 'auto',
+                        isScroll: false,
+                        data: fodders,
+                        enabledEdit: false,
+                        clickToEdit: false,
+                        pager: false
+                    });
+                    $("#pageloading").hide();
+                }
+            });
+        }
+
+        function initButton() {
+            $.ajax({
+                type: 'get',
+                url: "../../Feed/Fodder/GetSysFodders",
+                dataType: 'json',
+                cache: false,
+                success: function (sysFodderList) {
+                    $("select[name=sysFodder]").empty();
+                    $("select[name=sysFodder]").append('<option></option>');
+                    if (typeof (sysFodderList.Rows) != 'undefined' && sysFodderList.Rows && sysFodderList.Rows.length > 0) {
+                        $.each(sysFodderList.Rows, function () {
+                            $("select[name=sysFodder]").append('<option value="' + this.ID + '">' + this.Name + '</option>');
+                        });
+                    }
+                }
+            });
+
+            $('#btnAdd').click(function () {
+                var fodderName = $('input[name=fodderName]').val();
+                if (fodderName == '') {
+                    alert("请输入饲料名称。");
+                    return;
+                }
+                var quantity = $('input[name=quantity]').val();
+                if (quantity == '') {
+                    alert("请输入饲料数量。");
+                    return;
+                }
+                var price = $('input[name=price]').val();
+                if (price == '') {
+                    alert("请输入饲料价格。");
+                    return;
+                }
+                var sysFodderID = $('select[name=sysFodder]').val();
+                if (sysFodderID == '') {
+                    alert("请选择对应标准饲料。");
+                    return;
+                }
+                $.ajax({
+                    type: 'post',
+                    url: "../../Feed/Fodder/AddPastureFodder",
+                    dataType: "json",
+                    data: { fodderName: fodderName, quantity: quantity, price: price, sysFodderID: sysFodderID }
+                }).success(function (Msg) {
+                    loadFodderList();
+                    alert(Msg.Msg);
+                });
+
+            });
+            $('#btnDelete').click(function () {
+                var row = fooderGridManager.getSelectedRow();
+                if (row) {
+                    var id = row["FodderID"];
+                    if (id == undefined) {
+                        alert("id is null");
+                    }
+                    $.ajax({
+                        type: 'post',
+                        url: "../../Feed/Fodder/DeletePastureFodder",
+                        dataType: "json",
+                        data: { fodderID: id }
+                    }).success(function (Msg) {
+                        loadFodderList();
+                        alert(Msg.Msg);
+                    });
+                }
+                else {
+                    alert("请先选中饲料。");
+                }
+            });
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div id="menu"></div>
+        <div class="content">
+            <div class="input-group mt10">
+                <span class="input-group-addon w200">牧场饲料名</span>
+                <input type="text" class="form-control w200 " placeholder="牧场饲料名" name="fodderName">
+            </div>
+            <div class="input-group mt10">
+                <span class="input-group-addon w200">数量</span>
+                <input type="text" class="form-control w200 " placeholder="数量" name="quantity">
+            </div>
+            <div class="input-group mt10">
+                <span class="input-group-addon w200">价格</span>
+                <input type="text" class="form-control w200 " placeholder="价格" name="price">
+            </div>
+            <div class="input-group mt10">
+                <span class="input-group-addon w200">对应标准饲料</span>
+                <select class="w200" name="sysFodder"></select>
+            </div>
+            <div class="input-group mt10">
+                <button type="button" class="btn btn-primary inline" id="btnAdd">添加牧场饲料</button>
+                <button type="button" class="btn btn-primary inline" id="btnDelete">删除牧场饲料</button>
+            </div>
+            <div style="margin: 10px 0px 10px 0px; position: relative; height: 30px; width: 100%;">
+                <div style="display: inline-block; position: absolute; right: 0px;">
+                    <input type="button" id="btnAdd" value="添加牧场饲料" style="display: none;" />
+                    <input type="button" id="btnDelete" value="删除牧场饲料" style="display: none;" />
+                </div>
+            </div>
+            <div>
+                <div id="fodderGrid"></div>
+                <div id="message"></div>
+                <div class="l-loading" id="pageloading"></div>
+            </div>
+        </div>
+    </div>
+    <script src="~/Scripts/bdhm.js"></script>
+</body>
+</html>

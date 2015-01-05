@@ -1,0 +1,127 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>易牧通-登陆</title>
+    <link rel="shortcut icon" href="images/emutong.ico">
+    <script type="text/javascript" src="../Scripts/jquery-1.10.2.min.js"></script>
+    <link rel="stylesheet" href="../bootstrap/css/bootstrap-theme1.min.css">
+    <script type="text/javascript" src="../bootstrap/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="../Style/base.css">
+    <link href="../Style/emutong_style.css" rel="stylesheet" />
+    <script type="text/javascript">
+        $(function () {
+            $('input[name=name]').keydown(function (event) {
+                if (event.keyCode == 13) {
+                    $('#btnLogin').click();
+                }
+            });
+
+            $('input[name=password]').keydown(function (event) {
+                if (event.keyCode == 13) {
+                    $('#btnLogin').click();
+                }
+            });
+
+            $('#btnLogin').click(function () {
+                var userAccount = $("[name=name]").val();
+                var pas = $("[name=password]").val();
+                if (userAccount == '') {
+                    alert('请输入用户名！');
+                    return;
+                } else if (pas == '') {
+                    alert('请输入密码！');
+                    return;
+                }
+
+                $.ajax({
+                    type: 'get',
+                    url: "../Login/Login",
+                    cache: false,
+                    data: { userAccount: userAccount, password: pas },
+                    dataType: "json"
+                }).success(function (loginResult) {
+                    if (loginResult.login == 1)
+                    {
+                        if (loginResult.menu[0] == 'Home') {
+                            window.location.href = "../Home/Index";
+                        }
+                        else if (loginResult.menu[0] == 'Task') {
+                            window.location.href = "../Task/Index/List";
+                        }
+                        else if (loginResult.menu[0] == 'Breed') {
+                            window.location.href = "../Breed/Index/Index";
+                        }
+                        else if (loginResult.menu[0] == 'Feed') {
+                            window.location.href = "../Feed/CowGroup/List";
+                        }
+                        else if (loginResult.menu[0] == 'Milk') {
+                            window.location.href = "../Milk/Index/Index";
+                        }
+                        else if (loginResult.menu[0] == 'Medical') {
+                            window.location.href = "../Medical/Index/Index";
+                        }
+                        else if (loginResult.menu[0] == 'Platform') {
+                            window.location.href = "../Platform/Farm/List";
+                        }
+                        else if (loginResult.menu[0] == 'FarmAdmin') {
+                            window.location.href = "../Users/Index/List";
+                        }
+                    }
+                    else
+                    {
+                        alert("登陆失败，请确认用户名密码。");
+                    }
+                });                
+            })
+        })
+    </script>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-5 col-md-push-1 col-sm-6">
+                    <a href="#" id="emutong_logo"><img src="../Images/emutong_logo.png" alt="Logo"></a>
+                </div>
+            </div>
+        </div>
+    </header>
+    <section id="banner">
+        <div class="inner">
+            <form >
+                <p> <strong>登录易牧通系统</strong></p>
+                <div class="input-group mt10">
+                    <span class="input-group-addon w100">用户名：</span>
+                    <input type="text" class="logininput" name="name">
+                </div>
+              
+                <div class="input-group mt10">
+                    <span class="input-group-addon w100">密码：</span>
+                    <input type="password" class="logininput" name="password">
+                </div>
+                <footer>
+                    <div>
+                        <input id="btnLogin" type="button" value="登录" class="btn">
+                    </div>
+                </footer>
+            </form>
+        </div>
+    </section>
+    <div class="container">
+        @*<div id="emutong_nav">
+            <ul>
+                <li><a href="#"><img src="../Images/Login/nav-1.jpg" border="0"></a></li>
+                <li><a href="#"><img src="../Images/Login/nav-2.jpg" border="0"></a></li>
+                <li><a href="#"><img src="../Images/Login/nav-3.jpg" border="0"></a></li>
+            </ul>
+        </div>*@
+    </div>
+    <div class="clear"></div>
+    <div id="index_foot">©2014 易牧通 @*<a href="#"> 版权所有</a>  |   <a href="#">帮助</a>  |    <a href="#">服务电话</a>  |   <a href="#">公司信息</a>*@</div>
+    <script src="~/Scripts/bdhm.js"></script>
+</body>
+</html>

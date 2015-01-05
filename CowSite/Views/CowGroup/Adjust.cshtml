@@ -1,0 +1,147 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>康复调群</title>
+    <link rel="stylesheet" href="~/ligerUI/skins/Aqua/css/ligerui-all.css">
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/Scripts/jquery-tools-min.js"></script>
+    <script src="~/ligerUI/js/ligerui.min.js"></script>
+    <link rel="stylesheet" href="~/bootstrap/css/bootstrap-theme1.min.css">
+    <script src="~/bootstrap/js/bootstrap.min.js"></script>
+    <link href="~/Controls/jQuery.Select2/select2.css" rel="stylesheet" />
+    <script src="~/Controls/jQuery.Select2/select2.min.js"></script>
+    <script src="~/Scripts/menu.js"></script>
+    <link rel="stylesheet" href="~/Style/base.css">
+
+    <script>
+        var sickCowList;
+        var sickCowGridManager;
+        $(function () {
+            $('#menu').menu({ mainMenuSelectedID: "Medical", subMenuSelectedID: "Medical-AdjustGroup" });
+            initComponents();
+        });
+        function initComponents() {
+            loadSickCowList();
+            initBtn();
+        }
+
+        function initBtn() {
+            $('#btnRecover').show().ligerButton({
+                width: 80,
+                text: '康复',
+                disabled: false,
+                click: function () {
+                    var row=sickCowGridManager.getSelectedRow();
+                    if (row) {
+                        var id = row["EarNum"];
+                        if (id==undefined) {
+                            alert("id is null");
+                        }
+                        $.ajax({
+                            type: 'post',
+                            url: "../../Medical/Adjust/RecoverCows",
+                            dataType: "json",
+                            data: { cowID: id }
+                        }).success(function (msg) {
+                            loadSickCowList();
+                            alert("牛状态成功改为健康。");
+                        });
+                    }
+                    else {
+                        alert("请先选中牛。");
+                    }
+                },
+                icon: null
+            });
+
+        }
+        function loadSickCowList() {
+            $.ajax({
+                type: 'get',
+                url: "../../Medical/Adjust/GetSickCows",
+                dataType: 'json',
+                cache: false,
+                success: (function (cowData) {
+                    //alert(Number(list.length).toString());
+                    //sickCowList = list;
+                    sickCowGridManager = $("#sickCowGrid").ligerGrid({
+                        columns: [
+                            { display: '牛耳号', name: 'EarNum', width: 100, hide: true },
+                            { display: '牛耳号', name: 'DisplayEarNum', align: 'left', width: 250 },
+                            { display: "月龄", name: "AgeMonth", width: 100, type: 'float', editor: { type: 'float' } },
+                            //{
+                            //    display: '康复', name: 'IsIll', type: 'int', align: 'left', width: 150,
+                            //    render: function (item) {
+                            //    }
+                            //}
+                        ],
+                        pageSize: 15,
+                        width: '100%',
+                        height: 'auto',
+                        isScroll: false,
+                        data: cowData,
+                        title: '病牛列表',
+                        showTitle: true,
+                        enabledEdit: false,
+                        clickToEdit: false,
+                        pager: false,
+                        usePager: false,
+                        
+                    });
+                    $("#pageloading").hide();
+                }
+            )});
+            
+            //sickCowGridManager = $("#sickCowGrid").ligerGrid({
+            //    columns: [
+            //        { display: '牛耳号', name: 'EarNum', width: 100, hide: false },
+            //        { display: '牛耳号', name: 'DisplayEarNum', align: 'left', width: 250 },
+            //        { display: "月龄", name: "AgeMonth", width: 100, type: 'float', editor: { type: 'float' } },
+            //        //{
+            //        //    display: '康复', name: 'IsIll', type: 'int', align: 'left', width: 150,
+            //        //    render: function (item) {
+            //        //    }
+            //        //}
+            //    ],
+            //    pageSize: 15,
+            //    width: '90%',
+            //    height: '100%',
+            //    isScroll: false,
+            //    //data: sickCowList,
+            //    title: '病牛列表',
+            //    showTitle: true,
+            //    enabledEdit: false,
+            //    clickToEdit: false,
+            //    pager: false,
+            //    usePager: false,
+            //    url: "../../Medical/Adjust/GetSickCows"
+            //});
+
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div id="menu"></div>
+        <div class="content">
+            <div style="margin: 10px 0px 10px 0px; position: relative; height: 30px; width: 100%;">
+                <div style="display: inline-block; position: absolute; right: 0px;">
+                    <input type="button" id="btnRecover" value="康复" style="display: none;" />
+                </div>
+            </div>
+            <div>
+                <div id="sickCowGrid"></div>
+                <div id="message"></div>
+                <div class="l-loading" id="pageloading"></div>
+            </div>
+        </div>
+    </div>
+    <script src="~/Scripts/bdhm.js"></script>
+</body>
+</html>

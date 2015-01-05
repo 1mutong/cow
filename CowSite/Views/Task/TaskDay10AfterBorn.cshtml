@@ -1,0 +1,174 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>产后10天任务单</title>
+    <link rel="stylesheet" href="~/ligerUI/skins/Aqua/css/ligerui-all.css">
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/Scripts/jquery-tools-min.js"></script>
+    <script src="~/ligerUI/js/ligerui.min.js"></script>
+    <link rel="stylesheet" href="~/bootstrap/css/bootstrap-theme1.min.css">
+    <script src="~/bootstrap/js/bootstrap.min.js"></script>
+    <link href="~/Controls/jQuery.Select2/select2.css" rel="stylesheet" />
+    <script src="~/Controls/jQuery.Select2/select2.min.js"></script>
+    <script src="~/Scripts/menu.js"></script>
+    <script src="~/Scripts/common.js"></script>
+    <link href="~/Controls/bootstrap.datepicker/datepicker.css" rel="stylesheet" />
+    <script src="~/Controls/bootstrap.datepicker/bootstrap-datepicker.js"></script>
+    <link rel="stylesheet" href="~/Style/base.css">
+    <link rel="stylesheet" href="~/Style/common.css">
+    <script type="text/javascript">
+        var taskID = "@ViewBag.TaskID";
+
+        $(function () {
+            $('#menu').menu({ mainMenuSelectedID: "Task", subMenuSelectedID: "Task-Day10AfterBorn", showSubMemu: false });
+            loadTask();
+        })
+
+        function loadTask() {
+            $.ajax({
+                type: 'get',
+                url: "../../TaskDay10AfterBorn/LoadTask",
+                data: { taskID: taskID },
+                dataType: "json",
+                cache: false
+            }).success(function (taskData) {
+                $('input[name=id]').val(taskID);
+                $('#taskid').text(taskID);
+                $('input[name=DisplayEarNum]').val(taskData.DisplayEarNum);
+                initDateSelector(taskData.ArrivalTime);
+                loadOperator(taskData.Operator);
+                loadGroup();
+                loadHouse();
+            });
+        }
+
+        function loadOperator(op) {
+            $.ajax({
+                type: 'get',
+                url: '../../Users/User/GetUserItems',
+                dataType: 'json',
+                cache: false,
+                success: function (user) {
+                    if (user) {
+                        $("#OperatorID").empty();
+                        $("#OperatorID").append('<option value="0" selected = "selected">' + "请选择操作人员" + '</option>');
+                        $.each(user, function () {
+                            $("#OperatorID").append('<option value="' + this.ID + '">' + this.Name + '</option>');
+                        })
+                        $('select[name=operatorName]').val(op);
+                        ;
+                    }
+                }
+            });
+        }
+
+        function loadHouse() {
+            $.ajax({
+                type: 'get',
+                url: '../../Feed/CowHouse/GetCowHouseList',
+                dataType: 'json',
+                cache: false,
+                success: function (house) {
+                    if (house) {
+                        $("#HouseID").empty();
+                        $("#HouseID").append('<option value="0" selected = "selected">' + "请选择牛舍" + '</option>');
+                        $.each(house, function () {
+                            $("#HouseID").append('<option value="' + this.ID + '">' + this.Name + '</option>');
+                        })
+                        ;
+                    }
+                }
+            });
+        }
+
+        function loadGroup() {
+            $.ajax({
+                type: 'get',
+                url: '../../Feed/CowGroup/GetCowGroupList',
+                dataType: 'json',
+                cache: false,
+                success: function (group) {
+                    if (group) {
+                        $("#GroupID").empty();
+                        $("#GroupID").append('<option value="0" selected = "selected">' + "请选择牛群" + '</option>');
+                        $.each(group, function () {
+                            $("#GroupID").append('<option value="' + this.ID + '">' + this.Name + '</option>');
+                        })
+                        ;
+                    }
+                }
+            });
+        }
+
+        function initDateSelector(start) {
+            $('input[name=start]').datepicker({
+                language: 'zh-CN',
+                autoclose: 1,
+                todayHighlight: 1,
+                format: "yyyy-mm-dd",
+            });
+
+            $('input[name=start]').val(start);
+
+            $('input[name=end]').datepicker({
+                language: 'zh-CN',
+                autoclose: 1,
+                todayHighlight: 1,
+                format: "yyyy-mm-dd"
+            });
+        }
+
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div id="menu"></div>
+        <div class="content">
+            <div class="page-title">产后10天任务单</div>
+            <div>
+                <form action="../../TaskDay10AfterBorn/SaveTask" method="post">
+                    <input type="hidden" name="id" />
+                    <div>任务单ID：<span id="taskid"></span></div>
+                    <div>任务单类型：产后10天任务单</div>
+                    <div>任务指导：请进行该牛产后10天护理。</div>
+                    <br />
+                    <div class="input-group mt10">
+                        <span class="input-group-addon w200">牛耳号：</span>
+                        <input type="text" class="form-control w200 js-DisplayEarNum" placeholder="耳号" id="earNum" name="DisplayEarNum" readonly="readonly" />
+                    </div>
+                    <div class="input-group mt10">
+                        <span class="input-group-addon w200">任务开始时间:</span>
+                        <input type="text" class="form-control w200" id="startDate" name="start" readonly="readonly" />
+                    </div>
+                    <div class="input-group mt10">
+                        <span class="input-group-addon w200">任务完成时间: </span>
+                        <input type="text" class="form-control w200" id="endDate" name="end" />
+                    </div>
+                    <div class="input-group mt10">
+                        <span class="input-group-addon w200">操作人员：</span>
+                        <select name="operatorName" class="form-control w200" id="OperatorID"></select>
+                    </div>                    
+                    <div class="input-group mt10">
+                        <span class="input-group-addon w200">调群在高产群：</span>
+                        <select name="group" class="form-control w200" id="GroupID"></select>
+                    </div>
+                    <div class="input-group mt10">
+                        <span class="input-group-addon w200">牛舍：</span>
+                        <select name="house" class="form-control w200" id="HouseID"></select>
+                    </div>
+                    <div class="mt10">
+                        <input type="submit" class="btn btn-primary" id="btnSave" value="提交" />
+                    </div>                    
+                </form>
+            </div>
+        </div>
+    </div>
+    <script src="~/Scripts/bdhm.js"></script>
+</body>
+</html>

@@ -1,0 +1,61 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>解禁</title>
+    <link rel="stylesheet" href="~/ligerUI/skins/Aqua/css/ligerui-all.css">
+    <link rel="stylesheet" href="~/Style/base.css">
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/ligerUI/js/ligerui.min.js"></script>
+    <link rel="stylesheet" href="~/bootstrap/css/bootstrap-theme1.min.css">
+    <script src="~/bootstrap/js/bootstrap.min.js"></script>
+    <script>
+        $(function () {
+            loadInsemInfo();
+            initBtnEvent();
+        });
+
+        function initBtnEvent() {
+            $('#btnSubmit').ligerButton({
+                width: 60,
+                text: '保存',
+                click: function () {
+                    //提交表单
+                    document.getElementById('ForbidInfo').submit();
+                    parent.$.ligerDialog.close();
+                    parent.$(".l-dialog,.l-window-mask").hide
+                },
+                icon: null
+            });
+            $('#btnCancel').ligerButton({
+                width: 60,
+                text: '取消',
+                click: function () {
+                    parent.$.ligerDialog.close();
+                    parent.$(".l-dialog,.l-window-mask").hide();
+                },
+                icon: null
+            });
+        }
+    </script>
+</head>
+<body>
+    <form class="form-inline" method="post" action="~/Breed/UnForbidInsemination/UnForbid">
+        <div>
+            <input type="hidden" id="cowID" />
+            <div>解禁日期：<input type="text" id="unforbidDate" /></div>
+            <div>解禁原因：<textarea id="unforbidWhy"></textarea></div>
+        </div>
+        <div style="text-align: left;">
+            <input type="submit" id="btnSubmit" value="保存" />
+            <input type="button" id="btnCancel" value="取消" />
+        </div>
+    </form>    
+    <script src="~/Scripts/bdhm.js"></script>
+</body>
+</html>

@@ -1,0 +1,120 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>任务系统</title>
+    <link rel="stylesheet" href="~/ligerUI/skins/Aqua/css/ligerui-all.css">
+    <link rel="stylesheet" href="~/Style/base.css">
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/ligerUI/js/ligerui.min.js"></script>
+    <link rel="stylesheet" href="~/bootstrap/css/bootstrap-theme1.min.css">
+    <script src="~/bootstrap/js/bootstrap.min.js"></script>
+    <script src="~/Scripts/menu.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $('#menu').menu({ mainMenuSelectedID: "Task", subMenuSelectedID: "", showSubMemu: false });
+            loadTask();
+        });
+
+        function loadTask() {
+            $.ajax({
+                type: 'get',
+                url: "../Home/GetToDoList",
+                dataType: "json",
+                cache: false
+            }).success(function (toDoList) {
+                $("#toDoList").ligerGrid({
+                    checkbox: false,
+                    columns: [
+                        {
+                            display: '任务类型', name: 'TaskTypeID', align: 'left', minWidth: 60, render: function (item, index) {
+                                var taskPageUrl = "";
+                                var taskTypeName = "";
+                                switch (item.TaskTypeID) {
+                                    case 0:
+                                        taskPageUrl = 'TaskInsemination';
+                                        taskTypeName = '发情配种';
+                                        break;
+                                    case 1:
+                                        taskPageUrl = 'TaskInitialInspection';
+                                        taskTypeName = '妊检初检';
+                                        break;
+                                    case 2:
+                                        taskPageUrl = 'TaskReInspection';
+                                        taskTypeName = '妊检复检';
+                                        break;
+                                    case 3:
+                                        taskPageUrl = 'TaskDay21ToBorn';
+                                        taskTypeName = '产前21天';
+                                        break;
+                                    case 4:
+                                        taskPageUrl = 'TaskDay7TorBorn';
+                                        taskTypeName = '产前7天';
+                                        break;
+                                    case 5:
+                                        taskPageUrl = 'TaskDay3AfterBorn';
+                                        taskTypeName = '产后3天';
+                                        break;
+                                    case 6:
+                                        taskPageUrl = 'TaskDay10AfterBorn';
+                                        taskTypeName = '产后10天';
+                                        break;
+                                    case 7:
+                                        taskPageUrl = 'TaskDay15AfterBorn';
+                                        taskTypeName = '产后15天';
+                                        break;
+                                    case 8:
+                                        taskPageUrl = 'TaskCompleteImmune';
+                                        taskTypeName = '免疫';
+                                        break;
+                                    case 9:
+                                        taskPageUrl = 'TaskCompleteQuarantine';
+                                        taskTypeName = '检疫';
+                                        break;
+                                    case 10:
+                                        taskPageUrl = 'TaskCompleteGrouping';
+                                        taskTypeName = '分群';
+                                        break;
+                                    case 11:
+                                        taskPageUrl = 'TaskCompleteCalf';
+                                        taskTypeName = '犊牛饲喂';
+                                        break;
+                                    default:
+                                        break;
+                                }
+
+                                return '<a href="' + taskPageUrl + '?taskID=' + item.ID + '" target="_self">' + taskTypeName + '</a>';
+                            }
+                        },
+                        { display: '耳号', name: 'DisplayEarNum', align: 'left', minWidth: 120 },
+                        { display: '应开始时间', name: 'ArrivalTime', type: 'date', align: 'left', width: 75 },
+                        { display: '应完成时间', name: 'DeadLine', type: 'date', align: 'left', width: 75 }
+                    ],
+                    pageSize: 10,
+                    width: '100%',
+                    height: '100%',
+                    data: toDoList
+                });
+                $("#pageloading").hide();
+            });
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div class="container">
+            <div id="menu"></div>
+            <div class="content">
+                <div id="toDoList" class="ml5 mr5 mt20"></div>
+                <div class="l-loading" id="pageloading"></div>
+            </div>
+        </div>
+    </div>
+    <script src="~/Scripts/bdhm.js"></script>
+</body>
+</html>

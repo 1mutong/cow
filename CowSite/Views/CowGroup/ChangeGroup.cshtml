@@ -1,0 +1,166 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>调群</title>
+    <link rel="stylesheet" href="~/bootstrap/css/bootstrap-theme1.min.css">
+    <link rel="stylesheet" href="~/Style/base.css">
+    <link rel="stylesheet" href="~/ligerUI/skins/Aqua/css/ligerui-all.css">
+    <link rel="stylesheet" href="~/Controls/jQuery.Select2/select2.css" />
+</head>
+<body>
+    <div class="container">
+        <div id="menu"></div>
+        <div class="content">
+            <div class="input-group mt10">
+                <span class="input-group-addon w200">牛耳号：</span>
+                <input type="text" class="form-control w200" placeholder="耳号" id="earNum" />
+            </div>
+            <div class="input-group mt10">
+                <span class="input-group-addon w200">现在所在牛群:</span>
+                <span class="form-control w200" id="currGroupName"></span>
+            </div>
+            <div class="input-group mt10">
+                <span class="input-group-addon w200">现在所在牛舍: </span>
+                <span class="form-control w200" id="currHouseName"></span>
+            </div>
+            <div class="input-group mt10">
+                <span class="input-group-addon w200">调群后目标牛群：</span>
+                <select id="GroupSelector" class="w200"></select>
+            </div>
+            <div class="input-group mt10">
+                <span class="input-group-addon w200">调群后目标牛舍：</span>
+                <select id="HouseSelector" class="w200"></select>
+            </div>
+            <div class="mt10">
+                <button class="btn btn-primary hidden" id="btnSave">转群</button>
+            </div>
+        </div>
+    </div>
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/ligerUI/js/ligerui.min.js"></script>
+    <script src="~/Controls/jQuery.Select2/select2.min.js"></script>
+    <script src="~/Scripts/menu.js"></script>
+    <script>
+        $('#menu').menu({ mainMenuSelectedID: "Feed", subMenuSelectedID: "Feed-ChangeGroup" });
+        var originalGroupId = 0;
+        var originalHouseId = 0;
+        var houseList = null;
+
+        $('#btnSave').click(function () {
+            var targetGroupId = $("#GroupSelector").val();
+            var targetHouseId = $("#HouseSelector").val();
+
+            if (targetGroupId == null || targetGroupId == "" || targetGroupId == "0") {
+                alert('请选择目标牛群！');
+                return;
+            }
+            else if (targetHouseId == null || targetHouseId == "" || targetHouseId == "0") {
+                alert('请选择目标牛舍！');
+                return;
+            }
+
+            var displayEarNum = $("#earNum").val();
+            $.ajax({
+                type: 'post',
+                url: '../../Cow/InsertChangeGroupTask',
+                data: {
+                    DisplayEarNum: displayEarNum,
+                    TargetGroupID: targetGroupId,
+                    TargetHouseID: targetHouseId,
+                    OriginalGroupID: originalGroupId,
+                    OriginalHouseID: originalHouseId
+                },
+                dataType: 'json',
+                cache: false,
+                success: function (result) {
+                    if (result) {
+                        alert("转群任务添加成功！");
+                    }
+                }
+            });
+        });
+
+        $('#earNum').blur(function () {
+            $.ajax({
+                type: 'get',
+                url: '../../Cow/GetCowLiteInfo',
+                data: { displayEarNum: $('#earNum').val() },
+                dataType: 'json',
+                cache: false,
+                success: function (cow) {
+                    if (cow) {
+                        $('#currGroupName').text(cow.GroupName);
+                        $('#currHouseName').text(cow.HouseName);
+                        originalGroupId = cow.GroupID;
+                        originalHouseId = cow.HouseID;
+                        $('#btnSave').removeClass('hidden');
+                    }
+                }
+            });
+        });
+
+        $.ajax({
+            type: 'get',
+            url: '../../Feed/CowGroup/GetCowGroupList',
+            dataType: 'json',
+            cache: false,
+            success: function (group) {
+                $.ajax({
+                    type: 'get',
+                    url: '../../Feed/CowHouse/GetCowHouseList',
+                    dataType: 'json',
+                    cache: false,
+                    success: function (house) {
+                        houseList = house;
+
+                        if (group) {
+                            $("#GroupSelector").empty();
+                            $("#GroupSelector").append('<option value="0" selected="selected">' + "请选择牛群" + '</option>');
+                            $.each(group, function () {
+                                $("#GroupSelector").append('<option value="' + this.ID + '">' + this.Name + '</option>');
+                            });
+                            $('#GroupSelector').select2({
+                                placeholder: "牛群",
+                                allowClear: true,
+                                minimumResultsForSearch: -1
+                            }).change(function () {
+                                var groupID = $('#GroupSelector').val()
+                                var mapHouseList = $.map(houseList, function (el, index) {
+                                    if (el.GroupID == groupID) {
+                                        return el;
+                                    }
+                                });
+                                changeHouseSelector(mapHouseList);
+                            });
+                        }
+                    }
+                });                
+            }
+        });
+
+        
+
+        // 选择牛群时，牛舍联动
+        function changeHouseSelector(house) {
+            $("#HouseSelector").empty();
+            if (house) {                
+                $("#HouseSelector").append('<option value="0" selected = "selected">' + "请选择牛舍" + '</option>');
+                $.each(house, function () {
+                    $("#HouseSelector").append('<option value="' + this.ID + '">' + this.Name + '</option>');
+                });
+                $('#HouseSelector').select2({
+                    placeholder: "牛舍",
+                    allowClear: true,
+                    minimumResultsForSearch: -1
+                });
+            }
+        }
+    </script>
+    <script src="~/Scripts/bdhm.js"></script>
+</body>
+</html>

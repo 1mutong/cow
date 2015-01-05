@@ -1,0 +1,126 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>列表页面</title>
+    <script src="../../jQuery/jquery-1.11.0.min.js" type="text/javascript"></script>
+    <script src="../../jQuery/jquery-tools-min.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(function () {
+            showElemOverlay($('#content'));
+        });
+
+        // Show photo overlay
+        function showElemOverlay($elem) {
+            var overlay = $("<div class='loadingui-overlay'></div>").appendTo(document.body).addClass('loadingui-overlay-positioned');
+            var loadingWrapper = $(
+            '<div class="loadingui-table">' +
+            '<div class="loadingui-table-cell">' +
+                '<div class="loadingui-box">Loading...</div>' +
+            '</div>' +
+            '</div>').appendTo(document.body).addClass('loadingui-overlay-positioned');
+
+            if ($elem.is('body')) {
+                overlay.addClass('loadingui-overlay-fullwindow');
+                loadingWrapper.addClass('loadingui-overlay-fullwindow');
+            } else {
+                overlay.addClass('loadingui-overlay-positioned');
+                loadingWrapper.addClass('loadingui-overlay-positioned');
+
+                overlay.width($elem.width());
+                overlay.height($elem.height());
+
+                loadingWrapper.width($elem.width());
+                loadingWrapper.height($elem.height());
+
+                if ($elem[0].x) {
+                    overlay.css("left", $elem[0].x + "px");
+                    overlay.css("top", $elem[0].y + "px");
+                    loadingWrapper.css("left", $elem[0].x + "px");
+                    loadingWrapper.css("top", $elem[0].y + "px");
+                } else {
+                    // Handle IE incompatibility
+                    overlay.css("left", $elem.offset().left);
+                    overlay.css("top", $elem.offset().top);
+                    loadingWrapper.css("left", $elem.offset().left);
+                    loadingWrapper.css("top", $elem.offset().top);
+                }
+            }
+            overlay.show();
+            loadingWrapper.show();
+        }
+    </script>
+    <style type="text/css">
+        .loadingui-overlay
+        {
+            -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(opacity=30)";
+            filter: alpha(Opacity=30);
+            -moz-opacity: 0.3;
+            opacity: 0.3;
+            background: #ccc;
+            z-index: 1000000;
+        }
+        .loadingui-overlay-fullwindow
+        {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .loadingui-overlay-positioned
+        {
+            position: absolute;
+            top: 0;
+        }
+        
+        .loadingui-table
+        {
+            display: table;
+            table-layout: fixed;
+            z-index: 1000001;
+        }
+        
+        .loadingui-table-cell
+        {
+            display: table-cell;
+            text-align: center;
+            vertical-align: middle;
+        }
+        .loadingui-box
+        {
+            background: white url(data:image/gif;base64,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) no-repeat 3px 3px;
+            width: 56px;
+            height: 24px;
+            line-height: 26px;
+            font-size: 12px;
+            padding: 3px 10px 3px 30px;
+            top: 10%;
+            border: 1px solid #9BBBE6;
+            display: inline-block;
+        }
+        
+        #content
+        {
+            border: 1px solid gray;
+            margin: 100px 30px 0 50px;
+            width: 400px;
+            height: 300px;
+            overflow: scroll;
+            position: relative;
+        }
+    </style>
+</head>
+<body>
+    <!--div class="loadingui-overlay"></div-->
+    <!--div class="loadingui-wrapper">
+            <div class="loadingui-table-cell">
+                <div class="loadingui">
+                    Loading...</div>
+            </div>
+    </div-->
+    <div id="content">
+    </div>
+</body>
+</html>
