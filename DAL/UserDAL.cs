@@ -30,11 +30,12 @@ namespace DairyCow.DAL
             DataTable inseminationOperatorList = null;
 
             string sql = string.Format(@"select au.ID, au.Name, au.Account, au.Password, au.RoleID, au.PastureID
-                                        from Auth_User au where au.RoleID = 1");
+                                        from Auth_User au where au.RoleID = 1 and au.PastureID={0}", pastureID);
 
             inseminationOperatorList = dataProvider1mutong.FillDataTable(sql, CommandType.Text);
             return inseminationOperatorList;
         }
+
 
         /// <summary>
         /// 获取牧场饲养员table

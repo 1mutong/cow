@@ -136,5 +136,25 @@ namespace DairyCow.DAL
             DataTable dt = dataProvider1mutong.FillDataTable(sql, CommandType.Text);
             return Convert.ToInt32(dt.Rows[0].ItemArray[0]);
         }
+
+        public DataTable GetCareDT()
+        {
+            string sql = string.Format(@"SELECT [ID]
+      ,[EarNum]
+      ,[Disease_Id]
+      ,[Prescription]
+      ,[DoctorID]
+      ,[Date]
+      ,[LeftFront]
+      ,[RightFront]
+      ,[RightBack]
+      ,[LeftBack]
+  FROM [dbo].[Medical_Care]");
+
+            return dataProvider1mutong.FillDataTable(sql, CommandType.Text);
+        }
+
+
+
     }
 }

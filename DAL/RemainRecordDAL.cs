@@ -20,7 +20,7 @@ namespace DairyCow.DAL
                                             ,[RecordUserID]
                                             ,[RecordTime]
                                             ,[RemainQuantity]
-                                        FROM [1mutong].[dbo].[Feed_EmptyRecord]");
+                                        FROM [1mutong].[dbo].[Feed_RemainRecord]");
             remainRecordList = dataProvider1mutong.FillDataTable(sql, CommandType.Text);
             return remainRecordList;
         }

@@ -42,5 +42,13 @@ namespace DairyCow.DAL
             return dataProvider1mutong.FillDataTable(sql, CommandType.Text);
         }
 
+
+        public DataTable GetMilkCheckList(int farmID)
+        {
+            string sql = string.Format("select m.ID,m.EarNum, m.MilkDate,m.[Weight] as MilkWeight,m.[Round] from Milk_IndividualProduction as m inner join Base_Cow as b on m.EarNum=b.EarNum where b.FarmID={0} ", farmID);
+
+            return dataProvider1mutong.FillDataTable(sql, CommandType.Text);
+        }
+
     }
 }
