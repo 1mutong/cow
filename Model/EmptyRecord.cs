@@ -22,5 +22,7 @@ namespace DairyCow.Model
         public DateTime RecordTime { get; set; }
         //空料时间（小时）
         public float EmptyHour { get; set; }
+
+        public string Name { get; set; }
     }
 }

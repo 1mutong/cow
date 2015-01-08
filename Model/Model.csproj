@@ -65,6 +65,7 @@
     <Compile Include="IndividualProdcution.cs" />
     <Compile Include="InitialInspection.cs" />
     <Compile Include="Insemination.cs" />
+    <Compile Include="MedicalViewModel.cs" />
     <Compile Include="MilkHall.cs" />
     <Compile Include="MilkMastitisReport.cs" />
     <Compile Include="MilkRecord.cs" />
