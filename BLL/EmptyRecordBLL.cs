@@ -45,8 +45,9 @@ namespace DairyCow.BLL
                 emptyRecordItem.RecordTime = Convert.ToDateTime(emptyRecordRow["RecordTime"]);
                 if (Convert.ToInt32(emptyRecordRow["EmptyHour"]) != 0)
                 {
-                    emptyRecordItem.EmptyHour = (float)(emptyRecordRow["EmptyHour"]);
+                    emptyRecordItem.EmptyHour = float.Parse(emptyRecordRow["EmptyHour"].ToString());
                 }
+                emptyRecordItem.Name = emptyRecordRow["Name"].ToString();
             }
             return emptyRecordItem;
         }

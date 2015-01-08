@@ -46,7 +46,7 @@ namespace DairyCow.BLL
                 remainRecordItem.RecordTime = Convert.ToDateTime(remainRecordRow["RecordTime"]);
                 if (Convert.ToInt32(remainRecordRow["RemainQuantity"]) != 0)
                 {
-                    remainRecordItem.RemainQuantity = (float)(remainRecordRow["RemainQuantity"]);
+                    remainRecordItem.RemainQuantity = float.Parse(remainRecordRow["RemainQuantity"].ToString());
                 }
             }
             return remainRecordItem;

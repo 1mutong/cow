@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Data;
 using DairyCow.DAL;
 using DairyCow.Model;
+using Common;
 
 namespace DairyCow.BLL
 {
@@ -17,7 +18,7 @@ namespace DairyCow.BLL
             return this.individualProdcutionDAL.InsertIndividualProdcution(individualProdcution.EarNum, individualProdcution.MilkDate, individualProdcution.MilkWeight, individualProdcution.Round);
         }
 
-        public List<IndividualProdcutionTotal> GetIndividualDayProdcutionList(int earNum,DateTime startDate,DateTime endDate)
+        public List<IndividualProdcutionTotal> GetIndividualDayProdcutionList(int earNum, DateTime startDate, DateTime endDate)
         {
             List<IndividualProdcutionTotal> list = new List<IndividualProdcutionTotal>();
             DataTable table = this.individualProdcutionDAL.GetIndividualProductionTotalTable(earNum, startDate.Date, endDate.Date);
@@ -46,19 +47,19 @@ namespace DairyCow.BLL
         public List<IndividualProdcutionTotal> GetIndividualDayProdcutionList(int earNum, int parityNum)
         {
             DateTime startDate, endDate;
-            
+
             CowInfo cowInfo = new CowInfo(earNum);
             int parity = cowInfo.Parity;
             //ORDER BY D.Birthday DESC 降序的
             List<Calving> calvingList = CowInfo.GetCowCalvingRecords(earNum);
-            if (parityNum > parity | parityNum<1)
+            if (parityNum > parity | parityNum < 1)
             {
-                throw new ArgumentException("此牛仅有" + parity.ToString()+"个胎次，不能有此记录");
+                throw new ArgumentException("此牛仅有" + parity.ToString() + "个胎次，不能有此记录");
             }
             else
             {
                 startDate = calvingList[parity - parityNum].Birthday.Date;
-                if (parityNum<parity)
+                if (parityNum < parity)
                 {
                     endDate = calvingList[parity - parityNum + 1].Birthday.Date;
                 }
@@ -69,6 +70,15 @@ namespace DairyCow.BLL
                 }
             }
             return GetIndividualDayProdcutionList(earNum, startDate, endDate);
+        }
+
+
+        public List<MilkCheckModel> GetMilkCheckList(int farmID)
+        {
+
+            DataTable dt = this.individualProdcutionDAL.GetMilkCheckList(farmID);
+            List<MilkCheckModel> ListMilkCheck = ConvertHelper<MilkCheckModel>.ConvertToList(dt);
+            return ListMilkCheck;
         }
     }
 }

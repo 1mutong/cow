@@ -1,4 +1,5 @@
-﻿using DairyCow.DAL;
+﻿using Common;
+using DairyCow.DAL;
 using DairyCow.Model;
 using System;
 using System.Collections.Generic;
@@ -48,7 +49,7 @@ namespace DairyCow.BLL
             immune.DoctorID = Convert.ToInt32(row["DoctorID"]);
             return immune;
         }
-        
+
         public List<DiseaseType> GetDiseasesType()
         {
             DataTable table = this.medicalDAL.GetDiseaseTypes();
@@ -89,21 +90,29 @@ namespace DairyCow.BLL
         {
             Disease d = GetDiseases().Find(p => p.ID == care.Disease_Id);
             //乳房类：137，蹄类174
-            if (d.DiseaseTypeID==137||d.DiseaseTypeID==174)
+            if (d.DiseaseTypeID == 137 || d.DiseaseTypeID == 174)
             {
-                medicalDAL.InsertCare(care,true);
+                medicalDAL.InsertCare(care, true);
             }
             else
             {
                 medicalDAL.InsertCare(care, false);
             }
-            
+
         }
 
 
-        public int GetCareCowsCount(int diseaseId, DateTime startDate,DateTime endDate)
+        public int GetCareCowsCount(int diseaseId, DateTime startDate, DateTime endDate)
         {
             return medicalDAL.GetCareCowsCount(diseaseId, startDate, endDate);
+        }
+
+        public List<Care> GetCareList()
+        {
+
+            return ConvertHelper<Care>.ConvertToList(medicalDAL.GetCareDT());
+
+
         }
     }
 }
