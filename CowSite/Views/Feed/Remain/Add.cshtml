@@ -18,6 +18,7 @@
         $(function () {
             $('#menu').menu({ mainMenuSelectedID: "Feed", subMenuSelectedID: "Feed-Remain" });
             loadCowGroup();
+            loadReaminList();
         });
 
         function loadCowGroup() {
@@ -36,6 +37,26 @@
                     }
                 }
             });
+        }
+
+
+        function loadReaminList() {
+            remainRecordGridManager = $("#remainRecordGrid").ligerGrid({
+                checkbox: false,
+                columns: [
+                    { display: 'ID', name: 'ID', type: 'int', hide: true, width: 50 },
+                    { display: '牛群', name: 'GroupName', align: 'left', width: 250 },
+                    { display: '剩料量', name: 'RemainQuantity', align: 'left', width: 250 },
+                    { display: '时间', name: 'RecordTime', align: 'left', width: 250,type: "date" }
+                ],
+                pageSize: 10,
+                width: '100%',
+                height: '100%',
+                dateFormat: "yyyy-MM-dd",
+                isScroll: false,
+                url: "../../Feed/Remain/SelectFeedList"
+            });
+            $("#pageloading").hide();
         }
     </script>
 </head>
@@ -56,6 +77,12 @@
                     <input type="submit" id="btnSubmit" class="btn btn-primary" value="保存" />
                 </div>
             </form>
+            <hr />
+            <div>
+                <div id="remainRecordGrid" class="displayBlock ml5 mr5"></div>
+                <div id="message"></div>
+                <div class="l-loading" id="pageloading"></div>
+            </div>
         </div>
     </div>
     <script src="~/Scripts/bdhm.js"></script>

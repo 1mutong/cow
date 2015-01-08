@@ -20,6 +20,7 @@
             $('#menu').menu({ mainMenuSelectedID: "Medical", subMenuSelectedID: "Medical-RepairHoof" });
             loadRepairHoofInfo();
             initBtnEvent();
+            LoadRepairHoofInfoList();
         });
 
         function loadRepairHoofInfo() {
@@ -75,6 +76,30 @@
                 icon: null
             });
         }
+
+        function LoadRepairHoofInfoList() {
+            $("#RepairHoofInfoGrid").ligerGrid({
+                checkbox: false,
+                columns: [
+                    { display: 'ID', name: 'ID', type: 'int', hide: true, width: 50 },
+                    { display: '耳号', name: 'EarNum', align: 'left', width: 100 },
+                    { display: '方法', name: 'Method', align: 'left', width: 100 },
+                    { display: '左前', name: 'LeftFront', align: 'left', width: 100 },
+                    { display: '右前', name: 'RightFront', align: 'left', width: 100 },
+                    { display: '左后', name: 'LeftBack', align: 'left', width: 100 },
+                   { display: '右后', name: 'RightBack', align: 'left', width: 100 },
+                   { display: '时间', name: 'OprateDate', align: 'left', width: 100, type: "date" }
+
+                ],
+                pageSize: 10,
+                width: '100%',
+                height: '100%',
+                dateFormat: "yyyy-MM-dd",
+                isScroll: false,
+                url: "../../Medical/RepairHoof/GetRepairHoofList"
+            });
+            $("#pageloading").hide();
+        }
     </script>
 </head>
 <body>
@@ -86,8 +111,15 @@
                 <input type="button" id="btnSubmit" value="保存" />
                 <input type="button" id="btnCancel" value="取消" />
             </div>
+
+            <hr />
+            <div>
+                <div id="RepairHoofInfoGrid" class="displayBlock ml5 mr5"></div>
+                <div id="message"></div>
+                <div class="l-loading" id="pageloading"></div>
+            </div>
         </div>
-    </div>    
+    </div>
     <script src="~/Scripts/bdhm.js"></script>
 </body>
 </html>

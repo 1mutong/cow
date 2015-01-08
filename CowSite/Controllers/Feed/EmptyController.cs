@@ -1,6 +1,7 @@
 ﻿using DairyCow.BLL;
 using DairyCow.Model;
 using System;
+using System.Collections.Generic;
 using System.Web.Mvc;
 
 namespace CowSite.Controllers.Feed
@@ -30,7 +31,7 @@ namespace CowSite.Controllers.Feed
                 emptyRecord.FormulaID = bllCowGroup.GetFormulaIDByGroupID(Convert.ToInt32(cowGroupID));//需要根据牛群ID获得配方ID
                 emptyRecord.RecordUserID = UserBLL.Instance.CurrentUser.ID;
                 emptyRecord.RecordTime = DateTime.Now;
-                emptyRecord.EmptyHour = Convert.ToInt32(emptyHour);                
+                emptyRecord.EmptyHour = Convert.ToInt32(emptyHour);
 
                 bllEmptyRecord.InsertEmptyRecordInfo(emptyRecord);
             }
@@ -39,6 +40,15 @@ namespace CowSite.Controllers.Feed
 
             }
             return RedirectToAction("../../Feed/CowGroup/List");
+        }
+
+
+        public ActionResult GetEmptyRecordList()
+        {
+            List<EmptyRecord> emptyRecordList = bllEmptyRecord.GetEmptyRecordList();
+
+            var gridData = new { Rows = emptyRecordList, Total = emptyRecordList.Count };
+            return Json(gridData, JsonRequestBehavior.AllowGet);
         }
     }
 }

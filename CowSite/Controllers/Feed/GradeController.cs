@@ -45,5 +45,15 @@ namespace CowSite.Controllers.Feed
                 return Json(msg, JsonRequestBehavior.AllowGet);
             }
         }
+
+
+        public JsonResult GetGradeList()
+        {
+            List<Grade> GradeList = bllGrade.GetGradeList();
+            var gridData = new { Rows = GradeList, Total = GradeList.Count };
+            return Json(gridData, JsonRequestBehavior.AllowGet);
+
+
+        }
     }
 }

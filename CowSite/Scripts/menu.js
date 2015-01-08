@@ -159,7 +159,7 @@
                             $('div.subMenuWrapper', $elem).show();
                         }
 
-                        $('.subMenuContainer .btn-default').click(function () { window.location.href = $(this).attr('href'); });
+                        $('.subMenuContainer .btn-default').click(function () { window.open($(this).attr('href')); });
                     }
                 });
             }

@@ -25,6 +25,7 @@
             initDiseaseSelector();
             loadDiseases();
             initBtn();
+            loadMedicalList();
         });
 
         function loadDiseasesType() {
@@ -122,6 +123,32 @@
                 });
             });
         }
+
+        function loadMedicalList() {
+            $("#MedicalGrid").ligerGrid({
+                checkbox: false,
+                columns: [
+                    { display: 'ID', name: 'ID', type: 'int', hide: true, width: 50 },
+                    { display: '耳号', name: 'EarNum', align: 'left', width: 100 },
+                    { display: '疾病名称', name: 'DiseaseName', align: 'left', width: 100 },
+                    { display: '疾病类型', name: 'DiseaseTypeName', align: 'left', width: 100 },
+                    { display: '描述', name: 'Prescription', align: 'left', width: 100 },
+                    { display: '日期', name: 'Date', align: 'left', width: 100, type: "date" },
+                    { display: '左前', name: 'LeftFront', align: 'left', width: 100 },
+                    { display: '右前', name: 'RightFront', align: 'left', width: 100, },
+                    { display: '左后', name: 'LeftBack', align: 'left', width: 100 },
+                    { display: '右后', name: 'RightBack', align: 'left', width: 100 }
+
+                ],
+                pageSize: 10,
+                width: '100%',
+                height: '100%',
+                dateFormat: "yyyy-MM-dd",
+                isScroll: false,
+                url: "../../Medical/Diagnoses/GetMedical"
+            });
+            $("#pageloading").hide();
+        }
     </script>
 </head>
 <body>
@@ -187,6 +214,12 @@
                     <button type="button" class="btn btn-primary" id="btnSave">保存</button>
                 </div>
             </form>
+
+            <div>
+                <div id="MedicalGrid" class="displayBlock ml5 mr5"></div>
+                <div id="message"></div>
+                <div class="l-loading" id="pageloading"></div>
+            </div>
         </div>
     </div>
     <script src="~/Scripts/bdhm.js"></script>

@@ -26,8 +26,17 @@ namespace CowSite.Controllers.Medical
         {
             RepairHoof repairHoof = new RepairHoof();
             UpdateModel<RepairHoof>(repairHoof);
+
             bllRepairHoof.InsertRepairHoofInfo(repairHoof);
-            return RedirectToAction("../Index/List");
+            return View();
+        }
+
+
+        public JsonResult GetRepairHoofList()
+        {
+            List<RepairHoof> RepairHoofList = bllRepairHoof.GetRepairHoofList();
+            var gridData = new { Rows = RepairHoofList, Total = RepairHoofList.Count };
+            return Json(gridData, JsonRequestBehavior.AllowGet);
         }
     }
 }

@@ -1,6 +1,8 @@
-﻿using DairyCow.BLL;
+﻿using CowSite.Model;
+using DairyCow.BLL;
 using DairyCow.Model;
 using System;
+using System.Collections.Generic;
 using System.Web.Mvc;
 
 namespace CowSite.Controllers.Feed
@@ -39,6 +41,27 @@ namespace CowSite.Controllers.Feed
 
             }
             return RedirectToAction("../../Feed/CowGroup/List");
+        }
+
+
+        public ActionResult SelectFeedList()
+        {
+            List<FeedRemainRecord> listLiger = new List<FeedRemainRecord>();
+            List<RemainRecord> listRemainRecord = bllRemainRecord.GetRemainRecordList();
+            foreach (var item in listRemainRecord)
+            {
+                listLiger.Add(new FeedRemainRecord()
+                {
+                    GroupName = item.CowGroupID.ToString(),
+                    ID = item.ID,
+                    RecordTime = item.RecordTime,
+                    RemainQuantity = item.RemainQuantity
+                });
+
+            }
+
+            var gridData = new { Rows = listLiger, Total = listLiger.Count };
+            return Json(gridData, JsonRequestBehavior.AllowGet);
         }
     }
 }

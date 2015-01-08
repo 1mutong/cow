@@ -25,6 +25,10 @@
         $(function () {
             $('#menu').menu({ mainMenuSelectedID: "Feed", subMenuSelectedID: "Feed-Empty" });
             loadCowGroup();
+            loadEmptyRecordList();
+            $("#btnSubmit").click(function () {
+                $(".l-bar-button.l-bar-btnload", window.parent.document).click();
+            });
         })
 
         function loadCowGroup() {
@@ -44,6 +48,27 @@
                 }
             });
         }
+
+
+        function loadEmptyRecordList() {
+
+            $("#emptyRecordGrid").ligerGrid({
+                checkbox: false,
+                columns: [
+                     { display: 'ID', name: 'ID', width: 1, hide: true },
+                            { display: '牛群', name: 'Name', width: 100, align: 'left' },
+                            { display: "空料时间(h)", name: "EmptyHour", width: 100 },
+                            { display: "记录日期", name: "RecordTime", width: 100, type: "date" }
+                ],
+                pageSize: 10,
+                width: '100%',
+                dateFormat: "yyyy-MM-dd",
+                height: '100%',
+                isScroll: false,
+                url: "../../Feed/Empty/GetEmptyRecordList"
+            });
+            $("#pageloading").hide();
+        };
     </script>
 </head>
 <body>
@@ -63,6 +88,12 @@
                     <input type="submit" id="btnSubmit" class="btn btn-primary" value="保存" />
                 </div>
             </form>
+            <hr />
+            <div>
+                <div id="emptyRecordGrid" class="displayBlock ml5 mr5"></div>
+                <div id="message"></div>
+                <div class="l-loading" id="pageloading"></div>
+            </div>
         </div>
     </div>
     <script src="~/Scripts/bdhm.js"></script>

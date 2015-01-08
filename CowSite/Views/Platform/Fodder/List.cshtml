@@ -18,11 +18,13 @@
     <link rel="stylesheet" href="~/Style/base.css">
     <link rel="stylesheet" href="~/ligerUI/skins/Aqua/css/ligerui-all.css">
     <link href="~/Controls/bootstrap.datepicker/datepicker.css" rel="stylesheet" />
-    <script src="~/Controls/bootstrap.datepicker/bootstrap-datepicker.js"></script>    <script>
+    <script src="~/Controls/bootstrap.datepicker/bootstrap-datepicker.js"></script>
+    <script>
         $(function () {
             $('#menu').menu({ mainMenuSelectedID: "Platform", subMenuSelectedID: "Platform-Fodder" });
             btnAdd();
         })
+
         function btnAdd() {
             $('#btnAdd').click(function () {
                 $.ajax({
@@ -36,173 +38,176 @@
                         }
                         else if (response.Result == -10) {
                             alert('标准饲料已存在！');
+                            return;
+                        } else if (response.Result == -1) {
+                            alert(response.Msg);
+                            return;
                         }
-                        else
-                        {
+                        else {
                             alert('添加标准饲料失败！');
                         }
                     }
                 });
             });
-        }
+        };
     </script>
 </head>
 <body>
     <div class="container">
         <div id="menu"></div>
         <div class="content">
-            
-                <form id="fodderInfo">
-                    <div class="input-group mt10">
-                        <span class="input-group-addon w200">饲料名称</span>
-                        <input type="text" class="form-control w400" placeholder="饲料名称" name="fodderName">
-                    </div>
-                    <div class="input-group mt10">
-                        <span class="input-group-addon w200">饲料说明</span>
-                        <textarea class="form-control h100 w400" placeholder="饲料说明" name="description"></textarea>
-                    </div>
-                    <div class="input-group mt10 js-price">
-                        <span class="input-group-addon w200">参考价格</span>
-                        <input type="text" class="form-control w400" placeholder="参考价格" name="price">
-                    </div>
-                    <div class="input-group mt10">
-                        <span class="input-group-addon w200">干物质 %</span>
-                        <input type="text" class="form-control w400 " placeholder="" name="DM">
-                    </div>
-                    <div class="input-group mt10">
-                        <span class="input-group-addon w200">总奶能 NND</span>
-                        <input type="text" class="form-control w400 " placeholder="" name="NND">
-                    </div>
-                    <div class="input-group mt10">
-                        <span class="input-group-addon w200">粗蛋白质 %</span>
-                        <input type="text" class="form-control w400 " placeholder="" name="CP">
-                    </div>
-                    <div class="input-group mt10">
-                        <span class="input-group-addon w200">粗脂肪%</span>
-                        <input type="text" class="form-control w400 " placeholder="" name="Fat">
-                    </div>
-                    <div class="input-group mt10">
-                        <span class="input-group-addon w200">粗纤维 %</span>
-                        <input type="text" class="form-control w400 " placeholder="" name="CF">
-                    </div>
-                    <div class="input-group mt10">
-                        <span class="input-group-addon w200">无氮浸出物 %</span>
-                        <input type="text" class="form-control w400 " placeholder="" name="NFE">
-                    </div>
-                    <div class="input-group mt10">
-                        <span class="input-group-addon w200">粗灰分 %</span>
-                        <input type="text" class="form-control w400 " placeholder="" name="ASH">
-                    </div>
-                    <div class="input-group mt10">
-                        <span class="input-group-addon w200">中性洗涤纤维 %</span>
-                        <input type="text" class="form-control w400 " placeholder="" name="NDF">
-                    </div>
-                    <div class="input-group mt10">
-                        <span class="input-group-addon w200">酸性洗涤纤维 %</span>
-                        <input type="text" class="form-control w400 " placeholder="" name="ADF">
-                    </div>
-                    <div class="input-group mt10">
-                        <span class="input-group-addon w200">钙 %</span>
-                        <input type="text" class="form-control w400 " placeholder="" name="Ca">
-                    </div>
-                    <div class="input-group mt10">
-                        <span class="input-group-addon w200">总磷 %</span>
-                        <input type="text" class="form-control w400 " placeholder="" name="P">
-                    </div>
-                    <div class="input-group mt10">
-                        <span class="input-group-addon w200">非植酸磷 %</span>
-                        <input type="text" class="form-control w400 " placeholder="" name="NPP">
-                    </div>
-                    <div class="input-group mt10">
-                        <span class="input-group-addon w200">精氨酸%</span>
-                        <input type="text" class="form-control w400 " placeholder="" name="Arg">
-                    </div>
-                    <div class="input-group mt10">
-                        <span class="input-group-addon w200">组氨酸 %</span>
-                        <input type="text" class="form-control w400 " placeholder="" name="His">
-                    </div>
-                    <div class="input-group mt10">
-                        <span class="input-group-addon w200">异亮氨酸 %</span>
-                        <input type="text" class="form-control w400 " placeholder="" name="Ile">
-                    </div>
-                    <div class="input-group mt10">
-                        <span class="input-group-addon w200">亮氨酸 %</span>
-                        <input type="text" class="form-control w400 " placeholder="" name="Leu">
-                    </div>
-                    <div class="input-group mt10">
-                        <span class="input-group-addon w200">赖氨酸 %</span>
-                        <input type="text" class="form-control w400 " placeholder="" name="Lys">
-                    </div>
-                    <div class="input-group mt10">
-                        <span class="input-group-addon w200">蛋氨酸 %</span>
-                        <input type="text" class="form-control w400 " placeholder="" name="Met">
-                    </div>
-                    <div class="input-group mt10">
-                        <span class="input-group-addon w200">胱氨酸 %</span>
-                        <input type="text" class="form-control w400 " placeholder="" name="Cys">
-                    </div>
-                    <div class="input-group mt10">
-                        <span class="input-group-addon w200">苯丙氨酸 %</span>
-                        <input type="text" class="form-control w400 " placeholder="" name="Phe">
-                    </div>
-                    <div class="input-group mt10">
-                        <span class="input-group-addon w200">酪氨酸 %</span>
-                        <input type="text" class="form-control w400 " placeholder="" name="Tyr">
-                    </div>
-                    <div class="input-group mt10">
-                        <span class="input-group-addon w200">苏氨酸 %</span>
-                        <input type="text" class="form-control w400 " placeholder="" name="Thr">
-                    </div>
-                    <div class="input-group mt10">
-                        <span class="input-group-addon w200">色氨酸 %</span>
-                        <input type="text" class="form-control w400 " placeholder="" name="Trp">
-                    </div>
-                    <div class="input-group mt10">
-                        <span class="input-group-addon w200">缬氨酸 %</span>
-                        <input type="text" class="form-control w400 " placeholder="" name="Val">
-                    </div>
-                    <div class="input-group mt10">
-                        <span class="input-group-addon w200">钠 %</span>
-                        <input type="text" class="form-control w400 " placeholder="" name="Na">
-                    </div>
-                    <div class="input-group mt10">
-                        <span class="input-group-addon w200">氯 %</span>
-                        <input type="text" class="form-control w400 " placeholder="" name="Cl">
-                    </div>
-                    <div class="input-group mt10">
-                        <span class="input-group-addon w200">镁 %</span>
-                        <input type="text" class="form-control w400 " placeholder="" name="Mg">
-                    </div>
-                    <div class="input-group mt10">
-                        <span class="input-group-addon w200">钾 %</span>
-                        <input type="text" class="form-control w400 " placeholder="" name="K">
-                    </div>
-                    <div class="input-group mt10">
-                        <span class="input-group-addon w200">铁 Mg/kg</span>
-                        <input type="text" class="form-control w400 " placeholder="" name="Fe">
-                    </div>
-                    <div class="input-group mt10">
-                        <span class="input-group-addon w200">铜 Mg/kg</span>
-                        <input type="text" class="form-control w400 " placeholder="" name="Cu">
-                    </div>
-                    <div class="input-group mt10">
-                        <span class="input-group-addon w200">锰 Mg/kg</span>
-                        <input type="text" class="form-control w400 " placeholder="" name="Mn">
-                    </div>
-                    <div class="input-group mt10">
-                        <span class="input-group-addon w200">锌 Mg/kg</span>
-                        <input type="text" class="form-control w400 " placeholder="" name="Zn">
-                    </div>
-                    <div class="input-group mt10">
-                        <span class="input-group-addon w200">硒 Mg/kg</span>
-                        <input type="text" class="form-control w400 " placeholder="" name="Se">
-                    </div>
 
-                    <div class="mt10">
-                        <button type="button" class="btn btn-primary" id="btnAdd">添加标准饲料</button>
-                    </div>
-                </form>
-            </div>
+            <form id="fodderInfo">
+                <div class="input-group mt10">
+                    <span class="input-group-addon w200">饲料名称</span>
+                    <input type="text" class="form-control w400" placeholder="饲料名称" name="fodderName">
+                </div>
+                <div class="input-group mt10">
+                    <span class="input-group-addon w200">饲料说明</span>
+                    <textarea class="form-control h100 w400" placeholder="饲料说明" name="description"></textarea>
+                </div>
+                <div class="input-group mt10 js-price">
+                    <span class="input-group-addon w200">参考价格</span>
+                    <input type="text" class="form-control w400" placeholder="参考价格" name="price">
+                </div>
+                <div class="input-group mt10">
+                    <span class="input-group-addon w200">干物质 %</span>
+                    <input type="text" class="form-control w400 " placeholder="" name="DM">
+                </div>
+                <div class="input-group mt10">
+                    <span class="input-group-addon w200">总奶能 NND</span>
+                    <input type="text" class="form-control w400 " placeholder="" name="NND">
+                </div>
+                <div class="input-group mt10">
+                    <span class="input-group-addon w200">粗蛋白质 %</span>
+                    <input type="text" class="form-control w400 " placeholder="" name="CP">
+                </div>
+                <div class="input-group mt10">
+                    <span class="input-group-addon w200">粗脂肪%</span>
+                    <input type="text" class="form-control w400 " placeholder="" name="Fat">
+                </div>
+                <div class="input-group mt10">
+                    <span class="input-group-addon w200">粗纤维 %</span>
+                    <input type="text" class="form-control w400 " placeholder="" name="CF">
+                </div>
+                <div class="input-group mt10">
+                    <span class="input-group-addon w200">无氮浸出物 %</span>
+                    <input type="text" class="form-control w400 " placeholder="" name="NFE">
+                </div>
+                <div class="input-group mt10">
+                    <span class="input-group-addon w200">粗灰分 %</span>
+                    <input type="text" class="form-control w400 " placeholder="" name="ASH">
+                </div>
+                <div class="input-group mt10">
+                    <span class="input-group-addon w200">中性洗涤纤维 %</span>
+                    <input type="text" class="form-control w400 " placeholder="" name="NDF">
+                </div>
+                <div class="input-group mt10">
+                    <span class="input-group-addon w200">酸性洗涤纤维 %</span>
+                    <input type="text" class="form-control w400 " placeholder="" name="ADF">
+                </div>
+                <div class="input-group mt10">
+                    <span class="input-group-addon w200">钙 %</span>
+                    <input type="text" class="form-control w400 " placeholder="" name="Ca">
+                </div>
+                <div class="input-group mt10">
+                    <span class="input-group-addon w200">总磷 %</span>
+                    <input type="text" class="form-control w400 " placeholder="" name="P">
+                </div>
+                <div class="input-group mt10">
+                    <span class="input-group-addon w200">非植酸磷 %</span>
+                    <input type="text" class="form-control w400 " placeholder="" name="NPP">
+                </div>
+                <div class="input-group mt10">
+                    <span class="input-group-addon w200">精氨酸%</span>
+                    <input type="text" class="form-control w400 " placeholder="" name="Arg">
+                </div>
+                <div class="input-group mt10">
+                    <span class="input-group-addon w200">组氨酸 %</span>
+                    <input type="text" class="form-control w400 " placeholder="" name="His">
+                </div>
+                <div class="input-group mt10">
+                    <span class="input-group-addon w200">异亮氨酸 %</span>
+                    <input type="text" class="form-control w400 " placeholder="" name="Ile">
+                </div>
+                <div class="input-group mt10">
+                    <span class="input-group-addon w200">亮氨酸 %</span>
+                    <input type="text" class="form-control w400 " placeholder="" name="Leu">
+                </div>
+                <div class="input-group mt10">
+                    <span class="input-group-addon w200">赖氨酸 %</span>
+                    <input type="text" class="form-control w400 " placeholder="" name="Lys">
+                </div>
+                <div class="input-group mt10">
+                    <span class="input-group-addon w200">蛋氨酸 %</span>
+                    <input type="text" class="form-control w400 " placeholder="" name="Met">
+                </div>
+                <div class="input-group mt10">
+                    <span class="input-group-addon w200">胱氨酸 %</span>
+                    <input type="text" class="form-control w400 " placeholder="" name="Cys">
+                </div>
+                <div class="input-group mt10">
+                    <span class="input-group-addon w200">苯丙氨酸 %</span>
+                    <input type="text" class="form-control w400 " placeholder="" name="Phe">
+                </div>
+                <div class="input-group mt10">
+                    <span class="input-group-addon w200">酪氨酸 %</span>
+                    <input type="text" class="form-control w400 " placeholder="" name="Tyr">
+                </div>
+                <div class="input-group mt10">
+                    <span class="input-group-addon w200">苏氨酸 %</span>
+                    <input type="text" class="form-control w400 " placeholder="" name="Thr">
+                </div>
+                <div class="input-group mt10">
+                    <span class="input-group-addon w200">色氨酸 %</span>
+                    <input type="text" class="form-control w400 " placeholder="" name="Trp">
+                </div>
+                <div class="input-group mt10">
+                    <span class="input-group-addon w200">缬氨酸 %</span>
+                    <input type="text" class="form-control w400 " placeholder="" name="Val">
+                </div>
+                <div class="input-group mt10">
+                    <span class="input-group-addon w200">钠 %</span>
+                    <input type="text" class="form-control w400 " placeholder="" name="Na">
+                </div>
+                <div class="input-group mt10">
+                    <span class="input-group-addon w200">氯 %</span>
+                    <input type="text" class="form-control w400 " placeholder="" name="Cl">
+                </div>
+                <div class="input-group mt10">
+                    <span class="input-group-addon w200">镁 %</span>
+                    <input type="text" class="form-control w400 " placeholder="" name="Mg">
+                </div>
+                <div class="input-group mt10">
+                    <span class="input-group-addon w200">钾 %</span>
+                    <input type="text" class="form-control w400 " placeholder="" name="K">
+                </div>
+                <div class="input-group mt10">
+                    <span class="input-group-addon w200">铁 Mg/kg</span>
+                    <input type="text" class="form-control w400 " placeholder="" name="Fe">
+                </div>
+                <div class="input-group mt10">
+                    <span class="input-group-addon w200">铜 Mg/kg</span>
+                    <input type="text" class="form-control w400 " placeholder="" name="Cu">
+                </div>
+                <div class="input-group mt10">
+                    <span class="input-group-addon w200">锰 Mg/kg</span>
+                    <input type="text" class="form-control w400 " placeholder="" name="Mn">
+                </div>
+                <div class="input-group mt10">
+                    <span class="input-group-addon w200">锌 Mg/kg</span>
+                    <input type="text" class="form-control w400 " placeholder="" name="Zn">
+                </div>
+                <div class="input-group mt10">
+                    <span class="input-group-addon w200">硒 Mg/kg</span>
+                    <input type="text" class="form-control w400 " placeholder="" name="Se">
+                </div>
+
+                <div class="mt10">
+                    <button type="button" class="btn btn-primary" id="btnAdd">添加标准饲料</button>
+                </div>
+            </form>
+        </div>
     </div>
     <script src="~/Scripts/bdhm.js"></script>
 </body>

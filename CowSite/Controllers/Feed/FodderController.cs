@@ -35,22 +35,22 @@ namespace CowSite.Controllers.Feed
             return Json(new { Rows = sysFodderList }, JsonRequestBehavior.AllowGet);
         }
 
-        public JsonResult AddPastureFodder(string fodderName, string quantity, string  price, string sysFodderID)
+        public JsonResult AddPastureFodder(string fodderName, string quantity, string price, string sysFodderID)
         {
             string Msg;
             PastureFodder p = new PastureFodder();
             p.FodderName = fodderName;
             p.IsCurrent = true;
             double result;
-            if ( Double.TryParse(quantity, out result))
+            if (Double.TryParse(quantity, out result))
             {
                 p.Quantity = result;
 
-                if (Double.TryParse(price,out result))
+                if (Double.TryParse(price, out result))
                 {
                     p.Price = result;
                     int rr;
-                    if (Int32.TryParse(sysFodderID,out rr))
+                    if (Int32.TryParse(sysFodderID, out rr))
                     {
                         p.SysFodderID = rr;
                         p.PastureID = UserBLL.Instance.CurrentUser.Pasture.ID;
@@ -79,7 +79,7 @@ namespace CowSite.Controllers.Feed
         {
             FodderBLL fBLL = new FodderBLL();
             int temp = fBLL.DeletePastureFodder(Int32.Parse(fodderID));
-            string s=temp==1?"成功删除饲料！":"未删除。";
+            string s = temp == 1 ? "成功删除饲料！" : "未删除。";
             return Json(new { Msg = s }, JsonRequestBehavior.AllowGet);
         }
 
@@ -130,23 +130,23 @@ namespace CowSite.Controllers.Feed
         public JsonResult GetFormulaFodders(int formulaID)
         {
             FodderBLL fBLL = new FodderBLL();
-            List<PastureFodder> list=new List<PastureFodder>();
-            if (formulaID!=0)
+            List<PastureFodder> list = new List<PastureFodder>();
+            if (formulaID != 0)
             {
-                list=fBLL.GetMappedPastureFodders(formulaID, UserBLL.Instance.CurrentUser.Pasture.ID);
+                list = fBLL.GetMappedPastureFodders(formulaID, UserBLL.Instance.CurrentUser.Pasture.ID);
             }
-            
+
             return Json(list, JsonRequestBehavior.AllowGet);
-            
+
         }
 
         public JsonResult CheckFormulaFodders(int formulaID)
         {
             FodderBLL fBLL = new FodderBLL();
             FormulaBLL formulaBLL = new FormulaBLL();
-            string formulaName; 
+            string formulaName;
             List<PastureFodder> list = new List<PastureFodder>();
-            List<Fodder> sList=new List<Fodder>();
+            List<Fodder> sList = new List<Fodder>();
             string msg;
             int result;
             if (formulaID != 0)
@@ -159,13 +159,13 @@ namespace CowSite.Controllers.Feed
                     //饲料匹配
                     msg = "配方Ready!";
                     result = 0;
-                    
+
                 }
                 else
                 {
                     msg = "本配方存在未匹配的标准饲料。";
                     result = 1;
-                    
+
                 }
             }
             else
@@ -174,7 +174,7 @@ namespace CowSite.Controllers.Feed
                 result = 2;
                 formulaName = "";
             }
-            
+
             CheckFodderResult r = new CheckFodderResult()
             {
                 Msg = msg,
@@ -191,5 +191,5 @@ namespace CowSite.Controllers.Feed
             public int Result;
             public string FormulaName;
         }
-	}
+    }
 }

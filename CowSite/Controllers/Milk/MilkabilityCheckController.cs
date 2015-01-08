@@ -40,5 +40,28 @@ namespace CowSite.Controllers.Milk
                 return Json(msg, JsonRequestBehavior.AllowGet);
             }
         }
+
+
+        public JsonResult SelectMilkCheckList()
+        {
+            List<MilkCheckModel> listobj = bllIndividual.GetMilkCheckList(UserBLL.Instance.CurrentUser.Pasture.ID);
+            List<MilkCheckModel> listLiger = new List<MilkCheckModel>();
+            foreach (var item in listobj)
+            {
+                
+                listLiger.Add(new MilkCheckModel()
+                {
+                    EarNum = item.EarNum,
+                    ID = item.ID,
+                    MilkDate = item.MilkDate,
+                    Weight = item.Weight,
+                    Round = item.Round
+                });
+
+            }
+
+            var gridData = new { Rows = listLiger, Total = listLiger.Count };
+            return Json(gridData, JsonRequestBehavior.AllowGet);
+        }
     }
 }
