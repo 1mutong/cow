@@ -11,20 +11,8 @@ namespace DairyCow.DAL
 {
     public class EmptyRecordDAL : BaseDAL
     {
-        //得到所有的空槽记录信息
-        public DataTable GetEmptyRecordList()
-        {
-            DataTable emptyRecordList = null;
-            string sql = string.Format(@"SELECT [ID]
-                                            ,[CowGroupID]
-                                            ,[FormulaID]
-                                            ,[RecordUserID]
-                                            ,[RecordTime]
-                                            ,[EmptyHour]
-                                        FROM [1mutong].[dbo].[Feed_EmptyRecord]");
-            emptyRecordList = dataProvider1mutong.FillDataTable(sql, CommandType.Text);
-            return emptyRecordList;
-        }
+
+
         //插入空槽记录信息
         public int InsertEmptyRecordInfo(EmptyRecord emptyRecord)
         {
@@ -45,6 +33,22 @@ namespace DairyCow.DAL
             string sql = string.Format(@"select top(1) CowGroupID from [1mutong].[dbo].[Feed_EmptyRecord] where ID = {0}", id);
             cowGroupID = Convert.ToInt32(dataProvider1mutong.ExecuteScalar(sql, CommandType.Text));
             return cowGroupID;
+        }
+
+        //得到所有的空槽记录信息
+        public DataTable GetEmptyRecordList()
+        {
+            DataTable emptyRecordList = null;
+            string sql = string.Format(@"SELECT f.[ID]
+             ,f.[CowGroupID]
+             ,f.[FormulaID]
+             ,f.[RecordUserID]
+             ,f.[RecordTime]
+             ,f.[EmptyHour]
+             ,b.Name
+         FROM [1mutong].[dbo].[Feed_EmptyRecord] as f inner join Base_CowGroup as b on b.ID=f.CowGroupID");
+            emptyRecordList = dataProvider1mutong.FillDataTable(sql, CommandType.Text);
+            return emptyRecordList;
         }
     }
 }
