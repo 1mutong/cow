@@ -22,14 +22,14 @@ namespace DairyCow.DAL
                                             ,[LeftBack]
                                             ,[RightBack]
                                             ,[Description]
-                                        FROM [1mutong].[dbo].[Milk_MastitisReport]");
+                                        FROM [Milk_MastitisReport]");
             milkMastitisReportList = dataProvider1mutong.FillDataTable(sql, CommandType.Text);
             return milkMastitisReportList;
         }
         public int InsertMilkMastitisReportInfo(MilkMastitisReport milkMastitisReport)
         {
             StringBuilder sql = new StringBuilder();
-            sql.Append(@"insert into [1mutong].[dbo].[Milk_MastitisReport] values (
+            sql.Append(@"insert into [Milk_MastitisReport] values (
                                     '" + milkMastitisReport.EarNum + "','"
                           + milkMastitisReport.DetectionDate + "','"
                           + milkMastitisReport.Detector + "',"

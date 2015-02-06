@@ -27,7 +27,7 @@ namespace DairyCow.DAL
                                             ,[EstrusDate]
                                             ,[EstrusType]
                                             ,[EstrusFindPerson] 
-                                        FROM [1mutong].[dbo].[Breed_Insemination]");
+                                        FROM [Breed_Insemination]");
             inseminationList = dataProvider1mutong.FillDataTable(sql, CommandType.Text);
             return inseminationList;
         }
@@ -48,7 +48,7 @@ namespace DairyCow.DAL
                                             ,[EstrusDate]
                                             ,[EstrusType]
                                             ,[EstrusFindPerson]
-                                        FROM [1mutong].[dbo].[Breed_Insemination] 
+                                        FROM [Breed_Insemination] 
                                         WHERE EarNum = {0} order by OperateDate DESC", earNum);
             inseminationList = dataProvider1mutong.FillDataTable(sql, CommandType.Text);
             return inseminationList;
@@ -76,7 +76,7 @@ namespace DairyCow.DAL
 
         public bool IsInsemExist(int earNum, int inseminationNum)
         {
-            string sql = string.Format(@"select * from [1mutong].[dbo].[Breed_Insemination] 
+            string sql = string.Format(@"select * from [Breed_Insemination] 
                                             where EarNum = {0}
                                             and InseminationNum = {1}", earNum, inseminationNum);
             object insemInfo = dataProvider1mutong.ExecuteScalar(sql, CommandType.Text);
@@ -105,8 +105,8 @@ namespace DairyCow.DAL
                                                                        values ({0},{1},'{2}',{3},'{4}',{5},{6},'{7}','{8}','{9}',{10})",
                                      earNum, inseminationNum, semenNum, semenType, estrusDate, estrusType, estrusFindType, estrusFindPerson, operateDate, descrition, operatorID);
             //StringBuilder sql = new StringBuilder();
-            ////sql.Append(@"insert into [1mutong].[dbo].[DairyCow_Insemination] values (" + insemination.EarNum + ")");
-            //sql.Append(@"insert into [1mutong].[dbo].[Breed_Insemination] values ('" + insemination.EarNum + "',"
+            ////sql.Append(@"insert into [DairyCow_Insemination] values (" + insemination.EarNum + ")");
+            //sql.Append(@"insert into [Breed_Insemination] values ('" + insemination.EarNum + "',"
             //              + insemination.InseminationNum + ",'"
             //              + insemination.SemenNum + "',"
             //              + insemination.SemenType + ",'"
@@ -129,7 +129,7 @@ namespace DairyCow.DAL
         //public int UpdateInseminationInfo(Insemination insem)
         //{
         //    StringBuilder sql = new StringBuilder();
-        //    sql.Append(@"UPDATE [1mutong].[dbo].[Breed_Insemination] set ");
+        //    sql.Append(@"UPDATE [Breed_Insemination] set ");
         //    if (insem.InseminationNum != null && insem.InseminationNum != 0)
         //    {
         //        sql.Append("[InseminationNum] = " + insem.InseminationNum + ",");
@@ -177,14 +177,14 @@ namespace DairyCow.DAL
         public int ForbidInsemination(int earNum)
         {
             StringBuilder sql = new StringBuilder();
-            sql.Append(@"update [1mutong].[dbo].[Base_Cow] set [Status] = 6 where EarNum = " + earNum);
+            sql.Append(@"update [Base_Cow] set [Status] = 6 where EarNum = " + earNum);
             return dataProvider1mutong.ExecuteNonQuery(sql.ToString(), CommandType.Text);
         }
         //根据牛的耳号获得最近一次牛的配种信息ID
         public int GetLatestInseminationID(int earNum)
         {
             int inseminatinID = 0;
-            string sql = string.Format(@"select top(1) ID from [1mutong].[dbo].[Breed_Insemination] where EarNum = '{0}' order by OperateDate DESC", earNum);
+            string sql = string.Format(@"select top(1) ID from [Breed_Insemination] where EarNum = '{0}' order by OperateDate DESC", earNum);
             inseminatinID = Convert.ToInt32(dataProvider1mutong.ExecuteScalar(sql, CommandType.Text));
             return inseminatinID;
         }
@@ -192,7 +192,7 @@ namespace DairyCow.DAL
         public object UnDoForbidInsemination(int earNum)
         {
             StringBuilder sql = new StringBuilder();
-            sql.Append(@"update [1mutong].[dbo].[Base_Cow] set [Status] = 0 where EarNum =" + earNum);
+            sql.Append(@"update [Base_Cow] set [Status] = 0 where EarNum =" + earNum);
             return dataProvider1mutong.ExecuteNonQuery(sql.ToString(), CommandType.Text);
         }
 
@@ -216,7 +216,7 @@ namespace DairyCow.DAL
                                             ,[EstrusDate]
                                             ,[EstrusType]
                                             ,[EstrusFindPerson]
-                                        FROM [1mutong].[dbo].[Breed_Insemination] 
+                                        FROM [Breed_Insemination] 
                                         WHERE EarNum = '{0}' order by OperateDate DESC", earNum);
             inseminationList = dataProvider1mutong.FillDataTable(sql, CommandType.Text);
             if (inseminationList.Rows.Count==1)

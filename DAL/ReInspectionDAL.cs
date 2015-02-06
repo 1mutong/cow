@@ -27,7 +27,7 @@ namespace DairyCow.DAL
                                             ,[AfterInsemDays]
                                             ,[AfterInitInspectDays]
                                             ,[Description] 
-                                        FROM [1mutong].[dbo].[Breed_ReInspection]");
+                                        FROM [Breed_ReInspection]");
             reInspectionList = dataProvider1mutong.FillDataTable(sql, CommandType.Text);
             return reInspectionList;
         }
@@ -44,7 +44,7 @@ namespace DairyCow.DAL
                                             ,[AfterInsemDays]
                                             ,[AfterInitInspectDays]
                                             ,[Description] 
-                                        FROM [1mutong].[dbo].[Breed_ReInspection]
+                                        FROM [Breed_ReInspection]
                                             where EarNum = '{0}' order by OperateDate", earNum);
             reInspectionList = dataProvider1mutong.FillDataTable(sql, CommandType.Text);
             return reInspectionList;
@@ -62,7 +62,7 @@ namespace DairyCow.DAL
                                             ,[AfterInsemDays]
                                             ,[AfterInitInspectDays]
                                             ,[Description] 
-                                        FROM [1mutong].[dbo].[Breed_ReInspection]
+                                        FROM [Breed_ReInspection]
                                             where InseminationID = '{0}' and EarNum = '{1}'", insemId, earNum);
             reInspectionList = dataProvider1mutong.FillDataTable(sql, CommandType.Text);
             return reInspectionList;
@@ -70,7 +70,7 @@ namespace DairyCow.DAL
         //根据耳号和配种信息ID判断是否存在复检信息
         public bool IsReInspectionExist(int earNum, int insemId)
         {
-            string sql = string.Format(@"select * from [1mutong].[dbo].[Breed_ReInspection] 
+            string sql = string.Format(@"select * from [Breed_ReInspection] 
                                             where EarNum = '{0}' 
                                             and InseminationID = {1}", earNum, insemId);
             object reInspectInfo = dataProvider1mutong.ExecuteScalar(sql, CommandType.Text);
@@ -87,7 +87,7 @@ namespace DairyCow.DAL
         public int UpdateReInspection(ReInspection reInspection)
         {
             StringBuilder sql = new StringBuilder();
-            sql.Append(@"UPDATE [1mutong].[dbo].[Breed_ReInspection] set ");
+            sql.Append(@"UPDATE [Breed_ReInspection] set ");
             if (reInspection.InseminationID != null && reInspection.InseminationID != 0)
             {
                 sql.Append("[InseminationID] = " + reInspection.InseminationID + ",");

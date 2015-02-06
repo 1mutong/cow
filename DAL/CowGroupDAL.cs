@@ -211,7 +211,7 @@ namespace DairyCow.DAL
         public int GetFormulaIDByGroupID(int id)
         {
             int formulaID = 0;
-            string sql = string.Format(@"select top(1) FormulaID from [1mutong].[dbo].[Base_CowGroup] where ID = {0}", id);
+            string sql = string.Format(@"select top(1) FormulaID from [Base_CowGroup] where ID = {0}", id);
             formulaID = Convert.ToInt32(dataProvider1mutong.ExecuteScalar(sql, CommandType.Text));
             return formulaID;
         }

@@ -44,9 +44,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AnalysisDAL.cs" />
     <Compile Include="Base\BaseDAL.cs" />
     <Compile Include="CalvingDAL.cs" />
+    <Compile Include="CalvingDALext.cs" />
     <Compile Include="CowDAL.cs" />
+    <Compile Include="CowDALext.cs" />
     <Compile Include="CowGroupDAL.cs" />
     <Compile Include="DBUtil\Command.cs" />
     <Compile Include="DBUtil\DataProvider.cs" />
@@ -58,6 +61,7 @@
     <Compile Include="GradeDAL.cs" />
     <Compile Include="GroupingRecordDAL.cs" />
     <Compile Include="HouseDAL.cs" />
+    <Compile Include="JobDAL.cs" />
     <Compile Include="MedicalDAL.cs" />
     <Compile Include="IndividualProdcutionDAL.cs" />
     <Compile Include="InitialInspectionDAL.cs" />
@@ -75,6 +79,7 @@
     <Compile Include="RemoveHornDAL.cs" />
     <Compile Include="RepairHoofDAL.cs" />
     <Compile Include="ReportDAL.cs" />
+    <Compile Include="CowSelectDAL.cs" />
     <Compile Include="StrayDAL.cs" />
     <Compile Include="TaskDAL.cs" />
     <Compile Include="UnForbidInseminationDAL.cs" />

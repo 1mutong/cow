@@ -23,7 +23,7 @@ namespace DairyCow.DAL
                                             ,[Description]
                                             ,[MeasureDate]
                                             ,[Measurer] 
-                                        FROM [1mutong].[dbo].[Feed_Grade]");
+                                        FROM [Feed_Grade]");
             gradeList = dataProvider1mutong.FillDataTable(sql, CommandType.Text);
             return gradeList;
         }
@@ -39,7 +39,7 @@ namespace DairyCow.DAL
                                             ,[Description]
                                             ,[MeasureDate]
                                             ,[Measurer]
-                                        FROM [1mutong].[dbo].[Feed_Grade] 
+                                        FROM [Feed_Grade] 
                                         WHERE EarNum = '{0}' order by MeasureDate DESC", earNum);
             gradeList = dataProvider1mutong.FillDataTable(sql, CommandType.Text);
             return gradeList;
@@ -48,7 +48,7 @@ namespace DairyCow.DAL
         public int InsertGradeInfo(Grade grade)
         {
             StringBuilder sql = new StringBuilder();
-            sql.Append(@"insert into [1mutong].[dbo].[Feed_Grade] values (
+            sql.Append(@"insert into [Feed_Grade] values (
                                     '" + grade.EarNum + "',"
                                     + grade.Height + ","
                                     + grade.Weight + ","

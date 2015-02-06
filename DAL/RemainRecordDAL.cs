@@ -20,14 +20,14 @@ namespace DairyCow.DAL
                                             ,[RecordUserID]
                                             ,[RecordTime]
                                             ,[RemainQuantity]
-                                        FROM [1mutong].[dbo].[Feed_RemainRecord]");
+                                        FROM [Feed_RemainRecord]");
             remainRecordList = dataProvider1mutong.FillDataTable(sql, CommandType.Text);
             return remainRecordList;
         }
         public int InsertRemainRecordInfo(RemainRecord remainRecord)
         {
             StringBuilder sql = new StringBuilder();
-            sql.Append(@"insert into [1mutong].[dbo].[Feed_RemainRecord] values (
+            sql.Append(@"insert into [Feed_RemainRecord] values (
                                     " + remainRecord.CowGroupID + ","
                                     + remainRecord.FormulaID + ","
                                     + remainRecord.RecordUserID + ",'"

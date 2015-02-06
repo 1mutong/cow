@@ -8,7 +8,7 @@ namespace DairyCow.DAL
     /// <summary>
     /// 奶牛基本信息数据库访问
     /// </summary>
-    public class CowDAL : BaseDAL
+    public partial class CowDAL : BaseDAL
     {
         /// <summary>
         /// 所有牛?
@@ -25,7 +25,8 @@ namespace DairyCow.DAL
                                         D.Gender, 
                                         D.BirthDate, 
                                         D.BirthWeight, 
-                                        D.Color, 
+                                        D.Color,
+                                        D.PedometerID, 
                                         D.Status, 
                                         D.IsIll,
                                         D.HouseID,
@@ -47,7 +48,7 @@ namespace DairyCow.DAL
         {
             DataTable cowInfo = null;
 
-            string sql = string.Format(@"SELECT D.EarNum,D.HouseID, D.DisplayEarNum, D.FarmID, D.GroupID, D.Gender, D.BirthDate,D.IsIll, D.BirthWeight, D.Color, D.Status,D.IsStray,D.FatherID,D.MotherID,D.IsStray, D.FatherID, D.MotherID,G.Name as GroupName 
+            string sql = string.Format(@"SELECT D.EarNum,D.HouseID,D.PedometerID, D.DisplayEarNum, D.FarmID, D.GroupID, D.Gender, D.BirthDate,D.IsIll, D.BirthWeight, D.Color, D.Status,D.IsStray,D.FatherID,D.MotherID,D.IsStray, D.FatherID, D.MotherID,G.Name as GroupName 
                                         FROM Base_Cow AS D LEFT JOIN [Base_CowGroup] as G ON D.GroupID = G.ID 
                                         WHERE D.EarNum={0}", earNum);
 
@@ -84,7 +85,7 @@ namespace DairyCow.DAL
         {
             DataTable cowInfo = null;
 
-            string sql = string.Format(@"SELECT D.EarNum,D.HouseID, D.DisplayEarNum, D.FarmID, D.GroupID, D.Gender, D.BirthDate,D.IsIll, D.BirthWeight, D.Color, D.Status,D.IsStray,D.FatherID,D.MotherID,D.IsStray, D.FatherID, D.MotherID,G.Name as GroupName 
+            string sql = string.Format(@"SELECT D.EarNum,D.HouseID, D.PedometerID,D.DisplayEarNum, D.FarmID, D.GroupID, D.Gender, D.BirthDate,D.IsIll, D.BirthWeight, D.Color, D.Status,D.IsStray,D.FatherID,D.MotherID,D.IsStray, D.FatherID, D.MotherID,G.Name as GroupName 
                                         FROM Base_Cow AS D LEFT JOIN [Base_CowGroup] as G ON D.GroupID = G.ID 
                                         WHERE D.DisplayEarNum='{0}' and D.FarmID={1}", dislayEarNum, pastureID);
 
@@ -111,6 +112,7 @@ namespace DairyCow.DAL
                                         D.BirthWeight, 
                                         D.Color, 
                                         D.Status,
+D.PedometerID,
                                         D.IsIll, 
                                         D.HouseID,
                                         D.IsStray,
@@ -146,6 +148,7 @@ namespace DairyCow.DAL
                                         D.Color, 
                                         D.Status, 
                                         D.IsIll,
+D.PedometerID,
                                         D.HouseID,
                                         D.IsStray,
                                         D.FatherID,

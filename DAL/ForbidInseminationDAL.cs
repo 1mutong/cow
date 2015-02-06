@@ -19,7 +19,7 @@ namespace DairyCow.DAL
                                             ,[OperateDate]
                                             ,[Operator]
                                             ,[Description]
-                                        FROM [1mutong].[dbo].[Breed_ForbidInsemination]");
+                                        FROM [Breed_ForbidInsemination]");
             forbidInseminationList = dataProvider1mutong.FillDataTable(sql, CommandType.Text);
             return forbidInseminationList;
         }
@@ -27,7 +27,7 @@ namespace DairyCow.DAL
         public int InsertForbidInseminationInfo(ForbidInsemination forBidInsemination)
         {
             StringBuilder sql = new StringBuilder();
-            sql.Append(@"insert into [1mutong].[dbo].[Breed_ForbidInsemination] values (
+            sql.Append(@"insert into [Breed_ForbidInsemination] values (
                                     " + forBidInsemination.EarNum + ",'"
                           + forBidInsemination.OperateDate + "',"
                           + forBidInsemination.Operator + ",'"

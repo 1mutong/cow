@@ -134,7 +134,7 @@ namespace DairyCow.DAL
                                               ,[Mn]
                                               ,[Zn]
                                               ,[Se]
-                                          FROM [1mutong].[dbo].[Feed_Fodder]
+                                          FROM [Feed_Fodder]
                                           ");
 
             fodderList = dataProvider1mutong.FillDataTable(sql, CommandType.Text);

@@ -21,7 +21,7 @@ namespace DairyCow.DAL
                                             ,[Pulsation]
                                             ,[CleanupCount]
                                             ,[ModifyTime]
-                                        FROM [1mutong].[dbo].[Milk_Hall]");
+                                        FROM [Milk_Hall]");
             milkHallList = dataProvider1mutong.FillDataTable(sql, CommandType.Text);
             return milkHallList;
         }
@@ -35,14 +35,14 @@ namespace DairyCow.DAL
                                             ,[Pulsation]
                                             ,[CleanupCount]
                                             ,[ModifyTime]
-                                        FROM [1mutong].[dbo].[Milk_Hall] order by ModifyTime DESC");
+                                        FROM [Milk_Hall] order by ModifyTime DESC");
             milkHallList = dataProvider1mutong.FillDataTable(sql, CommandType.Text);
             return milkHallList;
         }
         public int UpdateMilkHallInfo(MilkHall milkHall)
         {
             //StringBuilder sql = new StringBuilder();
-            //sql.Append(@"UPDATE [1mutong].[dbo].[Milk_Hall] set ");
+            //sql.Append(@"UPDATE [Milk_Hall] set ");
             //if (milkHall.VacuumPressure != null)
             //{
             //    sql.Append("[VacuumPressure] = " + milkHall.VacuumPressure + ",");

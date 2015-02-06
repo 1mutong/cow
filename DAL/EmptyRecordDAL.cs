@@ -17,7 +17,7 @@ namespace DairyCow.DAL
         public int InsertEmptyRecordInfo(EmptyRecord emptyRecord)
         {
             StringBuilder sql = new StringBuilder();
-            sql.Append(@"insert into [1mutong].[dbo].[Feed_EmptyRecord] values (
+            sql.Append(@"insert into [Feed_EmptyRecord] values (
                                     " + emptyRecord.CowGroupID + ","
                                     + emptyRecord.FormulaID + ","
                                     + emptyRecord.RecordUserID + ",'"
@@ -30,7 +30,7 @@ namespace DairyCow.DAL
         public int GetCowGroupID(int id)
         {
             int cowGroupID = 0;
-            string sql = string.Format(@"select top(1) CowGroupID from [1mutong].[dbo].[Feed_EmptyRecord] where ID = {0}", id);
+            string sql = string.Format(@"select top(1) CowGroupID from [Feed_EmptyRecord] where ID = {0}", id);
             cowGroupID = Convert.ToInt32(dataProvider1mutong.ExecuteScalar(sql, CommandType.Text));
             return cowGroupID;
         }
@@ -46,7 +46,7 @@ namespace DairyCow.DAL
              ,f.[RecordTime]
              ,f.[EmptyHour]
              ,b.Name
-         FROM [1mutong].[dbo].[Feed_EmptyRecord] as f inner join Base_CowGroup as b on b.ID=f.CowGroupID");
+         FROM [Feed_EmptyRecord] as f inner join Base_CowGroup as b on b.ID=f.CowGroupID");
             emptyRecordList = dataProvider1mutong.FillDataTable(sql, CommandType.Text);
             return emptyRecordList;
         }

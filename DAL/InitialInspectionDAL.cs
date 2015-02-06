@@ -24,7 +24,7 @@ namespace DairyCow.DAL
                                             ,[InspectWay]
                                             ,[AfterInsemDays]
                                             ,[Description]
-                                        FROM [1mutong].[dbo].[Breed_InitialInspection]");
+                                        FROM [Breed_InitialInspection]");
             initialInspectionList = dataProvider1mutong.FillDataTable(sql, CommandType.Text);
             return initialInspectionList;
         }
@@ -42,7 +42,7 @@ namespace DairyCow.DAL
                                             ,[InspectWay]
                                             ,[AfterInsemDays]
                                             ,[Description]
-                                        FROM [1mutong].[dbo].[Breed_InitialInspection]
+                                        FROM [Breed_InitialInspection]
                                             where EarNum = '{0}' order by OperateDate DESC", earNum);
             initialInspectionList = dataProvider1mutong.FillDataTable(sql, CommandType.Text);
             return initialInspectionList;
@@ -61,7 +61,7 @@ namespace DairyCow.DAL
                                             ,[InspectWay]
                                             ,[AfterInsemDays]
                                             ,[Description]
-                                        FROM [1mutong].[dbo].[Breed_InitialInspection]
+                                        FROM [Breed_InitialInspection]
                                             where InseminationID = '{0}' and EarNum = '{1}'", insemId, earNum);
             initialInspectionList = dataProvider1mutong.FillDataTable(sql, CommandType.Text);
             return initialInspectionList;
@@ -88,7 +88,7 @@ namespace DairyCow.DAL
         public int UpdateInitialInspection(InitialInspection initialInspection)
         {
             StringBuilder sql = new StringBuilder();
-            sql.Append(@"UPDATE [1mutong].[dbo].[Breed_InitialInspection] set ");
+            sql.Append(@"UPDATE [Breed_InitialInspection] set ");
             if (initialInspection.InseminationID != null && initialInspection.InseminationID != 0)
             {
                 sql.Append("[InseminationID] = " + initialInspection.InseminationID + ",");

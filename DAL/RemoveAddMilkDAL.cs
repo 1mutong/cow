@@ -22,7 +22,7 @@ namespace DairyCow.DAL
                                             ,[LeftBack]
                                             ,[RightBack]
                                             ,[OprateDate]
-                                        FROM [1mutong].[dbo].[Medical_RemoveAddMilk]");
+                                        FROM [Medical_RemoveAddMilk]");
             removeAddMilkList = dataProvider1mutong.FillDataTable(sql, CommandType.Text);
             return removeAddMilkList;
         }
@@ -30,7 +30,7 @@ namespace DairyCow.DAL
         public int InsertRemoveAddMilkInfo(RemoveAddMilk removeAddMilk)
         {
             StringBuilder sql = new StringBuilder();
-            sql.Append(@"insert into [1mutong].[dbo].[Medical_RemoveAddMilk] values (
+            sql.Append(@"insert into Medical_RemoveAddMilk values (
                                     " + removeAddMilk.EarNum + ",'"
                           + removeAddMilk.Method + "','"
                           + removeAddMilk.LeftFront + "','"

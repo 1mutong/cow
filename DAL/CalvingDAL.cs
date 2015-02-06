@@ -12,7 +12,7 @@ namespace DairyCow.DAL
     /// <summary>
     /// 产犊DAL
     /// </summary>
-    public class CalvingDAL:BaseDAL
+    public partial class CalvingDAL:BaseDAL
     {
 
         public int InsertCalvingRecord(int earNum,DateTime birthday,int birthType,string difficulty,string positionOfFetus,string fatherSemenNum,int operatorID,string comment,int numberOfMale,int numberOfFemale,int inParityCount)
