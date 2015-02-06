@@ -49,6 +49,7 @@
     <Compile Include="Cow.cs" />
     <Compile Include="CowGroup.cs" />
     <Compile Include="CowGroupInfo.cs" />
+    <Compile Include="CowListModel.cs" />
     <Compile Include="CowLite.cs" />
     <Compile Include="DairyParameter.cs" />
     <Compile Include="Disease.cs" />
@@ -70,6 +71,7 @@
     <Compile Include="MilkMastitisReport.cs" />
     <Compile Include="MilkRecord.cs" />
     <Compile Include="Pasture.cs" />
+    <Compile Include="Pedometer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Quarantine.cs" />
     <Compile Include="ReInspection.cs" />

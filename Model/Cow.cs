@@ -128,5 +128,10 @@ namespace DairyCow.Model
                 return IsIll ? "生病" : "健康";
             }
         }
+
+        /// <summary>
+        /// /计步器
+        /// </summary>
+        public int Pedometer { get; set; }
     }
 }
