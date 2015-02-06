@@ -30,7 +30,10 @@ namespace CowSite.Controllers
         public JsonResult GetCowInfo(string displayEarNum)
         {
             int earNum = CowBLL.ConvertDislayEarNumToEarNum(displayEarNum, UserBLL.Instance.CurrentUser.Pasture.ID);
+            
             CowInfo myCow = new CowInfo(earNum);
+            
+           
             return Json(myCow, JsonRequestBehavior.AllowGet);
         }
 
@@ -251,5 +254,43 @@ namespace CowSite.Controllers
 
             return Json(bResult, JsonRequestBehavior.AllowGet);
         }
+        //----------------------Modify By LJW-------------------//
+        public JsonResult CheckCavling()
+        {//查看是否是犊牛
+            int pastureID = UserBLL.Instance.CurrentUser.Pasture.ID;
+            Pedometer MyPedometer = new Pedometer();
+            MyPedometer.NewDisplayEarNum = Request.Form["displayEarNum"].ToString();
+            int temp = 0;
+            temp = bllCow.CheckCowInCavling(MyPedometer.NewDisplayEarNum, pastureID);
+            if (temp == 1)
+                return Json(new { Result = 0 });//该牛是牛犊    
+            else
+                return Json(new { Resul = 1 });
+
+        }
+        public JsonResult CheckCowInGan()
+        {
+            int pastureID = UserBLL.Instance.CurrentUser.Pasture.ID;
+            Pedometer MyPedometer = new Pedometer();
+            MyPedometer.NewDisplayEarNum = Request.Form["displayEarNum"].ToString();
+            int temp = 0;
+            temp = bllCow.CheckCowInGan(MyPedometer.NewDisplayEarNum, pastureID);
+            if (temp == 1)
+                return Json(new { Result = 0 });//该牛是干奶牛    
+            else
+                return Json(new { Resul = 1 });
+        }
+        
+        public JsonResult CheckInpregnancy()
+        {//查看该牛是不是在产犊1年之内,是返回1,否返回0
+            int pastureID = UserBLL.Instance.CurrentUser.Pasture.ID;
+            CalvingBLL Calving=new CalvingBLL();
+            int temp = 0;
+            int EarNum = CowBLL.ConvertDislayEarNumToEarNum(Request.Form["displayEarNum"].ToString(), pastureID);
+            temp = Calving.CheckInpregnancy(EarNum, pastureID);
+            return Json(new { Result = temp });
+
+        }
+        //----------------------Modify By LJW-------------------//
     }
 }

@@ -11,10 +11,12 @@
     <title>牛群查询</title>
     <link rel="shortcut icon" href="images/emutong.ico">
     <link rel="stylesheet" href="~/bootstrap/css/bootstrap-theme1.min.css">
+    <link rel="stylesheet" href="~/ligerUI/skins/Aqua/css/ligerui-all.css">
     <link rel="stylesheet" href="~/Style/base.css">
     <link rel="stylesheet" href="~/Style/common.css">
     <link rel="stylesheet" href="~/Style/Home/Index.css">
     <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/ligerUI/js/ligerui.min.js"></script>
     <script src="~/Scripts/jquery-tools-min.js"></script>
     <script src="~/bootstrap/js/bootstrap.min.js"></script>
     <script src="~/Scripts/menu.js"></script>
@@ -26,6 +28,7 @@
         $(function () {
             $('#menu').menu({ mainMenuSelectedID: "Query", subMenuSelectedID: "Query-CowGroup" });
             loadCowGroup();
+            loadCowList();
         });
 
         function loadCowGroup() {
@@ -56,6 +59,33 @@
                 }
             })
         }
+
+       
+
+        function loadCowList() {
+            $("#CowListGrid").ligerGrid({
+                checkbox: false,
+                columns: [
+                    
+                    { display: '耳号', name: 'EarNum', align: 'left', width: 150 },
+                    { display: '牛群类型', name: 'GroupName', align: 'left', width: 150 },
+                    { display: '牛舍', name: 'HouseName', align: 'left', width: 150 },
+                    { display: '出生日期', name: 'BirthDate', align: 'left', width: 150, type: "date" },
+                    { display: '颜色', name: 'Color', align: 'left', width: 150 },
+                    { display: '状态', name: 'Status', align: 'left', width: 150 },
+                    { display: '是否生病', name: 'IsIll', align: 'left', width: 150 }
+                    
+                ],
+                pageSize: 15,
+                width: '100%',
+                height: '100%',
+                usePager: true,
+                dateFormat: "yyyy-MM-dd",
+                isScroll: false,
+                url: "../../Query/GetSelectCowList"
+            });
+            $("#pageloading").hide();
+        }
     </script>
     <style type="text/css">
         .table2014 .table-cell {
@@ -70,6 +100,17 @@
             <div class="cowGroupList"></div>
         </div>
     </div>
+
+    <hr />
+
+    <div class="container">
+       
+        <div id="CowListGrid" class="displayBlock ml5 mr5"></div>
+        <div id="message"></div>
+        <div class="l-loading" id="pageloading"></div>
+    </div>
+
+
     <script src="~/Scripts/bdhm.js"></script>
 </body>
 </html>

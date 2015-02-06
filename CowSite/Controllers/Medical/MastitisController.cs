@@ -27,15 +27,28 @@ namespace CowSite.Controllers.Medical
             MilkMastitisReport milkMastitisReport = new MilkMastitisReport();
             UpdateModel<MilkMastitisReport>(milkMastitisReport);
             Cow cow = bllCow.GetCowInfo(milkMastitisReport.EarNum);
-            if (cow.FarmCode == 0)
-            {
-                //弹框提示此牛不存在
-            }
-            else
-            {
+            //if (cow.FarmCode == 0)
+            //{
+            //    //弹框提示此牛不存在
+            //    return Json(new { state = 1 });
+            //}
+            //else
+            //{
                 bllMilkMastitisReport.InsertMilkMastitisReportInfo(milkMastitisReport);
-            }
-            return RedirectToAction("../Index/List");
+                return Json(new {state=2});
+           // }
+            
+        }
+
+
+
+        public JsonResult GetMilkMastitisReportList()
+        {
+
+            List<MilkMastitisReport> MilkMastitisReportList = bllMilkMastitisReport.GetMilkMastitisReportList();
+
+            var gridData = new { Rows = MilkMastitisReportList, Total = MilkMastitisReportList.Count };
+            return Json(gridData, JsonRequestBehavior.AllowGet);
         }
     }
 }

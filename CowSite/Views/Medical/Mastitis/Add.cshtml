@@ -20,6 +20,7 @@
             $('#menu').menu({ mainMenuSelectedID: "Medical", subMenuSelectedID: "Medical-Mastitis" });
             loadMilkMastitisReportInfo();
             initBtnEvent();
+            LoadMilkMastitisReportList();
         });
 
         function loadMilkMastitisReportInfo() {
@@ -83,6 +84,7 @@
                     document.getElementById('milkMastitisReportInfo').submit();
                     parent.$.ligerDialog.close();
                     parent.$(".l-dialog,.l-window-mask").hide();
+                    $(".l-bar-button.l-bar-btnload", window.parent.document).click();
                 },
                 icon: null
             });
@@ -96,6 +98,32 @@
                 icon: null
             });
         }
+
+
+        function LoadMilkMastitisReportList() {
+            $("#MilkMastitisReportGrid").ligerGrid({
+                checkbox: false,
+                columns: [
+                    { display: 'ID', name: 'ID', type: 'int', hide: true, width: 100 },
+                    { display: '耳号', name: 'EarNum', align: 'left', width: 100 },                  
+                    { display: '左前', name: 'LeftFront', align: 'left', width: 100 },
+                    { display: '右前', name: 'RightFront', align: 'left', width: 100 },
+                    { display: '左后', name: 'LeftBack', align: 'left', width: 100 },
+                   { display: '右后', name: 'RightBack', align: 'left', width: 100 },
+                   { display: '检测人', name: 'Detector', align: 'left', width: 100 },
+                   { display: '检测描述', name: 'Description', align: 'left', width: 100 },
+                   { display: '检测时间', name: 'DetectionDate', align: 'left', width: 100, type: "date" }
+
+                ],
+                pageSize: 10,
+                width: '100%',
+                height: '100%',
+                dateFormat: "yyyy-MM-dd",
+                isScroll: false,
+                url: "../../Medical/Mastitis/GetMilkMastitisReportList"
+            });
+            $("#pageloading").hide();
+        }
     </script>
 </head>
 <body>
@@ -107,6 +135,13 @@
                 <input type="button" id="btnSubmit" value="保存" />
                 <input type="button" id="btnCancel" value="取消" />
             </div>
+        </div>
+
+        <hr />
+        <div>
+            <div id="MilkMastitisReportGrid" class="displayBlock ml5 mr5"></div>
+            <div id="message"></div>
+            <div class="l-loading" id="pageloading"></div>
         </div>
     </div>
     <script src="~/Scripts/bdhm.js"></script>

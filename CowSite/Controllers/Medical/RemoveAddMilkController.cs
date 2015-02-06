@@ -26,7 +26,16 @@ namespace CowSite.Controllers.Medical
             RemoveAddMilk removeAddMilk = new RemoveAddMilk();
             UpdateModel<RemoveAddMilk>(removeAddMilk);
             bllRemoveAddMilk.InsertRemoveAddMilkInfo(removeAddMilk);
-            return RedirectToAction("../Index/List");
+            return View();
+        }
+
+        public JsonResult GetRemoveAddMilkList()
+        {
+
+            List<RemoveAddMilk> RemoveAddMilkList = bllRemoveAddMilk.GetRemoveAddMilkList();
+
+            var gridData = new { Rows = RemoveAddMilkList, Total = RemoveAddMilkList.Count };
+            return Json(gridData, JsonRequestBehavior.AllowGet);
         }
     }
 }

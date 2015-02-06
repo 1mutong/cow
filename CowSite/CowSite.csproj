@@ -66,6 +66,7 @@
     <Reference Include="System.Net.Http.WebRequest" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Web.Abstractions" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
@@ -610,6 +611,12 @@
     <Content Include="Images\Login\nav-2.jpg" />
     <Content Include="Images\Login\nav-3.jpg" />
     <Content Include="Images\main-bg.jpg" />
+    <Content Include="Javascript\echarts\echarts-map.js" />
+    <Content Include="Javascript\echarts\echarts.js" />
+    <Content Include="Javascript\echarts\esl.js" />
+    <Content Include="Javascript\jquery-1.8.3.min.js" />
+    <Content Include="Javascript\MyEcharts.js" />
+    <Content Include="Javascript\WapCharts.js" />
     <Content Include="ligerUI\js\core\base.js" />
     <Content Include="ligerUI\js\core\inject.js" />
     <Content Include="ligerUI\js\ligerui.all.js" />
@@ -1098,6 +1105,7 @@
     <Content Include="Controls\echarts\src\util\mapData\rawData\geoJson\zhe_jiang_geo.json" />
     <Content Include="Controls\echarts\build\build.bat" />
     <Content Include="Controls\echarts\build\build.sh" />
+    <Content Include="ajax\Handler.ashx" />
     <None Include="Properties\PublishProfiles\1mutong.pubxml" />
     <None Include="Properties\PublishProfiles\a.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
@@ -1114,6 +1122,31 @@
     <Content Include="Scripts\json2.js" />
     <Content Include="Scripts\menu.js" />
     <Content Include="Scripts\settingData.js" />
+    <Content Include="Service References\ServiceReference1\CowSite.ServiceReference1.CompositeType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\ServiceReference1\CowSite.ServiceReference1.FeedModel.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\ServiceReference1\CowSite.ServiceReference1.JobInfo.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\ServiceReference1\CowSite.ServiceReference1.JobIngreForageInfo.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\ServiceReference1\CowSite.ServiceReference1.FeedCowInfo.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\ServiceReference1\CowSite.ServiceReference1.FeedInfo1.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <None Include="Service References\ServiceReference1\Service1.disco" />
+    <None Include="Service References\ServiceReference1\configuration91.svcinfo" />
+    <None Include="Service References\ServiceReference1\configuration.svcinfo" />
+    <None Include="Service References\ServiceReference1\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
     <Content Include="Style\base.css" />
     <Content Include="Style\Breeding\Index\List.css" />
     <Content Include="Style\button_bg.png" />
@@ -1122,6 +1155,10 @@
     <Content Include="Style\Feed\Formula\Select.css" />
     <Content Include="Style\Feed\Index\ModifyCowGroup.css" />
     <Content Include="Style\Home\Index.css" />
+    <Content Include="Style\tableStyle.css" />
+    <Content Include="Views\Feed\Formula\javascript\echarts\echarts-map.js" />
+    <Content Include="Views\Feed\Formula\javascript\echarts\echarts.js" />
+    <Content Include="Views\Feed\Formula\javascript\echarts\esl.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -1137,6 +1174,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\Breed\CalfController.cs" />
+    <Compile Include="Controllers\Breed\PedometerController.cs" />
     <Compile Include="Controllers\Feed\DryMilkController.cs" />
     <Compile Include="Controllers\Medical\ForbidInseminationController.cs" />
     <Compile Include="Controllers\Breed\IndexController.cs" />
@@ -1194,6 +1232,11 @@
     <Compile Include="Model\FeedRemainRecord.cs" />
     <Compile Include="Model\IdentityModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Service References\ServiceReference1\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Cow\Detail.cshtml" />
@@ -1253,7 +1296,6 @@
     <Content Include="Views\Task\TaskCompleteQuarantine.cshtml" />
     <Content Include="Views\Task\TaskCompleteGrouping.cshtml" />
     <Content Include="Views\Task\TaskCompleteCalf.cshtml" />
-    <Content Include="Views\Breed\Calf.cshtml" />
     <Content Include="Views\Feed\Fodder\Maintain.cshtml" />
     <Content Include="Views\Platform\Farm\List.cshtml" />
     <Content Include="Views\Platform\Fodder\List.cshtml" />
@@ -1277,6 +1319,22 @@
     <Content Include="Views\Platform\Formula\AddFodder.cshtml" />
     <Content Include="Views\Platform\Formula\AddFormula.cshtml" />
     <Content Include="Views\CowGroup\ChangeGroup.cshtml" />
+    <Content Include="Views\Feed\Formula\Process.cshtml" />
+    <None Include="Service References\ServiceReference1\Service1.wsdl" />
+    <None Include="Service References\ServiceReference1\Service1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\ServiceReference1\Service11.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\ServiceReference1\Service12.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <Content Include="Views\Feed\Formula\FeedList.cshtml" />
+    <Content Include="Views\Feed\Formula\Analysis.cshtml" />
+    <Content Include="Views\Breed\Pedometer.cshtml" />
+    <Content Include="Views\Breed\Calf.cshtml" />
+    <Content Include="Views\Home\AnalysisTwo.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -1287,9 +1345,12 @@
   <ItemGroup>
     <Folder Include="Controllers\Task\Platform\" />
   </ItemGroup>
-  <ItemGroup />
-  <ItemGroup />
-  <ItemGroup />
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadataStorage Include="Service References\ServiceReference1\" />
+  </ItemGroup>
   <ItemGroup />
   <ItemGroup />
   <ItemGroup />
@@ -1306,6 +1367,10 @@
     <ProjectReference Include="..\Model\Model.csproj">
       <Project>{cfdcf28e-a231-47a3-84de-d097b56a23c0}</Project>
       <Name>Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WCfModel\WCfModel.csproj">
+      <Project>{9886ecdc-dc0c-44e7-a482-3eb4e0fe6814}</Project>
+      <Name>WCfModel</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

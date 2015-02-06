@@ -35,7 +35,27 @@
             initBreedStatusSelector();
             $('div.js-calving').hide();
             $('div.js-insemination').hide();
+            Pedomter();
+
+           
         });
+        //----------------------Modify By LJW-------------------//
+        function Pedomter() {
+            $('#group').change(function () {
+                if (jQuery("#group option:selected").text() == "犊牛") {
+                    $('#PedometerID').val("");
+                    $('#Pedometer').hide();
+                    $('#PedometerError').hide();
+                }
+                else {
+                    $('#Pedometer').show();
+                    $('#PedometerError').html("");
+                    $('#PedometerError').show();
+                }
+            });
+
+        }
+        //----------------------Modify By LJW-------------------//
         function initDateSelector() {
             $('input[name=birthDate]').datepicker({
                 language: 'zh-CN',
@@ -77,7 +97,7 @@
         //}
         function initSexSelector() {
             $('select[name=sex]').empty();
-            //$('select[name=sex]').append('<option value="' + '公' + '">' + '公' + '</option>');
+            $('select[name=sex]').append('<option value="' + '公' + '">' + '公' + '</option>');
             $('select[name=sex]').append('<option value="' + '母' + '">' + '母' + '</option>');
         }
         function initParitySelector() {
@@ -211,7 +231,10 @@
                 });
             })
         }
-
+        //----------------------Modify By LJW-------------------//
+        var Falge = 0;
+        var Falge2 = 0;
+        //----------------------Modify By LJW-------------------//
         function inGroup() {
             $("#btnInGroup").click(function () {
                 if ($('input[name=displayEarNum]').val() == '') {
@@ -221,19 +244,79 @@
                     alert("请输入出生日期！");
                     return;
                 }
+                    //----------------------Modify By LJW-------------------//
+                else if (jQuery("#group option:selected").text() == '')
+                {
+                    alert("请选择牛群!");
+                    return;
+                }
+                else if (jQuery("#house option:selected").text() == '')
+                {
+                    alert("请选择牛舍!");
+                    return;
+                }
+               
+                if (jQuery("#group option:selected").text() != "犊牛") {
+                    Falge = 1;
 
+                }
+                else
+                    {
+                    Falge = 0;
+                    Falge2=1
+                }
+                if(Falge==1)
+                {
+                    var reg = /^\d+$/;
+                    if (!reg.test($("input[name=PedometerID]").val())) {
+                        $("#PedometerError").html("请输入数字!");
+                        $("input[name=PedometerID]").focus().val("");
+
+                        return;
+
+                    }
+                    else {
+                        $("#PedometerError").html("");
+                            $.ajax({
+                                type: 'post',
+                                url: '../../Breed/Pedometer/GetEarNum',
+                                data: { Pedometer: $("input[name=PedometerID]").val() },
+                                dataType: 'json',
+                                success: function (response) {
+                                    if (response.Result != 0) {
+                                        $("#PedometerError").html("该计步器已存在,请输入别的计步器!");
+                                        Falge2 = 0;
+                                        return;
+                                    }
+                                    else {
+                                        $("#PedometerError").html("");
+                                        Falge2 = 1;
+                                       
+                                    }
+
+                                }
+                            })
+                        
+                    }
+                }
+                    
+                //----------------------Modify By LJW-------------------// 
+         
                 $.ajax({
                     type: 'get',
                     url: '../../Cow/CheckCowInFarm',
                     data: { displayEarNum: $('input[name=displayEarNum]').val() },
-                    cache:false,
+                    cache: false,
                     dataType: 'json',
                     success: function (response) {
                         if (response.result) {
                             alert('本牧场已经存在该耳号，请输入其它耳号！');
                             return;
                         }
-
+                        //----------------------Modify By LJW-------------------//
+                        if (Falge2 == 1)
+                            //----------------------Modify By LJW-------------------//
+                            {
                         $.ajax({
                             type: 'post',
                             url: '../../FarmAdmin/InGroup/InGroup',
@@ -243,13 +326,18 @@
                             success: function (response) {
                                 if (response.Result == 1) {
                                     alert('入群成功！');
+
+
                                 }
                             }
                         });
+                        }
                     }
                 });
+                   
             })
         }
+            
     </script>
 </head>
 <body>
@@ -284,39 +372,49 @@
                     </div>*@
                 <div class="input-group mt10">
                     <span class="input-group-addon w200">牛群</span>
-                    <select class="w400" name="group"></select>
+                    <select class="w400" name="group" id="group"></select>
                 </div>
                 <div class="input-group mt10">
                     <span class="input-group-addon w200">牛舍</span>
-                    <select class="w400" name="house"></select>
+                    <select class="w400" name="house" id="house"></select>
                 </div>
                 <div class="input-group mt10">
                     <span class="input-group-addon w200">毛色</span>
-                    <select class="w400" name="color"></select>
+                    <select class="w400" name="color" ></select>
                 </div>
+                @*----------------------Modify By LJW------------------*@
+                <div class="input-group mt10" id="Pedometer">
+                    <span class="input-group-addon w200">计步器号</span>
+                    <input type="text" class="form-control w400" placeholder="计步器号" name="PedometerID" id="PedometerID">
+                    <span id="PedometerError" style=" color:red"></span>
+                    </div>
+                @*----------------------Modify By LJW------------------*@
                 
-                <div class="mt10 none js-breedInfo">
-                    <div class="input-group mt10">
-                        <span class="input-group-addon w200">繁殖状态</span>
-                        <select class="w400" name="breedStatus"></select>
-                    </div>
-                    <div class="input-group mt10 none js-insemination ">
-                        <span class="input-group-addon w200">最近配种日期</span>
-                        <input type="text" class="form-control w400" placeholder="最近配种日期" name="inseminationDate">
-                    </div>
-                    <div class="input-group mt10">
-                        <span class="input-group-addon w200">胎次</span>
-                        <select class="w400" name="parityNumber"></select>
-                    </div>
-                    <div class="input-group mt10 none js-calving ">
-                        <span class="input-group-addon w200">最近产犊日期</span>
-                        <input type="text" class="form-control w400" placeholder="最近产犊日期" name="calvingDate">
-                    </div>
-                </div>
+                 <div class="mt10 none js-breedInfo">
+                        <div class="input-group mt10">
+                            <span class="input-group-addon w200">繁殖状态</span>
+                            <select class="w400" name="breedStatus"></select>
+                        </div>
+                        <div class="input-group mt10 none js-insemination ">
+                            <span class="input-group-addon w200">最近配种日期</span>
+                            <input type="text" class="form-control w400" placeholder="最近配种日期" name="inseminationDate">
+                        </div>
+                        <div class="input-group mt10">
+                            <span class="input-group-addon w200">胎次</span>
+                            <select class="w400" name="parityNumber"></select>
+                        </div>
+                        <div class="input-group mt10 none js-calving ">
+                            <span class="input-group-addon w200">最近产犊日期</span>
+                            <input type="text" class="form-control w400" placeholder="最近产犊日期" name="calvingDate">
+                        </div>
+
+                        
+                      </div>
                 <div class="mt10">
                     <button type="button" class="btn btn-primary" id="btnInGroup">入群</button>
                 </div>
-            </form>
+
+</form>
         </div>
     </div>
     <script src="~/Scripts/bdhm.js"></script>

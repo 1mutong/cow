@@ -33,6 +33,7 @@ namespace CowSite.Controllers.FarmAdmin
 
         public JsonResult InGroup()
         {
+            
             Cow myCow = new Cow();
             myCow.DisplayEarNum = Request.Form["displayEarNum"].ToString();
             myCow.Gender = Request.Form["sex"].ToString();
@@ -46,7 +47,12 @@ namespace CowSite.Controllers.FarmAdmin
             myCow.IsIll = false;
             myCow.IsStray = false;
             myCow.Status = Request.Form["breedStatus"].ToString();
+            //----------------------Modify By LJW-------------------//
+            if (Request.Form["PedometerID"] != null && Request.Form["PedometerID"].ToString() != "")
+                myCow.Pedometer = Convert.ToInt32(Request.Form["PedometerID"]);
+            //----------------------Modify By LJW-------------------//
             CowBLL cowBLL = new CowBLL();
+           
             //插入牛基本信息
             cowBLL.InsertCow(myCow);
 

@@ -23,9 +23,13 @@
     <script src="~/Scripts/common.js"></script>
     <script>
         $(function () {
-            $('#menu').menu({ mainMenuSelectedID: "Breed", subMenuSelectedID: "Breed-Calf" });
+
+            $('#menu').menu(
+                { mainMenuSelectedID: "Breed", subMenuSelectedID: "Breed-Calf" }
+                );
             initForm();
-        });
+        }
+        );
 
         function initForm() {
             $('input[name=Birthday]').datepicker({
@@ -64,7 +68,62 @@
                                             displayEarNumInput.focus();
                                         }
                                         else if (response.result == true) {
-                                            renderDaysOfPregnant(displayEarNum);
+                                            //----------------------Modify By LJW-------------------//
+
+                                            $.ajax({
+                                                type: "post",
+                                                url: "../Cow/CheckCavling",
+                                                data: { displayEarNum: displayEarNum },
+                                                datatype: "json",
+                                                chache: false,
+                                                success: function (response) {
+                                                    if(response.Result==0)
+                                                    {
+                                                        alert("该牛是犊牛!不能产犊!");
+                                                        displayEarNumInput.focus();
+                                                    }
+                                                    else
+                                                    {
+                                                        $.ajax({
+                                                            type: "post",
+                                                            url: "../Cow/CheckCowInGan",
+                                                            data: { displayEarNum: displayEarNum },
+                                                        datatype: "json",
+                                                        chache: false,
+                                                        success: function (response) {
+                                                            if (response.Result == 0) {
+                                                                alert("该牛是干奶牛,不能产犊");
+                                                                displayEarNumInput.focus();
+                                                            }
+                                                            else {
+                                                                $.ajax({
+                                                                    type: 'post',
+                                                                    url: "../Cow/CheckInpregnancy",
+                                                                    data: { displayEarNum: displayEarNum },
+                                                                    datatype: "json",
+                                                                    chache: false,
+                                                                    success: function (response) {
+                                                                        if (response.Result == 1) {
+                                                                            alert("该牛刚产犊不到1年!不能产犊");
+                                                                            displayEarNumInput.focus();
+                                                                        }
+                                                                        else {
+                                                                            Falg = 1;
+                                                                            renderDaysOfPregnant(displayEarNum);
+                                                                        }
+
+                                                                    }
+                                                                })
+                                                            }
+                                                        }
+                                                        })
+                                                       
+                                                    }
+                                                       
+                                                    //----------------------Modify By LJW-------------------//
+                                                }
+                                            })
+                                           
                                         }
                                     }
                                 }
@@ -72,7 +131,9 @@
                         }
                     });
             });
-
+            //----------------------Modify By LJW-------------------//
+            var Falg = 0;
+            //----------------------Modify By LJW-------------------//
             $('#btnSave').click(function () {
                 var cowEarNum = $('input[name=EarNum]').val();
                 if (cowEarNum == '') {
@@ -91,7 +152,9 @@
                     alert('请填写时分秒！');
                     return;
                 }
-
+                //----------------------Modify By LJW-------------------//
+                if (Falg == 1) {
+                //----------------------Modify By LJW-------------------//
                 $.ajax({
                     type: 'post',
                     url: '../../Breed/Calf/InsertCalving',
@@ -103,6 +166,7 @@
                         }
                     }
                 });
+                }
             });
         }
 

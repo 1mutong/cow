@@ -24,6 +24,7 @@
             { ID: "Breed-Insemination", PID: "Breed", Name: "发情配种", Url: "Task/Index/TaskInsemination", target: "_self" },
             { ID: "Breed-Calf", PID: "Breed", Name: "产犊", Url: "Breed/Calf/Add", target: "_self" },
             { ID: "Feed", PID: "", Name: "饲养", Url: "Feed/CowGroup/List", target: "_self" },
+             { ID: "Breed-Pedometer", PID: "Breed", Name: "计步器管理", Url: "Breed/Pedometer", target: "_self" },
             //{ ID: "Feed-Home", PID: "Feed", Name: "饲养首页", Url: "Feed/Index/Index", target: "_self" },
             { ID: "Feed-CowGroup", PID: "Feed", Name: "牛群维护", Url: "Feed/CowGroup/List", target: "_self" },
             { ID: "Feed-CowHouse", PID: "Feed", Name: "牛舍维护", Url: "Feed/CowHouse/List", target: "_self" },
@@ -31,6 +32,10 @@
             { ID: "Feed-Fodder", PID: "Feed", Name: "饲料维护", Url: "Feed/Fodder/Maintain", target: "_self" },
             { ID: "Feed-Grade", PID: "Feed", Name: "体况评分", Url: "Feed/Grade/Add", target: "_self" },
             { ID: "Feed-Formua", PID: "Feed", Name: "饲料加工", Url: "Feed/Fodder/Calculate", target: "_self" },
+            { ID: "Feed-Process", PID: "Feed", Name: "加工单", Url: "Feed/Formula/Process", target: "_self" },
+             { ID: "Feed-FeedList", PID: "Feed", Name: "撒料单", Url: "Feed/Formula/FeedList", target: "_self" },
+
+             { ID: "Feed-Analysis", PID: "Feed", Name: "统计分析", Url: "Feed/Formula/Analysis", target: "_self" },
             { ID: "Feed-Empty", PID: "Feed", Name: "空槽记录", Url: "Feed/Empty/Add", target: "_self" },
             { ID: "Feed-Remain", PID: "Feed", Name: "剩料记录", Url: "Feed/Remain/Add", target: "_self" },
             { ID: "Feed-DryMilk", PID: "Feed", Name: "干奶", Url: "Feed/DryMilk/Add", target: "_self" },
@@ -121,6 +126,7 @@
                             }
                             info += "当前用户：" + currentUserInfo.Name;
                         }
+                        info +=",         "+ "<a href='/Account/login'>退出</a>";
                         $('#currentUserInfo').html(info);
                     }
                 });
@@ -159,7 +165,9 @@
                             $('div.subMenuWrapper', $elem).show();
                         }
 
-                        $('.subMenuContainer .btn-default').click(function () { window.open($(this).attr('href')); });
+                        //window.open($(this).attr('href'));
+                        //window.location.href = $(this).attr('href')
+                        $('.subMenuContainer .btn-default').click(function () { window.location.href = $(this).attr('href'); });
                     }
                 });
             }
