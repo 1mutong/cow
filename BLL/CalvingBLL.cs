@@ -9,7 +9,7 @@ using DairyCow.DAL;
 
 namespace DairyCow.BLL
 {
-    public class CalvingBLL
+    public partial class CalvingBLL
     {
         CalvingDAL calvingDAL = new CalvingDAL();
         /// <summary>

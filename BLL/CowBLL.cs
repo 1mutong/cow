@@ -6,7 +6,7 @@ using System.Data;
 
 namespace DairyCow.BLL
 {
-    public class CowBLL
+    public partial class CowBLL
     {
         CowDAL dalCow = new CowDAL();
 
@@ -206,6 +206,12 @@ namespace DairyCow.BLL
                     cowItem.MotherID = String.Empty;
                 }
                 cowItem.IsStray = Convert.ToInt32(cowRow["IsStray"]) == 0 ? false : true;
+                //----------------------Modify By LJW-------------------//
+                if (cowRow["PedometerID"] != DBNull.Value)
+                {
+                    cowItem.Pedometer = Convert.ToInt32(cowRow["PedometerID"]);
+                }
+                //----------------------Modify By LJW-------------------//
             }
             return cowItem;
         }
@@ -327,6 +333,7 @@ namespace DairyCow.BLL
 
             return lstCow;
         }
+      
 
         public int UpdateCowStrayStatus(int earNum, int isStray)
         {
@@ -339,17 +346,27 @@ namespace DairyCow.BLL
         /// <param name="myCow"></param>
         /// <returns></returns>
         public int InsertCow(Cow myCow)
-        {
+        {   
             int temp = 0;
             int statusNum = GetCowStatusNum(myCow.Status);
             int isill = myCow.IsIll ? 1 : 0;
-            temp = dalCow.InsertCow(myCow.DisplayEarNum, myCow.FarmCode, myCow.GroupID, myCow.HouseID, myCow.Gender, myCow.BirthDate, statusNum, isill, myCow.FatherID, myCow.MotherID, myCow.Color);
+            //----------------------Modify By LJW-------------------//
+            if (myCow.Pedometer == 0)
+                temp=dalCow.InsertCow(myCow.DisplayEarNum, myCow.FarmCode, myCow.GroupID, myCow.HouseID, myCow.Gender, myCow.BirthDate, statusNum, isill, myCow.FatherID, myCow.MotherID, myCow.Color);
+            else
+            temp = dalCow.InsertCow(myCow.DisplayEarNum, myCow.FarmCode, myCow.GroupID, myCow.HouseID, myCow.Gender, myCow.BirthDate, statusNum, isill, myCow.FatherID, myCow.MotherID, myCow.Color,myCow.Pedometer);
             return temp;
+            //----------------------Modify By LJW-------------------//
         }
 
         public bool CheckCowInFarm(string displayEarNum, int farmID)
         {
             return dalCow.CheckCowInFarm(displayEarNum, farmID);
         }
+      
+        //----------------------------------------------------------------------//
+      
+
     }
+
 }

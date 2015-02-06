@@ -37,7 +37,9 @@
     <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -45,10 +47,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AnalysisBLL.cs" />
     <Compile Include="CalvingBLL.cs" />
+    <Compile Include="CalvingBLLext.cs" />
     <Compile Include="CowBLL.cs" />
+    <Compile Include="CowBLLext.cs" />
     <Compile Include="CowGroupBLL.cs" />
     <Compile Include="CowInfoBLL.cs" />
+    <Compile Include="CowSelectBLL.cs" />
     <Compile Include="DairyParameterBLL.cs" />
     <Compile Include="EmptyRecordBLL.cs" />
     <Compile Include="FarmInfo.cs" />
@@ -58,6 +64,7 @@
     <Compile Include="GradeBLL.cs" />
     <Compile Include="GroupingRecordBLL.cs" />
     <Compile Include="HouseBLL.cs" />
+    <Compile Include="JobBLL.cs" />
     <Compile Include="MedicalBLL.cs" />
     <Compile Include="IndividualProdcutionBLL.cs" />
     <Compile Include="InitialInspectionBLL.cs" />
@@ -91,6 +98,10 @@
     <ProjectReference Include="..\Model\Model.csproj">
       <Project>{cfdcf28e-a231-47a3-84de-d097b56a23c0}</Project>
       <Name>Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WCfModel\WCfModel.csproj">
+      <Project>{9886ecdc-dc0c-44e7-a482-3eb4e0fe6814}</Project>
+      <Name>WCfModel</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
