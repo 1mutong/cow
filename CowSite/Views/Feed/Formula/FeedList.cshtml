@@ -1,0 +1,122 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>撒料单</title>
+    <link rel="stylesheet" href="~/ligerUI/skins/Aqua/css/ligerui-all.css">
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/Scripts/jquery-tools-min.js"></script>
+    <script src="~/ligerUI/js/ligerui.min.js"></script>
+    <link rel="stylesheet" href="~/bootstrap/css/bootstrap-theme1.min.css">
+    <script src="~/bootstrap/js/bootstrap.min.js"></script>
+    <link href="~/Controls/jQuery.Select2/select2.css" rel="stylesheet" />
+    <script src="~/Controls/jQuery.Select2/select2.min.js"></script>
+    <script src="~/Scripts/menu.js"></script>
+    <script src="~/Scripts/common.js"></script>
+    <link href="~/Controls/bootstrap.datepicker/datepicker.css" rel="stylesheet" />
+    <script src="~/Controls/bootstrap.datepicker/bootstrap-datepicker.js"></script>
+    <link rel="stylesheet" href="~/Style/base.css">
+    <link href="~/Style/tableStyle.css" rel="stylesheet" />
+
+    <script type="text/javascript">
+
+        var manager;
+        $(function () {
+
+
+            manager = $("#FormulaProcessGrid").ligerGrid({
+                checkbox: false,
+                columns: [
+                    { display: 'ID', name: 'feid', type: 'int', hide: true, width: 100 },
+                    { display: '名称', name: 'fename', align: 'left', width: 300 },
+                    
+                    { display: 'TRM', name: 'ttid', align: 'left', width: 100 },                 
+                   { display: '配方id', name: 'jid', align: 'left', width: 100 },
+                                  
+                   { display: '开始时间', name: 'fetdate', type: "date", width: 100 },
+                    
+                    { display: '排序', name: 'jrank', align: 'left', width: 100 },                   
+                    { display: 'jtbatc', name: 'jtbatc', align: 'left', width: 100 },
+                  
+
+
+                ],
+                pageSize: 10,
+                width: '100%',
+                height: '100%',
+                dateFormat: "yyyy-MM-dd",
+                isScroll: false,
+                url: "../../Feed/Formula/GetFeedList",
+                onDblClickRow: getCheckedData
+            });
+            $("#pageloading").hide();
+            $('#menu').menu({ mainMenuSelectedID: "Feed", subMenuSelectedID: "Feed-FeedList" });
+
+
+            $("#btnSearch").click(function () {
+
+                var row = manager.getSelectedRow();
+                if (!row) { alert('请选择行'); return; }
+                // alert(row.jid);
+                $.ajax({
+                    type: "GET",
+                    url: "../../Feed/Formula/GetFeedCowList",
+                    data: { feid: row.feid },
+                    dataType: "json",
+                    success: function (data) {
+                        $('#JobIngreGrid').empty();   //清空resText里面的所有内容
+
+                        var html = '';
+                        html += ' <table><thead><tr><th>牛舍</th><th>饲料重量</th></tr></thead>';
+                        $.each(data.Rows, function (commentIndex, comment) {
+
+                            html += '<tr><td>' + comment.csname + '</td><td>' + comment.flweig + '</td></tr>';
+
+                        });
+                        html += '</table>';
+                        $('#JobIngreGrid').html(html);
+                    }
+
+                });
+            });
+        });
+
+        function getCheckedData() {
+
+            var rows = grid.getCheckedRows();
+
+            var str = "";
+            $(rows).each(function () {
+                str += this.CustomerID + ",";
+            });
+            alert(str);
+            $.ligerDialog.alert('选择的是' + str);
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div id="menu"></div>
+        <div class="content">
+
+            <div>
+                <div id="FormulaProcessGrid" class="displayBlock ml5 mr5"></div>
+                <div id="message"></div>
+                <div class="l-loading" id="pageloading"></div>
+            </div>
+            <button id="btnSearch">查看撒料明细</button>
+            <hr />
+            <div>
+                <div id="JobIngreGrid" class="displayBlock ml5 mr5"></div>
+                <div id="message"></div>
+                <div class="l-loading" id="pageloading"></div>
+            </div>
+
+        </div>
+    </div>
+    <script src="~/Scripts/bdhm.js"></script>
+</body>
+</html>

@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/WcfService1" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/WcfService1" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:complexType name="ArrayOfFeedInfo">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="FeedInfo" nillable="true" type="tns:FeedInfo" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfFeedInfo" nillable="true" type="tns:ArrayOfFeedInfo" />
+  <xs:complexType name="FeedInfo">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="feid" type="xs:int" />
+      <xs:element minOccurs="0" name="feleng" type="xs:float" />
+      <xs:element minOccurs="0" name="fename" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="fetdate" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="jid" type="xs:int" />
+      <xs:element minOccurs="0" name="jrank" type="xs:int" />
+      <xs:element minOccurs="0" name="jstat" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="stid" type="xs:int" />
+      <xs:element minOccurs="0" name="ttid" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="FeedInfo" nillable="true" type="tns:FeedInfo" />
+  <xs:complexType name="ArrayOfFeedCowInfo">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="FeedCowInfo" nillable="true" type="tns:FeedCowInfo" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfFeedCowInfo" nillable="true" type="tns:ArrayOfFeedCowInfo" />
+  <xs:complexType name="FeedCowInfo">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="csid" type="xs:int" />
+      <xs:element minOccurs="0" name="csname" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="flint" type="xs:int" />
+      <xs:element minOccurs="0" name="flweig" type="xs:double" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="FeedCowInfo" nillable="true" type="tns:FeedCowInfo" />
+  <xs:complexType name="ArrayOfJobInfo">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="JobInfo" nillable="true" type="tns:JobInfo" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfJobInfo" nillable="true" type="tns:ArrayOfJobInfo" />
+  <xs:complexType name="JobInfo">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="ctid" type="xs:int" />
+      <xs:element minOccurs="0" name="foid" type="xs:int" />
+      <xs:element minOccurs="0" name="jauth" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="jdate" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="jid" type="xs:int" />
+      <xs:element minOccurs="0" name="jleng" type="xs:float" />
+      <xs:element minOccurs="0" name="jname" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="joper" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="jrank" type="xs:int" />
+      <xs:element minOccurs="0" name="jstat" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="jtbatc" type="xs:int" />
+      <xs:element minOccurs="0" name="jtdate" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="jtype" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="pid" type="xs:int" />
+      <xs:element minOccurs="0" name="trmid" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="JobInfo" nillable="true" type="tns:JobInfo" />
+  <xs:complexType name="ArrayOfJobIngreForageInfo">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="JobIngreForageInfo" nillable="true" type="tns:JobIngreForageInfo" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfJobIngreForageInfo" nillable="true" type="tns:ArrayOfJobIngreForageInfo" />
+  <xs:complexType name="JobIngreForageInfo">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="fid" type="xs:int" />
+      <xs:element minOccurs="0" name="fname" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="jid" type="xs:int" />
+      <xs:element minOccurs="0" name="jiint" type="xs:int" />
+      <xs:element minOccurs="0" name="jiweig" type="xs:float" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="JobIngreForageInfo" nillable="true" type="tns:JobIngreForageInfo" />
+  <xs:complexType name="ArrayOfFeedModel">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="FeedModel" nillable="true" type="tns:FeedModel" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfFeedModel" nillable="true" type="tns:ArrayOfFeedModel" />
+  <xs:complexType name="FeedModel">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="feauth" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="feid" type="xs:int" />
+      <xs:element minOccurs="0" name="fename" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="fetdate" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="jrank" type="xs:int" />
+      <xs:element minOccurs="0" name="stid" type="xs:int" />
+      <xs:element minOccurs="0" name="ttid" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="FeedModel" nillable="true" type="tns:FeedModel" />
+  <xs:complexType name="CompositeType">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="BoolValue" type="xs:boolean" />
+      <xs:element minOccurs="0" name="StringValue" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="CompositeType" nillable="true" type="tns:CompositeType" />
+</xs:schema>

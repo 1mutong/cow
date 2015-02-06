@@ -1,0 +1,371 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>易牧通奶牛云智能管理平台</title>
+    <link rel="shortcut icon" href="images/emutong.ico">
+    <link rel="stylesheet" href="~/bootstrap/css/bootstrap-theme1.min.css">
+    <link rel="stylesheet" href="~/Style/base.css">
+    <link rel="stylesheet" href="~/Style/common.css">
+    <link rel="stylesheet" href="~/Style/Home/Index.css">
+    <link rel="stylesheet" href="~/Controls/jQuery.LoadingUI/jquery.loadingui.css" />
+</head>
+<body>
+    <div class="container">
+        <div id="menu"></div>
+        <div class="content">
+            <div class="farmInfo"><div class="title"></div></div>
+            <div style="margin-top: 20px;">
+                <div id="chart-cowSummary" style="height:350px; width: 450px; display:inline-block;"></div>
+                <div id="chart-milkCowSummary" style="height: 350px; width: 450px; display: inline-block; "></div>
+            </div>
+            <div>
+                <div id="chart-breedSummary" style="height: 350px; width: 450px; display: inline-block; "></div>
+                <div id="chart-paritySummary" style="height: 350px; width: 450px; display: inline-block; "></div>
+            </div>
+        </div>
+    </div>
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/Scripts/jquery-tools-min.js"></script>
+    <script src="~/bootstrap/js/bootstrap.min.js"></script>
+    <script src="~/Controls/echarts/doc/asset/js/esl/esl.js"></script>
+    <script src="~/Scripts/menu.js"></script>
+    <script src="~/Controls/jQuery.LoadingUI/jquery.loadingui.js"></script>
+    <script type="text/javascript">
+        // 路径配置
+        require.config({
+            paths: {
+                'echarts': '../Controls/echarts/build/echarts',
+                'echarts/chart/pie': '../Controls/echarts/build/echarts'
+            }
+        });
+
+        $(function () {
+            $('#menu').menu();
+            loadPastureInfo();
+            loadCowGroupSummary();
+        });
+
+        function loadPastureInfo() {
+            $.ajax({
+                type: 'get',
+                url: "../Home/GetCurrentUserInfo",
+                dataType: "json",
+                cache: false
+            }).success(function (user) {
+                if (user.CurrentUser.Pasture != null) {
+                    $('div.title').html('欢迎来到【' + user.CurrentUser.Pasture.Name + '】牧场');
+                    //$('.farmInfo').html(user.CurrentUser.Name + '：欢迎来到【' + user.CurrentUser.Pasture.Name + '】牧场');
+                }
+            });
+        }
+
+        function loadCowGroupSummary() {
+            $.ajax({
+                type: 'get',
+                url: "../Home/GetCowGroupSummary",
+                dataType: "json",
+                cache: false,
+                beforeSend: function () {
+                    $('.content').loadingUI();
+                },
+                success: function (cowData) {
+                    renderCowGroupSummary(cowData.CowSummary);
+                    renderMilkCowSummary(cowData.MilkCowSummary);
+                    renderBreedSummary(cowData.BreedSummary);
+                    renderParitySummary(cowData.ParitySummary);
+                    $('.content').loadingUI('hide');
+                }
+            });
+        }
+
+        function renderCowGroupSummary(summary) {
+            // 使用
+            require(
+                [
+                    'echarts',
+                    'echarts/chart/pie' // 使用柱状图就加载bar模块，按需加载
+                ],
+                function (ec) {
+                    // 基于准备好的dom，初始化echarts图表
+                    var myChart = ec.init(document.getElementById('chart-cowSummary'));
+
+                    option = {
+                        title: {
+                            text: '牛群整体结构',
+                            subtext: '',
+                            x: 'center'
+                        },
+                        tooltip: {
+                            trigger: 'item',
+                            showContent: true,
+                            formatter: "{a} <br/>{b} : {c} ({d}%)"
+                        },
+                        legend: {
+                            orient: 'vertical',
+                            x: 'left',
+                            y: 'top',
+                            data: ['经产牛', '青年牛', '育成牛', '犊牛']
+                        },
+                        toolbox: {
+                            show: false,
+                            feature: {
+                                mark: { show: true },
+                                dataView: { show: true, readOnly: false },
+                                restore: { show: true },
+                                saveAsImage: { show: true }
+                            }
+                        },
+                        calculable: false,
+                        series: [
+                            {
+                                name: '牛群整体结构',
+                                type: 'pie',
+                                radius: '55%',
+                                center: ['50%', '50%'],
+                                itemStyle: {
+                                    normal: {
+                                        label: {
+                                            position: 'outer',
+                                            formatter: "{b}：{c}"
+                                        },
+                                        labelLine: {
+                                            show: true
+                                        }
+                                    }
+                                },
+                                data: summary
+                            }
+                        ]
+                    };
+
+                    // 为echarts对象加载数据
+                    myChart.setOption(option);
+
+                    var ecConfig = require('echarts/config');
+                    myChart.on(ecConfig.EVENT.CLICK, function (param) {
+                        window.open("../Cow/CowList?cowType=" + param.name);
+                    });
+                }
+            );
+        }
+
+        function renderMilkCowSummary(summary) {
+            // 使用
+            require(
+                [
+                    'echarts',
+                    'echarts/chart/pie' // 使用柱状图就加载bar模块，按需加载
+                ],
+                function (ec) {
+                    // 基于准备好的dom，初始化echarts图表
+                    var myChart = ec.init(document.getElementById('chart-milkCowSummary'));
+
+                    option = {
+                        title: {
+                            text: '牛群泌乳状态',
+                            subtext: '',
+                            x: 'center'
+                        },
+                        tooltip: {
+                            trigger: 'item',
+                            showContent: true,
+                            formatter: "{a} <br/>{b} : {c} ({d}%)"
+                        },
+                        legend: {
+                            orient: 'vertical',
+                            x: 'left',
+                            y: 'top',
+                            data: ['泌乳牛', '干奶牛']
+                        },
+                        toolbox: {
+                            show: false,
+                            feature: {
+                                mark: { show: true },
+                                dataView: { show: true, readOnly: false },
+                                restore: { show: true },
+                                saveAsImage: { show: true }
+                            }
+                        },
+                        calculable: false,
+                        series: [
+                            {
+                                name: '牛群泌乳状态',
+                                type: 'pie',
+                                radius: '55%',
+                                center: ['50%', '50%'],
+                                data: summary,
+                                itemStyle: {
+                                    normal: {
+                                        label: {
+                                            position: 'outer',
+                                            formatter: "{b}：{c}"
+                                        },
+                                        labelLine: {
+                                            show: true
+                                        }
+                                    }
+                                },
+                            }
+                        ]
+                    };
+
+                    // 为echarts对象加载数据
+                    myChart.setOption(option);
+
+                    var ecConfig = require('echarts/config');
+                    myChart.on(ecConfig.EVENT.CLICK, function (param) {
+                        window.open("../Cow/CowList?cowType=" + param.name);
+                    });
+                }
+            );
+        }
+
+        function renderBreedSummary(summary) {
+            // 使用
+            require(
+                [
+                    'echarts',
+                    'echarts/chart/pie' // 使用柱状图就加载bar模块，按需加载
+                ],
+                function (ec) {
+                    // 基于准备好的dom，初始化echarts图表
+                    var myChart = ec.init(document.getElementById('chart-breedSummary'));
+
+                    option = {
+                        title: {
+                            text: '经产牛繁殖状况',
+                            subtext: '',
+                            x: 'center'
+                        },
+                        tooltip: {
+                            trigger: 'item',
+                            showContent: true,
+                            formatter: "{a} <br/>{b} : {c} ({d}%)"
+                        },
+                        legend: {
+                            orient: 'vertical',
+                            x: 'left',
+                            y: 'top',
+                            data: ['未配牛', '已配未检牛', '已孕牛']
+                        },
+                        toolbox: {
+                            show: false,
+                            feature: {
+                                mark: { show: true },
+                                dataView: { show: true, readOnly: false },
+                                restore: { show: true },
+                                saveAsImage: { show: true }
+                            }
+                        },
+                        calculable: false,
+                        series: [
+                            {
+                                name: '经产牛繁殖状况',
+                                type: 'pie',
+                                radius: '55%',
+                                center: ['50%', '50%'],
+                                data: summary,
+                                itemStyle: {
+                                    normal: {
+                                        label: {
+                                            position: 'outer',
+                                            formatter: "{b}：{c}"
+                                        },
+                                        labelLine: {
+                                            show: true
+                                        }
+                                    }
+                                },
+                            }
+                        ]
+                    };
+
+                    // 为echarts对象加载数据
+                    myChart.setOption(option);
+
+                    var ecConfig = require('echarts/config');
+                    myChart.on(ecConfig.EVENT.CLICK, function (param) {
+                        window.open("../Cow/CowList?cowType=经产牛" + param.name);
+                    });
+                }
+            );
+        }
+
+        function renderParitySummary(summary) {
+            // 使用
+            require(
+                [
+                    'echarts',
+                    'echarts/chart/pie' // 使用柱状图就加载bar模块，按需加载
+                ],
+                function (ec) {
+                    // 基于准备好的dom，初始化echarts图表
+                    var myChart = ec.init(document.getElementById('chart-paritySummary'));
+
+                    option = {
+                        title: {
+                            text: '青年牛繁殖状况',
+                            subtext: '',
+                            x: 'center'
+                        },
+                        tooltip: {
+                            trigger: 'item',
+                            showContent: true,
+                            formatter: "{a} <br/>{b} : {c} ({d}%)"
+                        },
+                        legend: {
+                            orient: 'vertical',
+                            x: 'left',
+                            y: 'top',
+                            data: ['未配牛', '已配未检牛', '已孕牛']
+                        },
+                        toolbox: {
+                            show: false,
+                            feature: {
+                                mark: { show: true },
+                                dataView: { show: true, readOnly: false },
+                                restore: { show: true },
+                                saveAsImage: { show: true }
+                            }
+                        },
+                        calculable: false,
+                        series: [
+                            {
+                                name: '青年牛繁殖状况',
+                                type: 'pie',
+                                radius: '55%',
+                                center: ['50%', '50%'],
+                                data: summary,
+                                itemStyle: {
+                                    normal: {
+                                        label: {
+                                            position: 'outer',
+                                            formatter: "{b}：{c}"
+                                        },
+                                        labelLine: {
+                                            show: true
+                                        }
+                                    }
+                                }
+                            }
+                        ]
+                    };
+
+                    // 为echarts对象加载数据
+                    myChart.setOption(option);
+
+                    var ecConfig = require('echarts/config');
+                    myChart.on(ecConfig.EVENT.CLICK, function (param) {
+                        window.open("../Cow/CowList?cowType=青年牛" + param.name);
+                    });
+                }
+            );
+        }
+    </script>
+    <script src="~/Scripts/bdhm.js"></script>
+</body>
+</html>

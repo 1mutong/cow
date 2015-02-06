@@ -1,0 +1,114 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>统计分析</title>
+    <script src="~/Javascript/jquery-1.8.3.min.js"></script>
+    <script src="~/Javascript/echarts/esl.js" type="text/javascript"></script>
+    <script src="~/Javascript/MyEcharts.js" type="text/javascript"></script>
+    <script src="~/Javascript/WapCharts.js" type="text/javascript"></script>
+
+
+    <link rel="stylesheet" href="~/ligerUI/skins/Aqua/css/ligerui-all.css">
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/Scripts/jquery-tools-min.js"></script>
+    <script src="~/ligerUI/js/ligerui.min.js"></script>
+    <link rel="stylesheet" href="~/bootstrap/css/bootstrap-theme1.min.css">
+    <script src="~/bootstrap/js/bootstrap.min.js"></script>
+    <link href="~/Controls/jQuery.Select2/select2.css" rel="stylesheet" />
+    <script src="~/Controls/jQuery.Select2/select2.min.js"></script>
+    <script src="~/Scripts/menu.js"></script>
+    <script src="~/Scripts/common.js"></script>
+    <link href="~/Controls/bootstrap.datepicker/datepicker.css" rel="stylesheet" />
+    <script src="~/Controls/bootstrap.datepicker/bootstrap-datepicker.js"></script>
+    <link rel="stylesheet" href="~/Style/base.css">
+
+
+   
+    <script type="text/javascript">
+        
+        $(function () {
+           
+
+            var dataresult;
+            var dataresult1;
+            var dataresult2;
+            $.ajax({
+                url: "../../Feed/Formula/GetAnalysis",
+                type: 'get',
+                async: false,
+                dataType: 'json',
+                success: function (data) {
+                    dataresult = JSON.parse(data);
+                    DrawBar(dataresult, "echart")
+                },
+
+                error: function (msg) {
+                    alert("系统发生错误");
+                }
+
+            });
+            
+
+            $.ajax({
+                url: "../../Feed/Formula/GetGaochanAnalysis",
+                type: 'get',
+                async: false,
+                dataType: 'json',
+                success: function (data) {
+                    dataresult1 = JSON.parse(data);
+                    DrawBar(dataresult1, "echart1")
+                },
+
+                error: function (msg) {
+                    alert("系统发生错误");
+                }
+
+            });
+
+            $.ajax({
+                url: "../../Feed/Formula/GetGannaiAnalysis",
+                type: 'get',
+                async: false,
+                dataType: 'json',
+                success: function (data) {
+                    dataresult2 = JSON.parse(data);
+                    DrawBar(dataresult2, "echart2")
+                },
+
+                error: function (msg) {
+                    alert("系统发生错误");
+                }
+
+            });
+            $("#menu").menu(
+                { mainMenuSelectedID: "Feed", subMenuSelectedID: "Feed-Analysis", showSubMemu: true }
+                );
+        });
+       
+    </script>
+
+
+
+</head>
+<body>
+    <div class="container">
+        <div id="menu" style="height:100px"></div>
+        <div class="content">
+        <p>饲料用量情况</p>
+            <div id="echart" style="width:100%; height:400px;"></div>
+            <p>高产牛单头牛干物质比例</p>
+            <div id="echart1" style="width:100%; height:500px;"></div>
+            <p>干奶牛单头牛干物质比例</p>
+            <div id="echart2" style="width:100%; height:500px;"></div>
+        </div>
+        
+    </div>
+    <script src="~/Scripts/bdhm.js"></script>
+</body>
+</html>

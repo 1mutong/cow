@@ -1,0 +1,349 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>计步器管理</title>
+    <link rel="stylesheet" href="~/ligerUI/skins/Aqua/css/ligerui-all.css">
+    <link rel="stylesheet" href="~/Style/base.css">
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/ligerUI/js/ligerui.min.js"></script>
+    <link rel="stylesheet" href="~/bootstrap/css/bootstrap-theme1.min.css">
+    <script src="~/bootstrap/js/bootstrap.min.js"></script>
+    <script src="~/Controls/echarts/doc/asset/js/esl/esl.js"></script>
+    <script src="~/Scripts/menu.js"></script>
+    <script>
+        $(function () {
+
+              $('#menu').menu(
+                {
+                    mainMenuSelectedID: "Breed",
+                    subMenuSelectedID: "Breed-Pedometer" ,
+                  
+                   
+                });
+                  Pedometer_change();
+                  GetEarNumByPedometer();
+                  GetPedometerByEarNum();
+                  CheckNewEarNum();
+                  LoadPedoemterList();
+                  DeletePedometer();
+        });
+        var Flage = 0;
+        function GetPedometerByEarNum()
+        {
+            $('input[name=FirstDisplayEarNum]').change(function () {
+                if ($('input[name=FirstDisplayEarNum]').val() != "")
+                {
+                   
+                
+
+                $.ajax({
+                    type: 'post',
+                    url: '../../Breed/Pedometer/GetPedometer',
+                    data: $("#PedomterInfo").serialize(),
+                    dataType: 'json',
+                    success: function (response) {
+                        if (response.Result == -2)
+                            {
+                            $("#FirstDisplayEarNumError").html("不存在该牛!");
+                            $("PedometerError").html("");
+                            $("#SecondDisplayEarNumError").html("");
+                            Flage = 0;
+                            $("input[name=FirstDisplayEarNum]").val("");
+                            $("input[name=Pedometer]").val("");
+                        }
+
+                       else if (response.Result == -1) {
+                           $("#FirstDisplayEarNumError").html("此牛没有计步器!");
+                           $("PedometerError").html("");
+                           $("#SecondDisplayEarNumError").html("");
+                           Flage = 0;
+                           $("input[name=FirstDisplayEarNum]").val("");
+                       }
+                       else
+                           {
+                           $("input[name=Pedometer]").val(response.Result);
+                           $("#FirstDisplayEarNumError").html("");
+                           $("PedometerError").html("");
+                           $("#SecondDisplayEarNumError").html("");
+                           Flage = 1;
+                       }
+
+                    }
+
+                })
+                }
+            });
+        }
+        function GetEarNumByPedometer()
+        {
+            $('input[name=Pedometer]').change(function () {
+                
+                if ($('input[name=Pedometer]').val() != "")
+                {
+                    if (NumCheck())
+                        {
+                $.ajax({
+                    type:'post',
+                    url: '../../Breed/Pedometer/GetEarNum',
+                    data: $("#PedomterInfo").serialize(),
+                    dataType: 'json',
+                    success: function (response) {
+                        if (response.Result != 0) {
+                            $("input[name=FirstDisplayEarNum]").val(response.Result);
+                            $("#PedometerError").html("");
+                            
+                            $("#FirstDisplayEarNumError").html("");
+                            $("#SecondDisplayEarNumError").html("");
+
+                            Flage = 1;
+                        }
+                        else {
+                            
+                         
+                            $('input[name=FirstDisplayEarNum]').val("");
+                            $("#FirstDisplayEarNumError").html("");
+                            $("#SecondDisplayEarNumError").html("");
+                            Flage = 1;
+                        }
+
+                    }
+                   
+                })
+                    }
+                }
+                });
+           
+            
+               
+                
+            }
+        function CheckNewEarNum()
+        {
+            $("input[name=SecondDisplayEarNum]").change(function () {
+                if ($('input[name=SecondDisplayEarNum]').val() != "") {
+                    $.ajax({
+                        type: 'post',
+                        url: '../../Breed/Pedometer/CheckNewEarNum',
+                        data: $("#PedomterInfo").serialize(),
+                        dataType: 'json',
+                        success: function (response) {
+                            if(response.Result==-1)
+                            {
+                                $("#SecondDisplayEarNumError").html("不存在该牛!");
+                                $('input[name=SecondDisplayEarNum]').val("");
+                                $("PedometerError").html("");
+                                $("#FirstDisplayEarNumError").html("");
+                                Flage = 0;
+                            }
+                            else
+                            {
+                                $.ajax({
+                                    type: 'post',
+                                    url: '../../Breed/Pedometer/CheckCavling',
+                                    data: $("#PedomterInfo").serialize(),
+                                    dataType: 'json',
+                                    success: function (response) {
+                                        if (response.Result == -2) {
+                                            $("#SecondDisplayEarNumError").html("此牛是犊牛!");
+                                            $("PedometerError").html("");
+                                            $("#FirstDisplayEarNumError").html("");
+                                            $('input[name=SecondDisplayEarNum]').val("");
+
+                                            Flage = 0;
+                                        }
+                                        else
+                                            $.ajax({
+                                                type: 'post',
+                                                url: '../../Breed/Pedometer/CheckIfPedometer',
+                                                data: $("#PedomterInfo").serialize(),
+                                                dataType: 'json',
+                                                success: function (response) {
+                                                    if (response.Result == -3) {
+                                                        $("#SecondDisplayEarNumError").html("该牛有已经拥有计步器!");
+                                                        $('input[name=SecondDisplayEarNum]').val("");
+                                                        $("PedometerError").html("");
+                                                        $("#FirstDisplayEarNumError").html("");
+                                                        Flage = 0;
+                                                    }
+                                                    else
+                                                    {
+                                                        $("#SecondDisplayEarNumError").html("");
+                                                        $("PedometerError").html("");
+                                                        $("#FirstDisplayEarNumError").html("");
+                                                        Flage = 1;
+                                                    }
+
+                                                }
+                                            })
+
+
+
+                                    }
+                                })
+                            }
+                          
+                        }
+
+
+                    })
+                   
+                  
+                }
+
+            });
+        }
+        function Pedometer_change()
+        {
+            $('#btnchange').click(function ()
+            {
+                if ($('input[name=Pedometer]').val()=="")
+                {
+                    $("#PedometerError").html("请输入");
+                    Flage=0;
+                }
+             
+             if($('input[name=SecondDisplayEarNum]').val()=="")
+                {
+                $("#SecondDisplayEarNumError").html("请输入");
+                Flage=0;
+                }
+                if (Flage == 1) {
+                    $.ajax({
+
+                        type: 'post',
+                        url: '../../Breed/Pedometer/PedometerChange',
+                        data: $("#PedomterInfo").serialize(),
+                        dataType: 'json',
+                        success: function (response) {
+                            if (response.Result == 1) {
+                                alert('修改成功！');
+                                Flage == 0;
+                                $("input[name=Pedometer]").val("");
+                                $("input[name=FirstDisplayEarNum]").val("");
+                                $("input[name=SecondDisplayEarNum]").val("");
+                                LoadPedoemterList();
+                            }
+                        }
+                    });
+                }
+               
+
+            })
+
+        }
+        function NumCheck()
+        {
+            
+            var reg =/^\d+$/;
+            if (!reg.test($("input[name=Pedometer]").val())) {
+                $("#PedometerError").html("请输入数字!");
+                $("input[name=Pedometer]").focus().val("");
+                return false;
+
+            }
+            else
+            {
+                $("#PedometerError").html("");
+                return true;
+            }
+        }
+        function LoadPedoemterList()
+        {
+            PedometerGrid = $('#PedometerGrid').ligerGrid({
+                columns: [
+                        {display:'系统耳号',name:'EarNum',width:1,hide:true},
+                        { display: '耳号', name: 'DisplayEarNum', width: 120, type:'string' },
+                        { display: "月龄", name: "AgeMonth", width: 120, type: 'double' },
+                        { display: '牛类型', name: 'GroupName', width: 120, type: 'string' },
+                        { display: '出生日期', name: 'BirthDate', width: 120, type: 'date' },
+                        { display: '花色', name: 'Color', width: 120, type: 'string' },
+                        { display: '出生体重', name: 'BirthWeight', width: 120, type: 'double' },
+                        { display: '性别', name: "Gender", width: 120, type: 'string' },
+                        { display: '健康状态', name: 'IllStatus', width: 120, type: 'string' },
+                        { display: '计步器号', name: 'Pedometer', type: 'int' }
+                   ],
+            pageSize: 15,
+            width: '100%',
+            height: '80%',
+            isScroll: false,
+            url: "../../Breed/Pedometer/GetPedometerList"
+            })
+        }
+        function DeletePedometer()
+        {
+            $("#Delete").click(function () {
+                var PedometerRow = PedometerGrid.getSelectedRow();
+                var DisplayEarNum;
+                if (PedometerRow == null) {
+                    alert("请选择行！");
+                    return;
+                } else {
+                    DisplayEarNum = PedometerRow["DisplayEarNum"];
+                }
+                if (confirm("确定摘下计步器么?")) {
+                    $.ajax({
+                        type: 'post',
+                        url: "../../Breed/Pedometer/DeletePedometer",
+                        dataType: "json",
+                        data: { DisplayEarNum: DisplayEarNum }
+                    }).success(function () {
+                        alert("成功摘除！");
+                    });
+                    LoadPedoemterList();
+                }
+                
+            })
+           
+        }
+       
+          
+
+        
+    </script>
+</head>
+<body>
+    <div class="container">
+        
+        <div id="menu">
+
+        </div>
+        <div class="content">
+            <form id="PedomterInfo">
+                <div class="input-group mt10">
+                    <span class="input-group-addon w100">计数器号</span>
+                    <input type="text" class="form-control w200 " placeholder="请输入计数器号" name="Pedometer" nvalidate="number:true">
+                    <span id="PedometerError" style="color:red"></span>
+
+                </div>
+                <div class="input-group mt10">
+                    <span class="input-group-addon w100">占用的牛</span>
+                    <input type="text" class="form-control w200 " placeholder="占用牛的耳号" name="FirstDisplayEarNum" >
+                    <span id="FirstDisplayEarNumError" style="color:red"></span>
+            </div>
+                <div class="input-group mt10">
+                    <span class="input-group-addon w100">替换的牛</span>
+                    <input type="text" class="form-control w200 " placeholder="请输入将要替换牛的耳号" name="SecondDisplayEarNum" >
+                    <span id="SecondDisplayEarNumError" style="color:red"></span>
+                </div>
+                <div class="mt10">
+                    <button type="button" class="btn btn-primary" id="btnchange">修改</button>
+                   
+                </div>
+               
+</form>
+            
+            <div id="PedometerGrid"></div>
+             <div style="display: inline-block; position: absolute;">
+                        <input type="button" id="Delete" class="btn btn-primary" value="摘下"  />
+                    </div>
+      </div>
+    </div>
+</body>
+</html>
